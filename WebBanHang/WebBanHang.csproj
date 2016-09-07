@@ -178,6 +178,7 @@
     <Compile Include="Controllers\Default4Controller.cs" />
     <Compile Include="Controllers\Default5Controller.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -241,6 +242,7 @@
     <Folder Include="Views\Default4\" />
     <Folder Include="Views\Default5\" />
     <Folder Include="Views\Product\" />
+    <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
