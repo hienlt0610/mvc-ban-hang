@@ -172,13 +172,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\Default1Controller.cs" />
-    <Compile Include="Controllers\Default2Controller.cs" />
-    <Compile Include="Controllers\Default3Controller.cs" />
-    <Compile Include="Controllers\Default4Controller.cs" />
-    <Compile Include="Controllers\Default5Controller.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
