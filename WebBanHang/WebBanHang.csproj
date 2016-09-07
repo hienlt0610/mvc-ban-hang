@@ -175,6 +175,7 @@
     <Compile Include="Controllers\Default1Controller.cs" />
     <Compile Include="Controllers\Default2Controller.cs" />
     <Compile Include="Controllers\Default3Controller.cs" />
+    <Compile Include="Controllers\Default4Controller.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -236,6 +237,7 @@
     <Folder Include="Views\Default1\" />
     <Folder Include="Views\Default2\" />
     <Folder Include="Views\Default3\" />
+    <Folder Include="Views\Default4\" />
     <Folder Include="Views\Product\" />
   </ItemGroup>
   <ItemGroup>
