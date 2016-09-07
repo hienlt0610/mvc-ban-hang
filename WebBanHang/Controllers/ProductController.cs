@@ -12,7 +12,7 @@ namespace WebBanHang.Controllers
         // GET: /Product/
         public ActionResult Index()
         {
-            int i;
+            int i = 0;
             return View();
         }
 	}
