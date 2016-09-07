@@ -230,11 +230,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Default1\" />
-    <Folder Include="Views\Default2\" />
-    <Folder Include="Views\Default3\" />
-    <Folder Include="Views\Default4\" />
-    <Folder Include="Views\Default5\" />
     <Folder Include="Views\Product\" />
     <Folder Include="Views\Test\" />
   </ItemGroup>
