@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9ae1acab004f49ea8a8ae96b1e634df6" Name="Diagram1">
+        <EntityTypeShape EntityType="ecommerceModel.Advertise" Width="1.5" PointX="5.75" PointY="7.125" />
+        <EntityTypeShape EntityType="ecommerceModel.Cart" Width="1.5" PointX="0.75" PointY="7" />
+        <EntityTypeShape EntityType="ecommerceModel.CartDetail" Width="1.5" PointX="3" PointY="8.625" />
+        <EntityTypeShape EntityType="ecommerceModel.Color" Width="1.5" PointX="0.75" PointY="11.625" />
+        <EntityTypeShape EntityType="ecommerceModel.Comment" Width="1.5" PointX="5.25" PointY="15.5" />
+        <EntityTypeShape EntityType="ecommerceModel.Configuration" Width="1.5" PointX="7.75" PointY="3.125" />
+        <EntityTypeShape EntityType="ecommerceModel.Contact" Width="1.5" PointX="3.75" PointY="34" />
+        <EntityTypeShape EntityType="ecommerceModel.Coupon" Width="1.5" PointX="5.75" PointY="3.375" />
+        <EntityTypeShape EntityType="ecommerceModel.Customer" Width="1.5" PointX="1.5" PointY="0.75" />
+        <EntityTypeShape EntityType="ecommerceModel.District" Width="1.5" PointX="1.5" PointY="20.375" />
+        <EntityTypeShape EntityType="ecommerceModel.ExcludeCoupon" Width="1.5" PointX="9" PointY="9.75" />
+        <EntityTypeShape EntityType="ecommerceModel.GroupProduct" Width="1.5" PointX="0.75" PointY="15.5" />
+        <EntityTypeShape EntityType="ecommerceModel.ImageProduct" Width="1.5" PointX="5.25" PointY="19.125" />
+        <EntityTypeShape EntityType="ecommerceModel.Menu" Width="1.5" PointX="3.75" PointY="3.125" />
+        <EntityTypeShape EntityType="ecommerceModel.OptionGroup" Width="1.5" PointX="3.75" PointY="23" />
+        <EntityTypeShape EntityType="ecommerceModel.Option" Width="1.5" PointX="6" PointY="22.875" />
+        <EntityTypeShape EntityType="ecommerceModel.OrderDetail" Width="1.5" PointX="6" PointY="11.5" />
+        <EntityTypeShape EntityType="ecommerceModel.Order" Width="1.5" PointX="3.75" PointY="27.375" />
+        <EntityTypeShape EntityType="ecommerceModel.Payment" Width="1.5" PointX="1.5" PointY="29" />
+        <EntityTypeShape EntityType="ecommerceModel.ProductOption" Width="1.5" PointX="8.25" PointY="15.75" />
+        <EntityTypeShape EntityType="ecommerceModel.Product" Width="1.5" PointX="3" PointY="14.75" />
+        <EntityTypeShape EntityType="ecommerceModel.Province" Width="1.5" PointX="1.5" PointY="24.5" />
+        <EntityTypeShape EntityType="ecommerceModel.Quantity" Width="1.5" PointX="3" PointY="11.875" />
+        <EntityTypeShape EntityType="ecommerceModel.sysdiagram" Width="1.5" PointX="7.75" PointY="6.125" />
+        <EntityTypeShape EntityType="ecommerceModel.User" Width="1.5" PointX="9.75" PointY="3.125" />
+        <AssociationConnector Association="ecommerceModel.FK_Cart_Customers" />
+        <AssociationConnector Association="ecommerceModel.FK_CartDetails_Cart" />
+        <AssociationConnector Association="ecommerceModel.FK_CartDetails_Color" />
+        <AssociationConnector Association="ecommerceModel.FK_CartDetails_Products" />
+        <AssociationConnector Association="ecommerceModel.FK_OrderDetails_Color" />
+        <AssociationConnector Association="ecommerceModel.FK_Quantity_Color" />
+        <AssociationConnector Association="ecommerceModel.FK_Comment_Customers" />
+        <AssociationConnector Association="ecommerceModel.FK_Comment_Products" />
+        <AssociationConnector Association="ecommerceModel.FK_Contact_Customers" />
+        <AssociationConnector Association="ecommerceModel.FK_ExcludeCoupon_Coupon" />
+        <AssociationConnector Association="ecommerceModel.FK_Customers_Districts" />
+        <AssociationConnector Association="ecommerceModel.FK_Customers_Provinces" />
+        <AssociationConnector Association="ecommerceModel.FK_Districts_Provinces" />
+        <AssociationConnector Association="ecommerceModel.FK_Orders_Districts" />
+        <AssociationConnector Association="ecommerceModel.FK_ExcludeCoupon_GroupProducts" />
+        <AssociationConnector Association="ecommerceModel.FK_GroupProducts_GroupProducts" />
+        <AssociationConnector Association="ecommerceModel.FK_Products_GroupProducts" />
+        <AssociationConnector Association="ecommerceModel.FK_ImageProducts_Products" />
+        <AssociationConnector Association="ecommerceModel.FK_Menus_Menus" />
+        <AssociationConnector Association="ecommerceModel.FK_Options_OptionGroups" />
+        <AssociationConnector Association="ecommerceModel.FK_ProductOptions_Options" />
+        <AssociationConnector Association="ecommerceModel.FK_OrderDetails_Orders" />
+        <AssociationConnector Association="ecommerceModel.FK_OrderDetails_Products" />
+        <AssociationConnector Association="ecommerceModel.FK_Orders_Payments" />
+        <AssociationConnector Association="ecommerceModel.FK_Orders_Provinces" />
+        <AssociationConnector Association="ecommerceModel.FK_ProductOptions_Products" />
+        <AssociationConnector Association="ecommerceModel.FK_Quantity_Products" />
+        <AssociationConnector Association="ecommerceModel.ColorProducts" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

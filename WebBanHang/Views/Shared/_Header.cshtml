@@ -1,4 +1,8 @@
 ﻿@using WebBanHang.Utils
+@{
+    var Data = ViewBag.Data;
+    var config = Data.Config as DefaultableDictionary<String, String>;
+}
 <!-- ============================================== HEADER ============================================== -->
 <header class="header-style-1">
     @Html.Partial("_Topbar")
@@ -18,10 +22,10 @@
                 <div class="col-xs-12 col-sm-12 col-md-6 top-search-holder">
                     <div class="contact-row">
                         <div class="phone inline">
-                            <i class="icon fa fa-phone"></i> (84) 1207774140
+                            <i class="icon fa fa-phone"></i> @config["support_phone"]
                         </div>
                         <div class="contact inline">
-                            <i class="icon fa fa-envelope"></i> saler@@sieunoob.vn
+                            <i class="icon fa fa-envelope"></i> @config["support_email"]
                         </div>
                     </div><!-- /.contact-row -->
                     <!-- ============================================================= SEARCH AREA ============================================================= -->

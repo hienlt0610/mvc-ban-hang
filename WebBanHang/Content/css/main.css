@@ -1346,7 +1346,8 @@ a {
 .yamm .dropdown-menu h2 {
   font-size: 15px;
   line-height: 27px;
-  color: #555;
+  font-weight: bold;
+  color: #3B3B3B;
   text-transform: uppercase;
   font-family: 'Open Sans Condensed', sans-serif;
   margin-top: 0px;
@@ -5177,4 +5178,8 @@ a {
 }
 .body-content .sign-in-page .register-form .form-group {
   margin-bottom: 25px;
+}
+
+.margin-bottom-10{
+    margin-bottom:10px;
 }
