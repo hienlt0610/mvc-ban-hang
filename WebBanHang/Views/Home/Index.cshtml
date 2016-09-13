@@ -9,39 +9,7 @@
             <div class="col-xs-12 col-sm-12 col-md-3 sidebar">
 
                 <!-- ================================== TOP NAVIGATION ================================== -->
-                <div class="side-menu animate-dropdown outer-bottom-xs">
-                    <div class="head"><i class="icon fa fa-align-justify fa-fw"></i> Chuyên mục</div>
-                    <nav class="yamm megamenu-horizontal" role="navigation">
-                        <ul class="nav">
-                            <li class="dropdown menu-item">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon fa fa-desktop fa-fw"></i>Computer</a>
-                                <ul class="dropdown-menu mega-menu">
-                                    <li class="yamm-content">
-                                        <div class="row">
-                                            <div class="col-sm-12 col-md-3">
-                                                <h2 class="title">Laptops &amp; Notebooks</h2>
-                                                <ul class="links list-unstyled margin-bottom-10">
-                                                    <li><a href="category.html">Microsoft</a></li>
-                                                    <li><a href="category.html">Apple</a></li>
-                                                    <li><a href="category.html">Tees & Tanks</a></li>
-                                                    <li><a href="category.html">Graphic Tees</a></li>
-                                                </ul>
-                                                <h2 class="title">Laptops &amp; Notebooks</h2>
-                                                <ul class="links list-unstyled margin-bottom-10">
-                                                    <li><a href="category.html">Microsoft</a></li>
-                                                    <li><a href="category.html">Apple</a></li>
-                                                    <li><a href="category.html">Tees & Tanks</a></li>
-                                                    <li><a href="category.html">Graphic Tees</a></li>
-                                                </ul>
-                                            </div><!-- /.col -->
-                                        </div><!-- /.row -->
-                                    </li><!-- /.yamm-content -->
-                                </ul><!-- /.dropdown-menu -->
-                            </li><!-- /.menu-item -->
-
-                        </ul><!-- /.nav -->
-                    </nav><!-- /.megamenu-horizontal -->
-                </div><!-- /.side-menu -->
+                @Html.Action("SideBarMenu");
                 <!-- ================================== TOP NAVIGATION : END ================================== -->
                 <!-- ============================================== SPECIAL OFFER ============================================== -->
                 <div class="sidebar-widget outer-bottom-small wow fadeInUp">

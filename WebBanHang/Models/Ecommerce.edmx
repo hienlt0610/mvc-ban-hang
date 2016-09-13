@@ -166,6 +166,8 @@
           <Property Name="Link" Type="nvarchar" MaxLength="255" />
           <Property Name="ParentMenuID" Type="int" />
           <Property Name="Priority" Type="tinyint" />
+          <Property Name="Label" Type="nvarchar" MaxLength="20" />
+          <Property Name="Hot" Type="bit" />
         </EntityType>
         <EntityType Name="OptionGroups">
           <Key>
@@ -1103,6 +1105,8 @@
           <Property Name="Link" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="ParentMenuID" Type="Int32" />
           <Property Name="Priority" Type="Byte" />
+          <Property Name="Label" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Hot" Type="Boolean" />
           <NavigationProperty Name="Menus1" Relationship="ecommerceModel.FK_Menus_Menus" FromRole="Menu" ToRole="Menu1" />
           <NavigationProperty Name="Menu1" Relationship="ecommerceModel.FK_Menus_Menus" FromRole="Menu1" ToRole="Menu" />
         </EntityType>
@@ -1580,7 +1584,7 @@
           <End Type="ecommerceModel.Color" Role="Color" Multiplicity="*" />
           <End Type="ecommerceModel.Product" Role="Product" Multiplicity="*" />
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -1742,6 +1746,8 @@
           <EntitySetMapping Name="Menus">
             <EntityTypeMapping TypeName="ecommerceModel.Menu">
               <MappingFragment StoreEntitySet="Menus">
+                <ScalarProperty Name="Hot" ColumnName="Hot" />
+                <ScalarProperty Name="Label" ColumnName="Label" />
                 <ScalarProperty Name="Priority" ColumnName="Priority" />
                 <ScalarProperty Name="ParentMenuID" ColumnName="ParentMenuID" />
                 <ScalarProperty Name="Link" ColumnName="Link" />

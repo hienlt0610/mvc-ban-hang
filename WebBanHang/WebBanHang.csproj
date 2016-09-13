@@ -175,13 +175,16 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\WidgetController.cs" />
     <Compile Include="Core\BaseController.cs" />
     <Compile Include="Core\DbContextRepository.cs" />
     <Compile Include="Core\IRepository.cs" />
     <Compile Include="Core\RepositoryModel.cs" />
     <Compile Include="Core\RepositoryModel\ColorRepository.cs" />
     <Compile Include="Core\RepositoryModel\ConfigRepository.cs" />
-    <Compile Include="Core\RepositoryModel\ProductGroupRepository.cs" />
+    <Compile Include="Core\RepositoryModel\GroupProductRepository.cs" />
+    <Compile Include="Core\RepositoryModel\MenuRespository.cs" />
+    <Compile Include="Core\WebDbContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -588,6 +591,7 @@
       <DependentUpon>Ecommerce.edmx</DependentUpon>
       <LastGenOutput>Ecommerce.cs</LastGenOutput>
     </Content>
+    <Content Include="Content\fonts\fontawesome-webfont.woff2" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -627,8 +631,9 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
-    <Content Include="Views\Shared\_Navbar.cshtml" />
     <Content Include="Views\Shared\_Topbar.cshtml" />
+    <Content Include="Views\Home\SideBarMenu.cshtml" />
+    <Content Include="Views\Widget\Navbar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

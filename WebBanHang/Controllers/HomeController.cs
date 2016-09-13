@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using WebBanHang.Models;
 using WebBanHang.Core;
 using WebBanHang.Core.RepositoryModel;
+using System.Web.Configuration;
+using System.Configuration;
 namespace WebBanHang.Controllers
 {
     public class HomeController : BaseController
@@ -15,18 +17,10 @@ namespace WebBanHang.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult SideBarMenu()
         {
-            ViewBag.Message = "Your application description page.";
-            String color = Repository.Create<ColorRepository>().FindById(1).ColorName;
-            return Content(color);
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            var groupProduct = Repository.Create<GroupProductRepository>().FetchAll().OrderByDescending(item => item.Priority).ToList();
+            return PartialView(groupProduct);
         }
     }
 }

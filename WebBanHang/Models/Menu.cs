@@ -24,6 +24,8 @@ namespace WebBanHang.Models
         public string Link { get; set; }
         public Nullable<int> ParentMenuID { get; set; }
         public Nullable<byte> Priority { get; set; }
+        public string Label { get; set; }
+        public Nullable<bool> Hot { get; set; }
     
         public virtual ICollection<Menu> Menus1 { get; set; }
         public virtual Menu Menu1 { get; set; }

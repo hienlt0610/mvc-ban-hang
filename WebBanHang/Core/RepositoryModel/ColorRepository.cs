@@ -11,6 +11,7 @@ namespace WebBanHang.Core.RepositoryModel
     {
         public ColorRepository(DbContext dbContext) : base(dbContext)
         {
+
         }
     }
 }

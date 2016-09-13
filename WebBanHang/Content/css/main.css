@@ -1461,7 +1461,7 @@ a {
 .sidebar .side-menu nav .nav > li > a {
   padding: 13px 15px;
   color: #666666;
-  text-transform: uppercase;
+  font-size:13px;
 }
 .sidebar .side-menu nav .nav > li > a:after {
   color: #bababa;
@@ -1479,7 +1479,7 @@ a {
 }
 .sidebar .side-menu nav .nav > li > a .icon {
   font-size: 20px;
-  margin-right: 25px;
+  margin-right: 15px;
 }
 .sidebar .side-menu nav .nav > li > a:hover,
 .sidebar .side-menu nav .nav > li > a:focus {

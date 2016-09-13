@@ -16,6 +16,7 @@ namespace WebBanHang.Core
             this._dbContext = dbContext;
         }
 
+
         public T Create<T>() where T : class
         {
             if (dict.ContainsKey(typeof(T))) return (T)dict[typeof(T)];

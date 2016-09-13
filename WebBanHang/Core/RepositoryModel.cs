@@ -20,7 +20,11 @@ namespace WebBanHang.Core
             this.dbSet = this.dbContext.Set<T>();
         }
 
-        public RepositoryModel() { }
+        public RepositoryModel()
+        {
+            this.dbContext = new DbContext("metadata=res://*/Models.Ecommerce.csdl|res://*/Models.Ecommerce.ssdl|res://*/Models.Ecommerce.msl;provider=System.Data.SqlClient;provider connection string='data source=DESKTOP-EO3JKGC\\HIENLT0610;initial catalog=ecommerce;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework'");
+            this.dbSet = this.dbContext.Set<T>();
+        }
 
         public DbContext DbContext
         {

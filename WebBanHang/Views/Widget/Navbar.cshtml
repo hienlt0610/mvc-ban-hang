@@ -1,4 +1,7 @@
-﻿<!-- ============================================== NAVBAR ============================================== -->
+﻿@using WebBanHang.Models
+@model IEnumerable<Menu>
+
+<!-- ============================================== NAVBAR ============================================== -->
 <div class="header-nav animate-dropdown">
     <div class="container">
         <div class="yamm navbar navbar-default" role="navigation">
@@ -14,24 +17,27 @@
                 <div class="navbar-collapse collapse" id="mc-horizontal-menu-collapse">
                     <div class="nav-outer">
                         <ul class="nav navbar-nav">
+                        @foreach(Menu menu in Model)
+                        {
                             <li class="dropdown">
-                                <a href="category.html">
-                                    Trang chủ
+                                <a href="@menu.Link">
+                                    @menu.MenuName
+                                    
+                                    @if (!String.IsNullOrEmpty(menu.Label))
+                                    {
+                                        if (menu.Hot == true)
+                                        {
+                                            <span class="menu-label hot-menu hidden-xs">@menu.Label</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="menu-label new-menu hidden-xs">@menu.Label</span>
+                                        }
+                                    }
+                                    
                                 </a>
                             </li>
-                            
-                            <li class="dropdown">
-                                <a href="category.html">
-                                    Khuyến mãi
-                                    <span class="menu-label hot-menu hidden-xs">hot</span>
-                                </a>
-                            </li>
-
-                            <li class="dropdown">
-                                <a href="category.html">
-                                    Liên hệ
-                                </a>
-                            </li>
+                        }
                         </ul><!-- /.navbar-nav -->
                         <div class="clearfix"></div>
                     </div><!-- /.nav-outer -->
@@ -42,4 +48,3 @@
     </div><!-- /.container-class -->
 </div><!-- /.header-nav -->
 <!-- ============================================== NAVBAR : END ============================================== -->
-

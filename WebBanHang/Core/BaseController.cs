@@ -8,6 +8,7 @@ using WebBanHang.Core;
 using WebBanHang.Core.RepositoryModel;
 using WebBanHang.Models;
 using WebBanHang.Utils;
+using System.Configuration;
 
 namespace WebBanHang.Core
 {
@@ -16,8 +17,10 @@ namespace WebBanHang.Core
         protected DbContextRepository Repository { get; set; }
         public BaseController()
         {
-            ecommerceEntities entity = new ecommerceEntities();
-            Repository = new DbContextRepository(entity);
+            //ecommerceEntities entity = new ecommerceEntities();
+            String connectionString = "data source=DESKTOP-EO3JKGC\\HIENLT0610;initial catalog=ecommerce;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework";
+            String entityConnStr = String.Format("metadata=res://*/Models.Ecommerce.csdl|res://*/Models.Ecommerce.ssdl|res://*/Models.Ecommerce.msl;provider=System.Data.SqlClient;provider connection string='{0}'",connectionString);
+            Repository = new DbContextRepository(new WebDbContext(entityConnStr));
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
