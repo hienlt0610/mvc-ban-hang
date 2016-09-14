@@ -274,9 +274,6 @@
     <Compile Include="Models\Quantity.cs">
       <DependentUpon>Ecommerce.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>Ecommerce.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\User.cs">
       <DependentUpon>Ecommerce.tt</DependentUpon>
     </Compile>
