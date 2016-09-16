@@ -10,29 +10,41 @@
         <ul class="nav">
         @foreach(GroupProduct group in Model){
             <li class="dropdown menu-item">
+                @if (group.GroupProducts1.Count > 0)
+                {
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon fa fa-@group.Icon fa-fw"></i>@group.GroupName</a>
                 <ul class="dropdown-menu mega-menu">
                     <li class="yamm-content">
-                        <div class="row">
-                            <div class="col-sm-12 col-md-3">
-                                <h2 class="title">Laptops &amp; Notebooks</h2>
+                            @{int i = 0;}
+                            @foreach (var subLevel2 in group.GroupProducts1)
+                            {
+                                if (i == 0)
+                                {
+                                    @Html.Raw("<div class=\"row\">")
+                                }
+                                <div class="col-sm-12 col-md-3">
+                                <h2 class="title">@subLevel2.GroupName</h2>
                                 <ul class="links list-unstyled margin-bottom-10">
-                                    <li><a href="category.html">Microsoft</a></li>
-                                    <li><a href="category.html">Apple</a></li>
-                                    <li><a href="category.html">Tees & Tanks</a></li>
-                                    <li><a href="category.html">Graphic Tees</a></li>
+                                    @foreach (var subLevel3 in subLevel2.GroupProducts1)
+                                    {
+                                        <li><a href="@Url.Action("View", "GroupProduct", new { id = subLevel3.GroupID })">@subLevel3.GroupName</a></li>
+                                    }
                                 </ul>
-                                <h2 class="title">Laptops &amp; Notebooks</h2>
-                                <ul class="links list-unstyled margin-bottom-10">
-                                    <li><a href="category.html">Microsoft</a></li>
-                                    <li><a href="category.html">Apple</a></li>
-                                    <li><a href="category.html">Tees & Tanks</a></li>
-                                    <li><a href="category.html">Graphic Tees</a></li>
-                                </ul>
-                            </div><!-- /.col -->
-                        </div><!-- /.row -->
+                                </div>
+                                i = i + 1;
+                                if(i == 2)
+                                {
+                                    @Html.Raw("</div>")
+                                    i = 0;
+                                }
+                            }
                     </li><!-- /.yamm-content -->
                 </ul><!-- /.dropdown-menu -->
+                }
+                else
+                {
+                    <a href="@Url.Action("View", "GroupProduct", new { id = group.GroupID})"><i class="icon fa fa-@group.Icon fa-fw"></i>@group.GroupName</a>
+                }
             </li><!-- /.menu-item -->
         }
         </ul><!-- /.nav -->

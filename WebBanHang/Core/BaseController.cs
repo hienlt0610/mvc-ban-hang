@@ -17,10 +17,8 @@ namespace WebBanHang.Core
         protected DbContextRepository Repository { get; set; }
         public BaseController()
         {
-            //ecommerceEntities entity = new ecommerceEntities();
-            String connectionString = "Data Source=(local);Initial Catalog=ecommerce;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False";
-            String entityConnStr = String.Format("metadata=res://*/Models.Ecommerce.csdl|res://*/Models.Ecommerce.ssdl|res://*/Models.Ecommerce.msl;provider=System.Data.SqlClient;provider connection string='{0}'",connectionString);
-            Repository = new DbContextRepository(new WebDbContext(entityConnStr));
+            ecommerceEntities entity = new ecommerceEntities();
+            Repository = new DbContextRepository(entity);
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)

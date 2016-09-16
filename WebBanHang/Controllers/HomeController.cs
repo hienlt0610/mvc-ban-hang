@@ -19,7 +19,11 @@ namespace WebBanHang.Controllers
 
         public ActionResult SideBarMenu()
         {
-            var groupProduct = Repository.Create<GroupProductRepository>().FetchAll().OrderByDescending(item => item.Priority).ToList();
+            var groupProduct = Repository.Create<GroupProductRepository>()
+                            .FetchAll()
+                            .Where(item => item.ParentGroupID == null)
+                            .OrderByDescending(item => item.Priority)
+                            .ToList();
             return PartialView(groupProduct);
         }
     }

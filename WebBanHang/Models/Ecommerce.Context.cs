@@ -48,6 +48,7 @@ namespace WebBanHang.Models
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Province> Provinces { get; set; }
         public virtual DbSet<Quantity> Quantities { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
     }
 }

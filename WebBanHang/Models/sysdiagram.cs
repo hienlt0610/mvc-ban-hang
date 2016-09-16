@@ -12,13 +12,12 @@ namespace WebBanHang.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ExcludeCoupon
+    public partial class sysdiagram
     {
-        public int CouponID { get; set; }
-        public int GroupID { get; set; }
-        public string Description { get; set; }
-    
-        public virtual Coupon Coupon { get; set; }
-        public virtual GroupProduct GroupProduct { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }
