@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace WebBanHang.Utils
 {
@@ -9,7 +6,7 @@ namespace WebBanHang.Utils
     {
         public static bool HasLength(this string target)
         {
-            return (target != null && target.Length > 0);
+            return !string.IsNullOrEmpty(target);
         }
 
         public static bool HasText(this string target)

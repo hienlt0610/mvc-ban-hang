@@ -13,5 +13,9 @@ namespace WebBanHang.Core.RepositoryModel
         {
             
         }
+
+        public IEnumerable<GroupProduct> GetTopGroupProduct(){
+            return FetchAll().Where(item => item.ParentGroupID == null).OrderBy(item => item.GroupName).ToList();
+        }
     }
 }

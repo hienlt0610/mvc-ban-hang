@@ -143,8 +143,8 @@
             <PropertyRef Name="GroupID" />
           </Key>
           <Property Name="GroupID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ParentGroupID" Type="int" />
           <Property Name="GroupName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ParentGroupID" Type="int" />
           <Property Name="Icon" Type="varchar" MaxLength="100" />
           <Property Name="Priority" Type="int" Nullable="false" />
         </EntityType>
@@ -246,6 +246,7 @@
           <Property Name="Stock" Type="int" />
           <Property Name="GroupID" Type="int" Nullable="false" />
           <Property Name="UseMultiColor" Type="bit" />
+          <Property Name="CreateDate" Type="smalldatetime" Nullable="false" />
           <Property Name="Active" Type="bit" />
         </EntityType>
         <EntityType Name="Provinces">
@@ -786,6 +787,7 @@
     <edmx:ConceptualModels>
       <Schema Namespace="ecommerceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="ecommerceEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="ecommerceModel.sysdiagram" />
           <EntitySet Name="Advertises" EntityType="ecommerceModel.Advertise" />
           <EntitySet Name="Carts" EntityType="ecommerceModel.Cart" />
           <EntitySet Name="CartDetails" EntityType="ecommerceModel.CartDetail" />
@@ -809,7 +811,6 @@
           <EntitySet Name="Products" EntityType="ecommerceModel.Product" />
           <EntitySet Name="Provinces" EntityType="ecommerceModel.Province" />
           <EntitySet Name="Quantities" EntityType="ecommerceModel.Quantity" />
-          <EntitySet Name="sysdiagrams" EntityType="ecommerceModel.sysdiagram" />
           <EntitySet Name="Users" EntityType="ecommerceModel.User" />
           <AssociationSet Name="FK_Cart_Customers" Association="ecommerceModel.FK_Cart_Customers">
             <End Role="Customer" EntitySet="Customers" />
@@ -923,7 +924,17 @@
             <End Role="Color" EntitySet="Colors" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
         <EntityType Name="Advertise">
           <Key>
             <PropertyRef Name="AdvertiseID" />
@@ -1077,8 +1088,8 @@
             <PropertyRef Name="GroupID" />
           </Key>
           <Property Name="GroupID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParentGroupID" Type="Int32" />
           <Property Name="GroupName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ParentGroupID" Type="Int32" />
           <Property Name="Icon" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Priority" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ExcludeCoupons" Relationship="ecommerceModel.FK_ExcludeCoupon_GroupProducts" FromRole="GroupProduct" ToRole="ExcludeCoupon" />
@@ -1200,6 +1211,7 @@
           <Property Name="Stock" Type="Int32" />
           <Property Name="GroupID" Type="Int32" Nullable="false" />
           <Property Name="UseMultiColor" Type="Boolean" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Active" Type="Boolean" />
           <NavigationProperty Name="CartDetails" Relationship="ecommerceModel.FK_CartDetails_Products" FromRole="Product" ToRole="CartDetail" />
           <NavigationProperty Name="Comments" Relationship="ecommerceModel.FK_Comment_Products" FromRole="Product" ToRole="Comment" />
@@ -1231,16 +1243,6 @@
           <Property Name="Stock" Type="Int32" />
           <NavigationProperty Name="Color" Relationship="ecommerceModel.FK_Quantity_Color" FromRole="Quantity" ToRole="Color" />
           <NavigationProperty Name="Product" Relationship="ecommerceModel.FK_Quantity_Products" FromRole="Quantity" ToRole="Product" />
-        </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -1590,6 +1592,17 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="ecommerceModelStoreContainer" CdmEntityContainer="ecommerceEntities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ecommerceModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Advertises">
             <EntityTypeMapping TypeName="ecommerceModel.Advertise">
               <MappingFragment StoreEntitySet="Advertise">
@@ -1727,8 +1740,8 @@
               <MappingFragment StoreEntitySet="GroupProducts">
                 <ScalarProperty Name="Priority" ColumnName="Priority" />
                 <ScalarProperty Name="Icon" ColumnName="Icon" />
-                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
                 <ScalarProperty Name="ParentGroupID" ColumnName="ParentGroupID" />
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
                 <ScalarProperty Name="GroupID" ColumnName="GroupID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1829,6 +1842,7 @@
             <EntityTypeMapping TypeName="ecommerceModel.Product">
               <MappingFragment StoreEntitySet="Products">
                 <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UseMultiColor" ColumnName="UseMultiColor" />
                 <ScalarProperty Name="GroupID" ColumnName="GroupID" />
                 <ScalarProperty Name="Stock" ColumnName="Stock" />
@@ -1855,17 +1869,6 @@
                 <ScalarProperty Name="Stock" ColumnName="Stock" />
                 <ScalarProperty Name="ColorID" ColumnName="ColorID" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="ecommerceModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="definition" ColumnName="definition" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

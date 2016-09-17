@@ -22,8 +22,8 @@ namespace WebBanHang.Models
         }
     
         public int GroupID { get; set; }
-        public Nullable<int> ParentGroupID { get; set; }
         public string GroupName { get; set; }
+        public Nullable<int> ParentGroupID { get; set; }
         public string Icon { get; set; }
         public int Priority { get; set; }
     

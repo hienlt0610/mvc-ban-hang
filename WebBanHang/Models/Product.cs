@@ -33,6 +33,7 @@ namespace WebBanHang.Models
         public Nullable<int> Stock { get; set; }
         public int GroupID { get; set; }
         public Nullable<bool> UseMultiColor { get; set; }
+        public System.DateTime CreateDate { get; set; }
         public Nullable<bool> Active { get; set; }
     
         public virtual ICollection<CartDetail> CartDetails { get; set; }

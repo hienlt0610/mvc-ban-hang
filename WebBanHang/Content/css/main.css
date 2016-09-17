@@ -937,7 +937,7 @@ a {
   font-size: 12px;
 }
 .top-bar .cnt-account {
-  float: left;
+  float: right;
   padding: 6px 0px;
 }
 .top-bar .cnt-account ul {
@@ -2455,9 +2455,9 @@ a {
   position: absolute;
 }
 .product .product-info .name {
-  font-size: 16px;
+  font-size: 14px;
   font-family: 'Open Sans Condensed', sans-serif;
-  font-weight:bold;
+  font-weight: bold;
 }
 .product .product-info .name a {
   color: #555;

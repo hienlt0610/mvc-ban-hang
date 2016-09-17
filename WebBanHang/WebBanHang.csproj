@@ -184,6 +184,7 @@
     <Compile Include="Core\RepositoryModel\ConfigRepository.cs" />
     <Compile Include="Core\RepositoryModel\GroupProductRepository.cs" />
     <Compile Include="Core\RepositoryModel\MenuRespository.cs" />
+    <Compile Include="Core\RepositoryModel\ProductRespository.cs" />
     <Compile Include="Core\WebDbContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -284,6 +285,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\AssetUtil.cs" />
     <Compile Include="Utils\DefaultableDictionary.cs" />
+    <Compile Include="Utils\ModelUtils.cs" />
     <Compile Include="Utils\StringUtils.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -638,6 +640,7 @@
     <Content Include="Views\Shared\_Topbar.cshtml" />
     <Content Include="Views\Home\SideBarMenu.cshtml" />
     <Content Include="Views\Widget\Navbar.cshtml" />
+    <Content Include="Views\Home\ShowGroupItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
