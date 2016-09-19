@@ -175,6 +175,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\WidgetController.cs" />
     <Compile Include="Core\BaseController.cs" />
     <Compile Include="Core\DbContextRepository.cs" />
@@ -182,6 +183,7 @@
     <Compile Include="Core\RepositoryModel.cs" />
     <Compile Include="Core\RepositoryModel\ColorRepository.cs" />
     <Compile Include="Core\RepositoryModel\ConfigRepository.cs" />
+    <Compile Include="Core\RepositoryModel\CustomerRepository.cs" />
     <Compile Include="Core\RepositoryModel\GroupProductRepository.cs" />
     <Compile Include="Core\RepositoryModel\MenuRespository.cs" />
     <Compile Include="Core\RepositoryModel\ProductRespository.cs" />
@@ -641,6 +643,7 @@
     <Content Include="Views\Home\SideBarMenu.cshtml" />
     <Content Include="Views\Widget\Navbar.cshtml" />
     <Content Include="Views\Home\ShowGroupItem.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

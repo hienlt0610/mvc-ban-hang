@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    @model Customer
+}
+
+<div class="breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-inner">
+            <ul class="list-inline list-unstyled">
+                <li><a href="home.html">Home</a></li>
+                <li class='active'>Authentication</li>
+            </ul>
+        </div><!-- /.breadcrumb-inner -->
+    </div><!-- /.container -->
+</div><!-- /.breadcrumb -->
+
+<div class="body-content outer-top-bd">
+    <div class="container">
+        <div class="sign-in-page inner-bottom-sm">
+            <div class="row">
+                <!-- create a new account -->
+                <div class="col-md-6 col-sm-6 create-new-account">
+                    <h4 class="checkout-subtitle">Tạo tài khoản mới</h4>
+                    <p class="text title-tag-line">Tạo cho bạn một tài khoản mua sắm</p>
+                    <form method="post" class="form-horizontal">
+                        <div class="form-group">
+                            <label for="txtUser" class="col-sm-3 control-label">Tài khoản:</label>
+                            <div class="col-sm-9">
+                                <input name="txtUser" type="text" class="form-control" id="txtUser" placeholder="Tài khoản">
+                                @if (ViewData["ErrUser"] != null)
+                                {
+                                    <p class="help-block red-text">@ViewData["ErrUser"]</p>
+                                }
+                            </div>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="txtPassword" class="col-sm-3 control-label">Mật khẩu:</label>
+                            <div class="col-sm-9">
+                                <input name="txtPassword" type="text" class="form-control" id="txtPassword" placeholder="Mật khẩu">
+                                @if (ViewData["ErrPassword1"] != null)
+                                {
+                                    <p class="help-block red-text">@ViewData["ErrPassword1"]</p>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="txtAgainPassword" class="col-sm-3 control-label">Xác nhận mật khẩu:</label>
+                            <div class="col-sm-9">
+                                <input name="txtAgainPassword" type="text" class="form-control" id="txtAgainPassword" placeholder="Xác nhận mật khẩu">
+                                @if (ViewData["ErrPassword2"] != null)
+                                {
+                                    <p class="help-block red-text">@ViewData["ErrPassword2"]</p>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="txtEmail" class="col-sm-3 control-label">Email:</label>
+                            <div class="col-sm-9">
+                                <input name="txtEmail" type="text" class="form-control" id="txtEmail" placeholder="Email">
+                                @if (ViewData["ErrEmail"] != null)
+                                {
+                                    <p class="help-block red-text">@ViewData["ErrEmail"]</p>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-9">
+                                <button type="submit" class="btn btn-default">Đăng nhập</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- create a new account -->
+            </div><!-- /.row -->
+        </div><!-- /.sigin-in-->
+      </div><!-- /.container -->
+</div><!-- /.body-content -->
+

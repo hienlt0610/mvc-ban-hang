@@ -21,7 +21,7 @@ namespace WebBanHang.Models
         public byte[] Email { get; set; }
         public Nullable<byte> UserRule { get; set; }
         public string IP { get; set; }
-        public byte[] Status { get; set; }
+        public string Status { get; set; }
         public Nullable<System.DateTime> RegistrationDate { get; set; }
     }
 }

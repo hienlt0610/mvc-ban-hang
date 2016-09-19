@@ -106,15 +106,15 @@
             <PropertyRef Name="CustomerID" />
           </Key>
           <Property Name="CustomerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FacebookID" Type="bigint" Nullable="false" />
-          <Property Name="GoogleID" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Username" Type="varchar" MaxLength="25" Nullable="false" />
-          <Property Name="Passwrord" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="FullName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FacebookID" Type="bigint" />
+          <Property Name="GoogleID" Type="varchar" MaxLength="20" />
+          <Property Name="Username" Type="varchar" MaxLength="25" />
+          <Property Name="Passwrord" Type="varchar" MaxLength="100" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="50" />
           <Property Name="Email" Type="varchar" MaxLength="80" Nullable="false" />
-          <Property Name="Address" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="ProvinceID" Type="int" Nullable="false" />
-          <Property Name="DistrictID" Type="int" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="100" />
+          <Property Name="ProvinceID" Type="int" />
+          <Property Name="DistrictID" Type="int" />
           <Property Name="Phone" Type="varchar" MaxLength="11" />
           <Property Name="Status" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="VerificationCode" Type="varchar" MaxLength="64" />
@@ -287,7 +287,7 @@
           <Property Name="Email" Type="varbinary" MaxLength="80" />
           <Property Name="UserRule" Type="tinyint" />
           <Property Name="IP" Type="varchar" MaxLength="50" />
-          <Property Name="Status" Type="varbinary" MaxLength="10" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="RegistrationDate" Type="smalldatetime" />
         </EntityType>
         <Association Name="FK_Cart_Customers">
@@ -399,7 +399,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Customers_Districts">
-          <End Role="Districts" Type="Self.Districts" Multiplicity="1" />
+          <End Role="Districts" Type="Self.Districts" Multiplicity="0..1" />
           <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Districts">
@@ -411,7 +411,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Customers_Provinces">
-          <End Role="Provinces" Type="Self.Provinces" Multiplicity="1" />
+          <End Role="Provinces" Type="Self.Provinces" Multiplicity="0..1" />
           <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Provinces">
@@ -1041,15 +1041,15 @@
             <PropertyRef Name="CustomerID" />
           </Key>
           <Property Name="CustomerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FacebookID" Type="Int64" Nullable="false" />
-          <Property Name="GoogleID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Username" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Name="Passwrord" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="FullName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FacebookID" Type="Int64" />
+          <Property Name="GoogleID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Username" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Passwrord" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
-          <Property Name="Address" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="ProvinceID" Type="Int32" Nullable="false" />
-          <Property Name="DistrictID" Type="Int32" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ProvinceID" Type="Int32" />
+          <Property Name="DistrictID" Type="Int32" />
           <Property Name="Phone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
           <Property Name="Status" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="VerificationCode" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
@@ -1255,7 +1255,7 @@
           <Property Name="Email" Type="Binary" MaxLength="80" FixedLength="false" />
           <Property Name="UserRule" Type="Byte" />
           <Property Name="IP" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="Binary" Nullable="false" MaxLength="10" FixedLength="false" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="RegistrationDate" Type="DateTime" Precision="0" />
         </EntityType>
         <Association Name="FK_Cart_Customers">
@@ -1379,7 +1379,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Customers_Districts">
-          <End Type="ecommerceModel.District" Role="District" Multiplicity="1" />
+          <End Type="ecommerceModel.District" Role="District" Multiplicity="0..1" />
           <End Type="ecommerceModel.Customer" Role="Customer" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="District">
@@ -1391,7 +1391,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Customers_Provinces">
-          <End Type="ecommerceModel.Province" Role="Province" Multiplicity="1" />
+          <End Type="ecommerceModel.Province" Role="Province" Multiplicity="0..1" />
           <End Type="ecommerceModel.Customer" Role="Customer" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Province">
@@ -1895,7 +1895,7 @@
               <ScalarProperty Name="ColorID" ColumnName="ColorID" />
             </EndProperty>
           </AssociationSetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

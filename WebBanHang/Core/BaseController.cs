@@ -23,13 +23,7 @@ namespace WebBanHang.Core
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            // Optional: Work only for GET request
-            if (filterContext.RequestContext.HttpContext.Request.RequestType != "GET")
-                return;
-
-            // Optional: Do not work with AjaxRequests
-            if (filterContext.RequestContext.HttpContext.Request.IsAjaxRequest())
-                return;
+           
             //  set viewbag data
             dynamic viewBagData = new ExpandoObject();
             viewBagData.Config = Repository.Create<ConfigRepository>()

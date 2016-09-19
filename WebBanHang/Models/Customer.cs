@@ -22,15 +22,15 @@ namespace WebBanHang.Models
         }
     
         public int CustomerID { get; set; }
-        public long FacebookID { get; set; }
+        public Nullable<long> FacebookID { get; set; }
         public string GoogleID { get; set; }
         public string Username { get; set; }
         public string Passwrord { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
-        public int ProvinceID { get; set; }
-        public int DistrictID { get; set; }
+        public Nullable<int> ProvinceID { get; set; }
+        public Nullable<int> DistrictID { get; set; }
         public string Phone { get; set; }
         public string Status { get; set; }
         public string VerificationCode { get; set; }
