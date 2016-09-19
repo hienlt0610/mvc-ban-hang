@@ -52,6 +52,7 @@ namespace WebBanHang.Controllers
 
             if (err == 0)
             {
+                string s = "";
                 return Content("Dang ky thanh cong!!!");
             }
             return View(); 
@@ -60,6 +61,7 @@ namespace WebBanHang.Controllers
         [HttpGet]
         public ActionResult Register()
         {
+            int i = 1;
             return View();   
         }
 
