@@ -1,2 +1,3 @@
 DiffMerge test
 
+Hello Thanhdeptrai
