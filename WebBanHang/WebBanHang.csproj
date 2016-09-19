@@ -643,7 +643,7 @@
     <Content Include="Views\Home\SideBarMenu.cshtml" />
     <Content Include="Views\Widget\Navbar.cshtml" />
     <Content Include="Views\Home\ShowGroupItem.cshtml" />
-    <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\User\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

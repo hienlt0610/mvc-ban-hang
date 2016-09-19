@@ -19,7 +19,7 @@ namespace WebBanHang.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(FormCollection form, Customer customer){
+        public ActionResult Register(FormCollection form, Customer customer){
             int err = 0;
             var cusRepository = Repository.Create<CustomerRepository>();
             String userName = form["txtUser"];
@@ -58,7 +58,7 @@ namespace WebBanHang.Controllers
         }
 
         [HttpGet]
-        public ActionResult Login()
+        public ActionResult Register()
         {
             return View();   
         }
