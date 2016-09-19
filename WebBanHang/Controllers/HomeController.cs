@@ -34,10 +34,14 @@ namespace WebBanHang.Controllers
             return PartialView(groupProduct);
         }
 
-        public ActionResult ShowGroupItem()
+        public ActionResult ShowGroupItem(int id)
         {
             var groupRes = Repository.Create<GroupProductRepository>();
-            var model = groupRes.GetTopGroupProduct();
+            dynamic model = new ExpandoObject();
+            List<Product> products = groupRes.GetProductInGroup(id);
+            model.Products = products;
+            model.Group = groupRes.FindById(id);
+            if (products.Count == 0) return Content("");
             return PartialView(model);
         }
     }

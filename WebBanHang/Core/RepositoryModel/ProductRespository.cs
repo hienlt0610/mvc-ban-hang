@@ -14,7 +14,10 @@ namespace WebBanHang.Core.RepositoryModel
 
         public List<Product> GetNewProduct(int number)
         {
-            return FetchAll().OrderByDescending(item => item.CreateDate).Take(number).ToList();
+            return FetchAll().Where(item => item.Active == true)
+                .OrderByDescending(item => item.CreateDate)
+                .Take(number)
+                .ToList();
         }
 
         public IEnumerable<Product> GetProductInGroup(int group)

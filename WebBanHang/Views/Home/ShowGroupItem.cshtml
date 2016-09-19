@@ -1,69 +1,79 @@
 ﻿
 @{
     ViewBag.Title = "ShowGroupItem";
-    @model IEnumerable<GroupProduct>
+    GroupProduct group = Model.Group;
 }
+<section class="section featured-product wow fadeInUp">
+    <h3 class="section-title">@Html.ActionLink(@group.GroupName, "Detail", "Category", new { id = group.GroupID }, null)</h3>
+    <div class="owl-carousel home-owl-carousel custom-carousel owl-theme outer-top-xs">
+        @foreach (Product product in ((IEnumerable<Product>)Model.Products).Take(10))
+         {
+        <div class="item item-carousel">
+            <div class="products">
+                <div class="product">
+                        <div class="product-image">
+                            <div class="image">
+                                <a href="@Url.Action("Detail", "Product", new { id = @product.ProductID })">
+                                    @{
+                                        var thumbUrl = ImageHelper.DefaultImage();
+                                        if (product.ImageProducts.Count > 0)
+                                        {
+                                            thumbUrl = ImageHelper.ThumbUrl(product.ImageProducts.FirstOrDefault().ImageUrl, 100, 200);
+                                        }
+                                    }
+                                    <img width="195px" src="@Url.Content("~/Content/images/blank.gif")" data-echo="@Url.Content(thumbUrl)" alt="">
+                                </a>
+                            </div><!-- /.image -->
+                            @if (product.SalePrice != 0 && (product.Price - product.SalePrice) > 0)
+                            {
+                                <div class="tag sale"><span>-@(((product.Price - product.SalePrice) * 100) / product.Price)%</span></div>
+                            }
+                        </div><!-- /.product-image -->
 
-@foreach(var group in Model)
-{
-    if (group.Products.Count == 0) { continue; }
-    <section class="section featured-product wow fadeInUp">
-        <h3 class="section-title">@group.GroupName</h3>
-        <div class="owl-carousel home-owl-carousel custom-carousel owl-theme outer-top-xs">
-            <div class="item item-carousel">
-                <div class="products">
-                    @foreach (Product product in group.Products.Take(10))
-                    {
-                        <div class="product">
-                            <div class="product-image">
-                                <div class="image">
-                                    <a href="detail.html"><img src="@Url.Content("~/Content/images/blank.gif")" data-echo="@Url.Content("~/Content/images/products/1.jpg")" alt=""></a>
-                                </div><!-- /.image -->
-                                <div class="tag sale"><span>-33%</span></div>
-                            </div><!-- /.product-image -->
 
+                        <div class="product-info text-left">
+                            <h3 class="name"><a href="@Url.Action("Detail", "Product", new { id = product.ProductID},null)">@product.ProductName</a></h3>
+                            <div class="rating rateit-small"></div>
+                            <div class="description"></div>
+                            <div class="product-price">
+                                <span class="price">
+                                    @Html.FormatCurrency(product.Price) đ
+                                </span>
+                                @if (product.SalePrice != 0 && (product.Price - product.SalePrice) > 0)
+                                {
+                                    <span class="price-before-discount">@Html.FormatCurrency(product.SalePrice) đ</span>
+                                }
 
-                            <div class="product-info text-left">
-                                <h3 class="name"><a href="detail.html">@product.ProductName</a></h3>
-                                <div class="rating rateit-small"></div>
-                                <div class="description"></div>
-                                <div class="product-price">
-                                    <span class="price">
-                                        $650.99
-                                    </span>
-                                    <span class="price-before-discount">$ 800</span>
+                            </div><!-- /.product-price -->
 
-                                </div><!-- /.product-price -->
+                        </div><!-- /.product-info -->
+                        <div class="cart clearfix animate-effect">
+                            <div class="action">
+                                <ul class="list-unstyled">
+                                    <li class="add-cart-button btn-group">
+                                        <button class="btn btn-primary icon" data-toggle="dropdown" type="button">
+                                            <i class="fa fa-shopping-cart"></i>
+                                        </button>
+                                        <button class="btn btn-primary" type="button">Add to cart</button>
 
-                            </div><!-- /.product-info -->
-                            <div class="cart clearfix animate-effect">
-                                <div class="action">
-                                    <ul class="list-unstyled">
-                                        <li class="add-cart-button btn-group">
-                                            <button class="btn btn-primary icon" data-toggle="dropdown" type="button">
-                                                <i class="fa fa-shopping-cart"></i>
-                                            </button>
-                                            <button class="btn btn-primary" type="button">Add to cart</button>
+                                    </li>
 
-                                        </li>
-
-                                        <li class="lnk wishlist">
-                                            <a class="add-to-cart" href="detail.html" title="Wishlist">
-                                                <i class="icon fa fa-heart"></i>
-                                            </a>
-                                        </li>
-                                        <li class="lnk">
-                                            <a class="add-to-cart" href="detail.html" title="Compare">
-                                                <i class="fa fa-retweet"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div><!-- /.action -->
-                            </div><!-- /.cart -->
-                        </div><!-- /.product -->
-                    }
-                </div><!-- /.products -->
-            </div><!-- /.item -->
-        </div><!-- /.home-owl-carousel -->
-    </section><!-- /.section -->
-}
+                                    <li class="lnk wishlist">
+                                        <a class="add-to-cart" href="@Url.Action("Detail", "Product", new { id = product.ProductID},null)" title="Wishlist">
+                                            <i class="icon fa fa-heart"></i>
+                                        </a>
+                                    </li>
+                                    <li class="lnk">
+                                        <a class="add-to-cart" href="@Url.Action("Detail", "Product", new { id = product.ProductID},null)" title="Compare">
+                                            <i class="fa fa-retweet"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div><!-- /.action -->
+                        </div><!-- /.cart -->
+                    </div><!-- /.product -->
+            </div><!-- /.products -->
+        </div><!-- /.item -->
+         }
+    </div><!-- /.home-owl-carousel -->
+</section><!-- /.section -->

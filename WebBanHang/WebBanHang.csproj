@@ -175,6 +175,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\WidgetController.cs" />
     <Compile Include="Core\BaseController.cs" />
@@ -287,6 +288,8 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\AssetUtil.cs" />
     <Compile Include="Utils\DefaultableDictionary.cs" />
+    <Compile Include="Utils\HtmlExtension.cs" />
+    <Compile Include="Utils\ImageHelper.cs" />
     <Compile Include="Utils\ModelUtils.cs" />
     <Compile Include="Utils\StringUtils.cs" />
   </ItemGroup>
@@ -427,6 +430,7 @@
     <Content Include="Content\images\loading.gif" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\images\next.png" />
+    <Content Include="Content\images\no_image.jpg" />
     <Content Include="Content\images\owl-carousel\AjaxLoader.gif" />
     <Content Include="Content\images\owl-carousel\grabbing.png" />
     <Content Include="Content\images\payments\1.png" />
@@ -503,6 +507,8 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Resource\173408_1.jpg" />
+    <Content Include="Resource\thumbnails\173408_1_100_200.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\fonts\bebas\bebasneuebold.eot" />
@@ -644,11 +650,11 @@
     <Content Include="Views\Widget\Navbar.cshtml" />
     <Content Include="Views\Home\ShowGroupItem.cshtml" />
     <Content Include="Views\User\Register.cshtml" />
+    <Content Include="Views\Product\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\admin\" />
-    <Folder Include="Views\Product\" />
     <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>
