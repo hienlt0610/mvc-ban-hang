@@ -62,5 +62,17 @@ namespace WebBanHang.Controllers
         {
             return View();   
         }
+
+        [HttpGet]
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(FormCollection form, Customer customer)
+        {
+            return View();
+        }
 	}
 }
