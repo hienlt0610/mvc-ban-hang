@@ -16,11 +16,11 @@ namespace WebBanHang.Controllers
     {
         public ActionResult Index()
         {
-            var productRes = Repository.Create<ProductRespository>();
+            var productRes = Repository.Create<ProductRepository>();
             var groupRes = Repository.Create<GroupProductRepository>(); 
             dynamic model = new ExpandoObject();
             model.NewProduct = productRes.GetNewProduct(5);
-            model.GroupProducts = groupRes.GetTopGroupProduct();
+            model.GroupProducts = groupRes.GetTopGroupProducts();
             return View(model);
         }
 
@@ -38,7 +38,7 @@ namespace WebBanHang.Controllers
         {
             var groupRes = Repository.Create<GroupProductRepository>();
             dynamic model = new ExpandoObject();
-            List<Product> products = groupRes.GetProductInGroup(id);
+            List<Product> products = groupRes.GetProductInGroups(id);
             model.Products = products;
             model.Group = groupRes.FindById(id);
             if (products.Count == 0) return Content("");

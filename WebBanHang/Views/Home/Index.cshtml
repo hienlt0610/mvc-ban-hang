@@ -506,14 +506,21 @@
                                                     <div class="description"></div>
                                                     <div class="product-price">
                                                         <span class="price">
-                                                            @Html.FormatCurrency(product.Price) đ
+                                                            @if (product.isSale())
+                                                            {
+                                                                @Html.FormatCurrency(product.SalePrice) <span>đ</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.FormatCurrency(product.Price) <span>đ</span>
+                                                            }
                                                         </span>
-                                                        @if (product.SalePrice != 0 && (product.Price - product.SalePrice) > 0)
+                                                        @if (product.isSale())
                                                         {
-                                                            <span class="price-before-discount">@Html.FormatCurrency(product.SalePrice) đ</span>
+                                                            <span class="price-before-discount">@Html.FormatCurrency(product.Price) đ</span>
                                                         }
 
-                                                    </div><!-- /.product-price -->
+                                                    </div>
 
                                                 </div><!-- /.product-info -->
                                                 <div class="cart clearfix animate-effect">

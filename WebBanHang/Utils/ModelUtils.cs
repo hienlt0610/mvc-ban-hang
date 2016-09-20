@@ -15,5 +15,10 @@ namespace WebBanHang.Utils
             var category = group.GroupProduct1;
             return category.GetLevel(level);
         }
+
+        public static bool isSale(this Product product)
+        {
+            return (product.SalePrice != 0 && (product.Price - product.SalePrice) > 0);
+        }
     }
 }

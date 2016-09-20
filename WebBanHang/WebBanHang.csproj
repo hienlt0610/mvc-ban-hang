@@ -40,6 +40,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -174,6 +182,8 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -186,8 +196,8 @@
     <Compile Include="Core\RepositoryModel\ConfigRepository.cs" />
     <Compile Include="Core\RepositoryModel\CustomerRepository.cs" />
     <Compile Include="Core\RepositoryModel\GroupProductRepository.cs" />
-    <Compile Include="Core\RepositoryModel\MenuRespository.cs" />
-    <Compile Include="Core\RepositoryModel\ProductRespository.cs" />
+    <Compile Include="Core\RepositoryModel\MenuRepository.cs" />
+    <Compile Include="Core\RepositoryModel\ProductRepository.cs" />
     <Compile Include="Core\WebDbContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -393,6 +403,7 @@
     <Content Include="Content\images\brands\brand4.png" />
     <Content Include="Content\images\brands\brand5.png" />
     <Content Include="Content\images\brands\brand6.png" />
+    <Content Include="Content\images\bullet-dark.png" />
     <Content Include="Content\images\cart.jpg" />
     <Content Include="Content\images\close.png" />
     <Content Include="Content\images\dot.png" />
@@ -438,6 +449,7 @@
     <Content Include="Content\images\payments\3.png" />
     <Content Include="Content\images\payments\4.png" />
     <Content Include="Content\images\payments\5.png" />
+    <Content Include="Content\images\plus.png" />
     <Content Include="Content\images\prev.png" />
     <Content Include="Content\images\product-compare\01.jpg" />
     <Content Include="Content\images\product-compare\02.jpg" />
@@ -504,6 +516,7 @@
     <Content Include="Content\js\owl.carousel.min.js" />
     <Content Include="Content\js\scripts.js" />
     <Content Include="Content\js\wow.min.js" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -651,6 +664,13 @@
     <Content Include="Views\Home\ShowGroupItem.cshtml" />
     <Content Include="Views\User\Register.cshtml" />
     <Content Include="Views\Product\Detail.cshtml" />
+    <Content Include="Views\Category\Detail.cshtml" />
+    <Content Include="Views\Category\ListGroupProduct.cshtml" />
+    <Content Include="Views\Category\InlineGroup.cshtml" />
+    <Content Include="Views\Category\HasSubGroup.cshtml" />
+    <Content Include="Views\Category\ShowProductInCategory.cshtml" />
+    <Content Include="Views\Error\Index.cshtml" />
+    <Content Include="Views\Error\Error404.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

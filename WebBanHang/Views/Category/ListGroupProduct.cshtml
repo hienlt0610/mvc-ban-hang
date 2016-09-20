@@ -1,0 +1,35 @@
+﻿@{
+    IEnumerable<GroupProduct> listGroupProduct = Model.GroupProducts;
+    GroupProduct currentGroup = Model.CurrentGroup;
+}
+
+<div class="sidebar-widget wow fadeInUp outer-bottom-xs ">
+    <div class="widget-header m-t-20">
+        <h4 class="widget-title">Danh mục</h4>
+    </div>
+    <div class="sidebar-widget-body m-t-10">
+        <div class="box-category">
+            <ul id="cat_accordion">
+                @ShowTree(listGroupProduct, currentGroup)
+            </ul>
+        </div>
+    </div>
+    <!-- /.sidebar-widget-body -->
+</div>
+
+@helper ShowTree(IEnumerable<GroupProduct> listGroupProduct, GroupProduct curr) 
+{ 
+    foreach (var group in listGroupProduct.OrderByDescending(item => item.Priority))
+    {
+        String actived = curr.GroupID == group.GroupID ? "active" : "";
+        <li class="cutom-parent-li">
+            <a href="@Url.Action("Detail", new { id=group.GroupID })" class="@actived cutom-parent">@group.GroupName<span class="dcjq-icon"></span></a> <span class="down"></span>
+            @if (group.GroupProducts1.Count > 0)
+            {
+            <ul style="display: block;">
+                @ShowTree(group.GroupProducts1,curr)
+            </ul>
+            }
+        </li>
+    }
+}

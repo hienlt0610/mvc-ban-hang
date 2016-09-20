@@ -19,7 +19,7 @@ namespace WebBanHang.Controllers
 
         public ActionResult Detail(int id)
         {
-            var productRepository = Repository.Create<ProductRespository>();
+            var productRepository = Repository.Create<ProductRepository>();
             var model = productRepository.FindById(id);
             return View(model);
         }

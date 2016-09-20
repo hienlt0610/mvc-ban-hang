@@ -5,9 +5,9 @@ using WebBanHang.Models;
 
 namespace WebBanHang.Core.RepositoryModel
 {
-    public class ProductRespository : RepositoryModel<Product>
+    public class ProductRepository : RepositoryModel<Product>
     {
-        public ProductRespository(DbContext dbContext)
+        public ProductRepository(DbContext dbContext)
             : base(dbContext)
         {
         }

@@ -14,11 +14,11 @@ namespace WebBanHang.Core.RepositoryModel
             
         }
 
-        public IEnumerable<GroupProduct> GetTopGroupProduct(){
+        public IEnumerable<GroupProduct> GetTopGroupProducts(){
             return FetchAll().Where(item => item.ParentGroupID == null).OrderBy(item => item.GroupName).ToList();
         }
 
-        public List<Product> GetProductInGroup(int group, List<Product> products = null)
+        public List<Product> GetProductInGroups(int group, List<Product> products = null)
         {
             if (products == null) products = new List<Product>();
             var currGroup = FindById(group);
@@ -27,9 +27,25 @@ namespace WebBanHang.Core.RepositoryModel
             List<GroupProduct> subGroups = FetchAll().Where(item => item.ParentGroupID == group).ToList();
             foreach (GroupProduct subGroup in subGroups)
             {
-                GetProductInGroup(subGroup.GroupID,products);
+                GetProductInGroups(subGroup.GroupID,products);
             }
             return products;
+        }
+
+        public IEnumerable<GroupProduct> GetListSubGroups(int groupID)
+        {
+            var mainGroupID = GetMainGroup(groupID);
+            return FetchAll().Where(item => item.ParentGroupID == mainGroupID)
+                .OrderByDescending(item => item.Priority)
+                .ToList();
+        }
+
+        public int GetMainGroup(int groupID)
+        {
+            var currGroup = FindById(groupID);
+            if (currGroup.ParentGroupID == null)
+                return groupID;
+            return GetMainGroup(currGroup.ParentGroupID.GetValueOrDefault(0));
         }
     }
 }
