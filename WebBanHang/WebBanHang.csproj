@@ -666,8 +666,6 @@
     <Content Include="Views\Product\Detail.cshtml" />
     <Content Include="Views\Category\Detail.cshtml" />
     <Content Include="Views\Category\ListGroupProduct.cshtml" />
-    <Content Include="Views\Category\InlineGroup.cshtml" />
-    <Content Include="Views\Category\HasSubGroup.cshtml" />
     <Content Include="Views\Category\ShowProductInCategory.cshtml" />
     <Content Include="Views\Error\Index.cshtml" />
     <Content Include="Views\Error\Error404.cshtml" />

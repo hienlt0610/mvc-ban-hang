@@ -8,6 +8,7 @@ using WebBanHang.Core;
 using WebBanHang.Utils;
 using WebBanHang.Core.RepositoryModel;
 using PagedList;
+using WebBanHang.Models;
 
 namespace WebBanHang.Controllers
 {
@@ -42,19 +43,17 @@ namespace WebBanHang.Controllers
             return PartialView(model);
         }
 
-        public ActionResult ShowProductInCategory(int id)
+        public ActionResult ShowProductInCategory(int id, int? page, String sort)
         {
-            var model = groupRepository.GetProductInGroups(id);
-            int page = 1;
-            if (Request.Params["page"] != null)
-            {
-                page = Request.Params["page"].ToIntWithDef(1);
-            }
             var config = Repository.Create<ConfigRepository>().FindById("product_per_page");
             var pageSize = config.Value.ToIntWithDef(1);
             if (pageSize < 1) pageSize = 1;
+            int pageNumber = (page ?? 1);
+
+            var model = groupRepository.GetProductInGroups(id, sort);
+
             ViewData["groupID"] = id;
-            return PartialView(model.ToPagedList(page, pageSize));
+            return PartialView(model.ToPagedList(pageNumber, pageSize));
         }
 	}
 }

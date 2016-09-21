@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using WebBanHang.Models;
+using WebBanHang.Utils;
 
 namespace WebBanHang.Core.RepositoryModel
 {
@@ -30,6 +31,32 @@ namespace WebBanHang.Core.RepositoryModel
                 GetProductInGroups(subGroup.GroupID,products);
             }
             return products;
+        }
+
+        public List<Product> GetProductInGroups(int group, String sort)
+        {
+            List<Product> model = null;
+            switch (sort)
+            {
+                case "name_asc":
+                    model = GetProductInGroups(group).OrderBy(item => item.ProductName).ToList();
+                    break;
+                case "name_desc":
+                    model = GetProductInGroups(group).OrderByDescending(item => item.ProductName).ToList();
+                    break;
+                case "price_asc":
+                    model = GetProductInGroups(group).
+                        OrderBy(item => item.isSale() ? item.SalePrice : item.Price)
+                        .ToList();
+                    break;
+                case "price_desc":
+                    model = GetProductInGroups(group).OrderByDescending(item => item.isSale() ? item.SalePrice : item.Price).ToList();
+                    break;
+                default:
+                    model = GetProductInGroups(group).OrderByDescending(item => item.CreateDate).ToList();
+                    break;
+            }
+            return model;
         }
 
         public IEnumerable<GroupProduct> GetListSubGroups(int groupID)
