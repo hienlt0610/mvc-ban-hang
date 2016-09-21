@@ -29,12 +29,12 @@ namespace WebBanHang.Models
         public string ProductName { get; set; }
         public string Detail { get; set; }
         public long Price { get; set; }
-        public Nullable<long> SalePrice { get; set; }
-        public Nullable<int> Stock { get; set; }
+        public long SalePrice { get; set; }
+        public int Stock { get; set; }
         public int GroupID { get; set; }
-        public Nullable<bool> UseMultiColor { get; set; }
+        public bool UseMultiColor { get; set; }
         public System.DateTime CreateDate { get; set; }
-        public Nullable<bool> Active { get; set; }
+        public bool Active { get; set; }
     
         public virtual ICollection<CartDetail> CartDetails { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }

@@ -25,18 +25,15 @@
         <EntityTypeShape EntityType="ecommerceModel.Order" Width="1.5" PointX="6" PointY="15.625" />
         <EntityTypeShape EntityType="ecommerceModel.Payment" Width="1.5" PointX="3.75" PointY="17.25" />
         <EntityTypeShape EntityType="ecommerceModel.ProductOption" Width="1.5" PointX="11.25" PointY="8" />
-        <EntityTypeShape EntityType="ecommerceModel.Product" Width="1.5" PointX="6" PointY="9.875" />
         <EntityTypeShape EntityType="ecommerceModel.Province" Width="1.5" PointX="2.25" PointY="3.25" />
         <EntityTypeShape EntityType="ecommerceModel.Quantity" Width="1.5" PointX="3" PointY="11.125" />
         <EntityTypeShape EntityType="ecommerceModel.User" Width="1.5" PointX="10.75" PointY="14.375" />
         <AssociationConnector Association="ecommerceModel.FK_Cart_Customers" />
         <AssociationConnector Association="ecommerceModel.FK_CartDetails_Cart" />
         <AssociationConnector Association="ecommerceModel.FK_CartDetails_Color" />
-        <AssociationConnector Association="ecommerceModel.FK_CartDetails_Products" />
         <AssociationConnector Association="ecommerceModel.FK_OrderDetails_Color" />
         <AssociationConnector Association="ecommerceModel.FK_Quantity_Color" />
         <AssociationConnector Association="ecommerceModel.FK_Comment_Customers" />
-        <AssociationConnector Association="ecommerceModel.FK_Comment_Products" />
         <AssociationConnector Association="ecommerceModel.FK_Contact_Customers" />
         <AssociationConnector Association="ecommerceModel.FK_ExcludeCoupon_Coupon" />
         <AssociationConnector Association="ecommerceModel.FK_Customers_Districts" />
@@ -45,19 +42,22 @@
         <AssociationConnector Association="ecommerceModel.FK_Orders_Districts" />
         <AssociationConnector Association="ecommerceModel.FK_ExcludeCoupon_GroupProducts" />
         <AssociationConnector Association="ecommerceModel.FK_GroupProducts_GroupProducts" />
-        <AssociationConnector Association="ecommerceModel.FK_Products_GroupProducts" />
-        <AssociationConnector Association="ecommerceModel.FK_ImageProducts_Products" />
         <AssociationConnector Association="ecommerceModel.FK_Menus_Menus" />
         <AssociationConnector Association="ecommerceModel.FK_Options_OptionGroups" />
         <AssociationConnector Association="ecommerceModel.FK_ProductOptions_Options" />
         <AssociationConnector Association="ecommerceModel.FK_OrderDetails_Orders" />
-        <AssociationConnector Association="ecommerceModel.FK_OrderDetails_Products" />
         <AssociationConnector Association="ecommerceModel.FK_Orders_Payments" />
         <AssociationConnector Association="ecommerceModel.FK_Orders_Provinces" />
+        <EntityTypeShape EntityType="ecommerceModel.Product" Width="1.5" PointX="6" PointY="7.75" />
+        <AssociationConnector Association="ecommerceModel.FK_CartDetails_Products" />
+        <AssociationConnector Association="ecommerceModel.FK_Comment_Products" />
+        <AssociationConnector Association="ecommerceModel.FK_Products_GroupProducts" />
+        <AssociationConnector Association="ecommerceModel.FK_ImageProducts_Products" />
+        <AssociationConnector Association="ecommerceModel.FK_OrderDetails_Products" />
         <AssociationConnector Association="ecommerceModel.FK_ProductOptions_Products" />
         <AssociationConnector Association="ecommerceModel.FK_Quantity_Products" />
         <AssociationConnector Association="ecommerceModel.ColorProducts" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

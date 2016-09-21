@@ -1,0 +1,119 @@
+﻿@model WebBanHang.Models.Product
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutTest.cshtml";
+    var groups = (IEnumerable<GroupProduct>)ViewBag.GroupProducts;
+}
+
+<h2>Index</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal">
+        <h4>Product</h4>
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProductName, new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Detail, new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.TextAreaFor(model => model.Detail, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GroupProduct, new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                <div class="dropdown dropdown-submit-input">
+                    @{Html.EnableClientValidation(false);}
+                    @Html.HiddenFor(item => item.GroupID, new { Value = (groups.Count() > 0 ? groups.FirstOrDefault().GroupID.ToString() : "") })
+                    @{Html.EnableClientValidation(true);}
+                    <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @(groups.Count() > 0 ? groups.FirstOrDefault().GroupName : "")
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                        @DropdownTree(groups.Where(item => item.ParentGroupID == null))
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price, new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.TextBoxFor(model => model.Price, new { @class = "form-control", type = "number", min = "0", max = "9999999999" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SalePrice, new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.TextBoxFor(model => model.SalePrice, new { @class = "form-control", type = "number", min = "0", max = "9999999999" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Stock, new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.TextBoxFor(model => model.Stock, new { @class = "form-control", type = "number", min = "1", max = "999999999" })
+            </div>
+        </div>
+       
+        <div class="form-group">
+            @Html.LabelFor(model => model.Active, new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.CheckBoxFor(x => x.Active, new { @checked = "checked" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+@section CustomScripts
+{
+    <script>
+        $('.dropdown-submit-input .dropdown-menu a').click(function (e) {
+            e.preventDefault();
+            $submitInput = $(this).closest('.dropdown-submit-input');
+            $submitInput.find('input').val($(this).data('value'));
+            $submitInput.find('button').html($(this).text() + ' <span class="caret"></span>');
+        });
+    </script>
+}
+
+@helper DropdownTree(IEnumerable<GroupProduct> list)
+{
+    foreach (GroupProduct group in list)
+    {
+        if (group.GroupProducts1.Count == 0)
+        {
+            <li><a href="#" data-value="@group.GroupID">@group.GroupName</a></li>
+        }
+        else
+        {
+            <li class="dropdown-submenu">
+                <a href="#" data-value="@group.GroupID">@group.GroupName</a>
+                <ul class="dropdown-menu">
+                    @DropdownTree(group.GroupProducts1)
+                </ul>
+            </li>
+        }
+    }
+}
