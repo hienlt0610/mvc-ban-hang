@@ -1,0 +1,205 @@
+﻿
+@{
+    @model GroupProduct
+    ViewBag.Title = Model.GroupName;
+}
+
+<div class="breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-inner">
+            <ul class="list-inline list-unstyled">
+                <li>@Html.ActionLink("Trang chủ","Index","Home")</li>
+                @ShowBreadcrumb(Model)
+            </ul>
+        </div>
+        <!-- /.breadcrumb-inner -->
+    </div>
+    <!-- /.container -->
+</div>
+<!-- /.breadcrumb -->
+<div class="body-content">
+    <div class='container'>
+        <div class='row outer-bottom-sm'>
+            <div class='col-md-3 sidebar'>
+                <div class="sidebar-module-container">
+                    <h3 class="section-title">@Model.GroupName</h3>
+                    <div class="sidebar-filter">
+                        <!-- ============================================== SIDEBAR CATEGORY ============================================== -->
+                        @Html.Action("ListGroupProduct", new { id = Model.GroupID})
+                        <!-- /.sidebar-widget -->
+                        <!-- ============================================== SIDEBAR CATEGORY : END ============================================== -->
+                        <!-- ============================================== PRICE SILDER============================================== -->
+                        <div class="sidebar-widget outer-bottom-xs wow fadeInUp">
+                            <div class="widget-header">
+                                <h4 class="widget-title">Price Slider</h4>
+                            </div>
+                            <div class="sidebar-widget-body m-t-20">
+                                <div class="price-range-holder">
+                                    <span class="min-max">
+                                        <span class="pull-left">$200.00</span>
+                                        <span class="pull-right">$800.00</span>
+                                    </span>
+                                    <input type="text" id="amount" style="border:0; color:#666666; font-weight:bold;text-align:center;">
+                                    <input type="text" class="price-slider" value="">
+
+                                </div>
+                                <!-- /.price-range-holder -->
+                                <a href="#" class="lnk btn btn-primary">Show Now</a>
+                            </div>
+                            <!-- /.sidebar-widget-body -->
+                        </div>
+                        <!-- /.sidebar-widget -->
+                        <!-- ============================================== PRICE SILDER : END ============================================== -->
+                        <!-- ============================================== MANUFACTURES============================================== -->
+                        <div class="sidebar-widget outer-bottom-xs wow fadeInUp">
+                            <div class="widget-header">
+                                <h4 class="widget-title">Manufactures</h4>
+                            </div>
+                            <div class="sidebar-widget-body m-t-10">
+                                <ul class="list">
+                                    <li><a href="#">Forever 18</a></li>
+                                    <li><a href="#">Nike</a></li>
+                                    <li><a href="#">Dolce & Gabbana</a></li>
+                                    <li><a href="#">Alluare</a></li>
+                                    <li><a href="#">Chanel</a></li>
+                                    <li><a href="#">Other Brand</a></li>
+                                </ul>
+                                <!--<a href="#" class="lnk btn btn-primary">Show Now</a>-->
+                            </div>
+                            <!-- /.sidebar-widget-body -->
+                        </div>
+                        <!-- /.sidebar-widget -->
+                        <!-- ============================================== MANUFACTURES: END ============================================== -->
+                        <!-- ============================================== COLOR============================================== -->
+                        <div class="sidebar-widget wow fadeInUp outer-bottom-xs ">
+                            <div class="widget-header">
+                                <h4 class="widget-title">Colors</h4>
+                            </div>
+                            <div class="sidebar-widget-body m-t-10">
+                                <ul class="list">
+                                    <li><a href="#">Red</a></li>
+                                    <li><a href="#">Blue</a></li>
+                                    <li><a href="#">Yellow</a></li>
+                                    <li><a href="#">Pink</a></li>
+                                    <li><a href="#">Brown</a></li>
+                                    <li><a href="#">Teal</a></li>
+                                </ul>
+                            </div>
+                            <!-- /.sidebar-widget-body -->
+                        </div>
+                        <!-- /.sidebar-widget -->
+                        <!-- ============================================== COLOR: END ============================================== -->
+                        <!-- ============================================== COMPARE============================================== -->
+                        <div class="sidebar-widget wow fadeInUp">
+                            <h3 class="section-title">Compare products</h3>
+                            <div class="sidebar-widget-body">
+                                <div class="compare-report">
+                                    <p>You have no <span>item(s)</span> to compare</p>
+                                </div>
+                                <!-- /.compare-report -->
+                            </div>
+                            <!-- /.sidebar-widget-body -->
+                        </div>
+                        <!-- /.sidebar-widget -->
+                        <!-- ============================================== COMPARE: END ============================================== -->
+                        <!-- ============================================== PRODUCT TAGS ============================================== -->
+                        <div class="sidebar-widget product-tag wow fadeInUp">
+                            <h3 class="section-title">Product tags</h3>
+                            <div class="sidebar-widget-body outer-top-xs">
+                                <div class="tag-list">
+                                    <a class="item" title="Phone" href="category.html">Phone</a>
+                                    <a class="item active" title="Vest" href="category.html">Vest</a>
+                                    <a class="item" title="Smartphone" href="category.html">Smartphone</a>
+                                    <a class="item" title="Furniture" href="category.html">Furniture</a>
+                                    <a class="item" title="T-shirt" href="category.html">T-shirt</a>
+                                    <a class="item" title="Sweatpants" href="category.html">Sweatpants</a>
+                                    <a class="item" title="Sneaker" href="category.html">Sneaker</a>
+                                    <a class="item" title="Toys" href="category.html">Toys</a>
+                                    <a class="item" title="Rose" href="category.html">Rose</a>
+                                </div>
+                                <!-- /.tag-list -->
+                            </div>
+                            <!-- /.sidebar-widget-body -->
+                        </div>
+                        <!-- /.sidebar-widget -->
+                        <!-- ============================================== PRODUCT TAGS : END ============================================== -->
+                        <!-- ============================================== COLOR============================================== -->
+                        <div class="sidebar-widget  wow fadeInUp outer-top-vs ">
+                            <div id="advertisement" class="advertisement">
+                                <div class="item bg-color">
+                                    <div class="container-fluid">
+                                        <div class="caption vertical-top text-left">
+                                            <div class="big-text">
+                                                Save<span class="big">50%</span>
+                                            </div>
+
+                                            <div class="excerpt">
+                                                on selected items
+                                            </div>
+                                        </div>
+                                        <!-- /.caption -->
+                                    </div>
+                                    <!-- /.container-fluid -->
+                                </div>
+                                <!-- /.item -->
+                                <div class="item" style="background-image: url('assets/images/advertisement/1.jpg');">
+
+                                </div>
+                                <!-- /.item -->
+                                <div class="item bg-color">
+                                    <div class="container-fluid">
+                                        <div class="caption vertical-top text-left">
+                                            <div class="big-text">
+                                                Save<span class="big">50%</span>
+                                            </div>
+
+                                            <div class="excerpt fadeInDown-2">
+                                                on selected items
+                                            </div>
+                                        </div>
+                                        <!-- /.caption -->
+                                    </div>
+                                    <!-- /.container-fluid -->
+                                </div>
+                                <!-- /.item -->
+                            </div>
+                            <!-- /.owl-carousel -->
+                        </div>
+
+                        <!-- ============================================== COLOR: END ============================================== -->
+                    </div>
+                    <!-- /.sidebar-filter -->
+                </div>
+                <!-- /.sidebar-module-container -->
+            </div>
+            <!-- /.sidebar -->
+            @Html.Action("ShowProductInCategory", new { id = Model.GroupID })
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+</div>
+<!-- /.body-content -->
+
+
+@helper ShowBreadcrumb(GroupProduct group, int currGroupID = -1)
+{
+    if (currGroupID == -1)
+    {
+        currGroupID = group.GroupID;
+    }
+    
+    if (group.ParentGroupID != null)
+    {
+        @ShowBreadcrumb(group.GroupProduct1, currGroupID)
+    }
+    if (group.GroupID == currGroupID)
+    {
+        <li class="active">@group.GroupName</li>
+    }
+    else
+    {
+        <li><a href="@Url.Action("Detail", new { id = group.GroupID })">@group.GroupName</a></li>
+    }
+}

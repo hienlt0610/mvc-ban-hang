@@ -27,7 +27,7 @@
                                 <ul class="links list-unstyled margin-bottom-10">
                                     @foreach (var subLevel3 in subLevel2.GroupProducts1)
                                     {
-                                        <li><a href="@Url.Action("View", "GroupProduct", new { id = subLevel3.GroupID })">@subLevel3.GroupName</a></li>
+                                        <li><a href="@Url.Action("Detail", "Category", new { id = subLevel3.GroupID })">@subLevel3.GroupName</a></li>
                                     }
                                 </ul>
                                 </div>

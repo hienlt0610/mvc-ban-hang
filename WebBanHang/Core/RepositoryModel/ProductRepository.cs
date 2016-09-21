@@ -5,16 +5,19 @@ using WebBanHang.Models;
 
 namespace WebBanHang.Core.RepositoryModel
 {
-    public class ProductRespository : RepositoryModel<Product>
+    public class ProductRepository : RepositoryModel<Product>
     {
-        public ProductRespository(DbContext dbContext)
+        public ProductRepository(DbContext dbContext)
             : base(dbContext)
         {
         }
 
         public List<Product> GetNewProduct(int number)
         {
-            return FetchAll().OrderByDescending(item => item.CreateDate).Take(number).ToList();
+            return FetchAll().Where(item => item.Active == true)
+                .OrderByDescending(item => item.CreateDate)
+                .Take(number)
+                .ToList();
         }
 
         public IEnumerable<Product> GetProductInGroup(int group)
