@@ -106,17 +106,17 @@
             <PropertyRef Name="CustomerID" />
           </Key>
           <Property Name="CustomerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FacebookID" Type="bigint" />
+          <Property Name="FacebookID" Type="varchar" MaxLength="20" />
           <Property Name="GoogleID" Type="varchar" MaxLength="20" />
           <Property Name="Username" Type="varchar" MaxLength="25" />
           <Property Name="Passwrord" Type="varchar" MaxLength="100" />
-          <Property Name="FullName" Type="nvarchar" MaxLength="50" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="80" Nullable="false" />
           <Property Name="Address" Type="nvarchar" MaxLength="100" />
           <Property Name="ProvinceID" Type="int" />
           <Property Name="DistrictID" Type="int" />
           <Property Name="Phone" Type="varchar" MaxLength="11" />
-          <Property Name="Status" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
           <Property Name="VerificationCode" Type="varchar" MaxLength="64" />
           <Property Name="RegistrationDate" Type="smalldatetime" Nullable="false" />
         </EntityType>
@@ -796,7 +796,6 @@
           <EntitySet Name="Configurations" EntityType="ecommerceModel.Configuration" />
           <EntitySet Name="Contacts" EntityType="ecommerceModel.Contact" />
           <EntitySet Name="Coupons" EntityType="ecommerceModel.Coupon" />
-          <EntitySet Name="Customers" EntityType="ecommerceModel.Customer" />
           <EntitySet Name="Districts" EntityType="ecommerceModel.District" />
           <EntitySet Name="ExcludeCoupons" EntityType="ecommerceModel.ExcludeCoupon" />
           <EntitySet Name="GroupProducts" EntityType="ecommerceModel.GroupProduct" />
@@ -811,10 +810,6 @@
           <EntitySet Name="Provinces" EntityType="ecommerceModel.Province" />
           <EntitySet Name="Quantities" EntityType="ecommerceModel.Quantity" />
           <EntitySet Name="Users" EntityType="ecommerceModel.User" />
-          <AssociationSet Name="FK_Cart_Customers" Association="ecommerceModel.FK_Cart_Customers">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="Cart" EntitySet="Carts" />
-          </AssociationSet>
           <AssociationSet Name="FK_CartDetails_Cart" Association="ecommerceModel.FK_CartDetails_Cart">
             <End Role="Cart" EntitySet="Carts" />
             <End Role="CartDetail" EntitySet="CartDetails" />
@@ -831,25 +826,9 @@
             <End Role="Color" EntitySet="Colors" />
             <End Role="Quantity" EntitySet="Quantities" />
           </AssociationSet>
-          <AssociationSet Name="FK_Comment_Customers" Association="ecommerceModel.FK_Comment_Customers">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="Comment" EntitySet="Comments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Contact_Customers" Association="ecommerceModel.FK_Contact_Customers">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="Contact" EntitySet="Contacts" />
-          </AssociationSet>
           <AssociationSet Name="FK_ExcludeCoupon_Coupon" Association="ecommerceModel.FK_ExcludeCoupon_Coupon">
             <End Role="Coupon" EntitySet="Coupons" />
             <End Role="ExcludeCoupon" EntitySet="ExcludeCoupons" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Customers_Districts" Association="ecommerceModel.FK_Customers_Districts">
-            <End Role="District" EntitySet="Districts" />
-            <End Role="Customer" EntitySet="Customers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Customers_Provinces" Association="ecommerceModel.FK_Customers_Provinces">
-            <End Role="Province" EntitySet="Provinces" />
-            <End Role="Customer" EntitySet="Customers" />
           </AssociationSet>
           <AssociationSet Name="FK_Districts_Provinces" Association="ecommerceModel.FK_Districts_Provinces">
             <End Role="Province" EntitySet="Provinces" />
@@ -924,6 +903,27 @@
             <End Role="Color" EntitySet="Colors" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
+          <EntitySet Name="Customers" EntityType="ecommerceModel.Customer" />
+          <AssociationSet Name="FK_Cart_Customers" Association="ecommerceModel.FK_Cart_Customers">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Cart" EntitySet="Carts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Customers" Association="ecommerceModel.FK_Comment_Customers">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contact_Customers" Association="ecommerceModel.FK_Contact_Customers">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Contact" EntitySet="Contacts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customers_Districts" Association="ecommerceModel.FK_Customers_Districts">
+            <End Role="District" EntitySet="Districts" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customers_Provinces" Association="ecommerceModel.FK_Customers_Provinces">
+            <End Role="Province" EntitySet="Provinces" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="sysdiagram">
           <Key>
@@ -957,8 +957,8 @@
           <Property Name="CookieID" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
           <Property Name="CustomerID" Type="Int32" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Customer" Relationship="ecommerceModel.FK_Cart_Customers" FromRole="Cart" ToRole="Customer" />
           <NavigationProperty Name="CartDetails" Relationship="ecommerceModel.FK_CartDetails_Cart" FromRole="Cart" ToRole="CartDetail" />
+          <NavigationProperty Name="Customer" Relationship="ecommerceModel.FK_Cart_Customers" FromRole="Cart" ToRole="Customer" />
         </EntityType>
         <EntityType Name="CartDetail">
           <Key>
@@ -997,8 +997,8 @@
           <Property Name="CommentTime" Type="DateTime" Precision="0" />
           <Property Name="CustomerID" Type="Int32" />
           <Property Name="Rate" Type="Byte" />
-          <NavigationProperty Name="Customer" Relationship="ecommerceModel.FK_Comment_Customers" FromRole="Comment" ToRole="Customer" />
           <NavigationProperty Name="Product" Relationship="ecommerceModel.FK_Comment_Products" FromRole="Comment" ToRole="Product" />
+          <NavigationProperty Name="Customer" Relationship="ecommerceModel.FK_Comment_Customers" FromRole="Comment" ToRole="Customer" />
         </EntityType>
         <EntityType Name="Configuration">
           <Key>
@@ -1036,30 +1036,6 @@
           <Property Name="Active" Type="Boolean" />
           <NavigationProperty Name="ExcludeCoupons" Relationship="ecommerceModel.FK_ExcludeCoupon_Coupon" FromRole="Coupon" ToRole="ExcludeCoupon" />
         </EntityType>
-        <EntityType Name="Customer">
-          <Key>
-            <PropertyRef Name="CustomerID" />
-          </Key>
-          <Property Name="CustomerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FacebookID" Type="Int64" />
-          <Property Name="GoogleID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Username" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Name="Passwrord" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
-          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="ProvinceID" Type="Int32" />
-          <Property Name="DistrictID" Type="Int32" />
-          <Property Name="Phone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="VerificationCode" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
-          <Property Name="RegistrationDate" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Carts" Relationship="ecommerceModel.FK_Cart_Customers" FromRole="Customer" ToRole="Cart" />
-          <NavigationProperty Name="Comments" Relationship="ecommerceModel.FK_Comment_Customers" FromRole="Customer" ToRole="Comment" />
-          <NavigationProperty Name="Contacts" Relationship="ecommerceModel.FK_Contact_Customers" FromRole="Customer" ToRole="Contact" />
-          <NavigationProperty Name="District" Relationship="ecommerceModel.FK_Customers_Districts" FromRole="Customer" ToRole="District" />
-          <NavigationProperty Name="Province" Relationship="ecommerceModel.FK_Customers_Provinces" FromRole="Customer" ToRole="Province" />
-        </EntityType>
         <EntityType Name="District">
           <Key>
             <PropertyRef Name="DistrictID" />
@@ -1068,9 +1044,9 @@
           <Property Name="DistrictName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ProvinceID" Type="Int32" />
           <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Customers" Relationship="ecommerceModel.FK_Customers_Districts" FromRole="District" ToRole="Customer" />
           <NavigationProperty Name="Province" Relationship="ecommerceModel.FK_Districts_Provinces" FromRole="District" ToRole="Province" />
           <NavigationProperty Name="Orders" Relationship="ecommerceModel.FK_Orders_Districts" FromRole="District" ToRole="Order" />
+          <NavigationProperty Name="Customers" Relationship="ecommerceModel.FK_Customers_Districts" FromRole="District" ToRole="Customer" />
         </EntityType>
         <EntityType Name="ExcludeCoupon">
           <Key>
@@ -1206,9 +1182,9 @@
           <Property Name="ProvinceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProvinceName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Type" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Customers" Relationship="ecommerceModel.FK_Customers_Provinces" FromRole="Province" ToRole="Customer" />
           <NavigationProperty Name="Districts" Relationship="ecommerceModel.FK_Districts_Provinces" FromRole="Province" ToRole="District" />
           <NavigationProperty Name="Orders" Relationship="ecommerceModel.FK_Orders_Provinces" FromRole="Province" ToRole="Order" />
+          <NavigationProperty Name="Customers" Relationship="ecommerceModel.FK_Customers_Provinces" FromRole="Province" ToRole="Customer" />
         </EntityType>
         <EntityType Name="Quantity">
           <Key>
@@ -1235,18 +1211,6 @@
           <Property Name="Status" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="RegistrationDate" Type="DateTime" Precision="0" />
         </EntityType>
-        <Association Name="FK_Cart_Customers">
-          <End Type="ecommerceModel.Customer" Role="Customer" Multiplicity="0..1" />
-          <End Type="ecommerceModel.Cart" Role="Cart" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Customer">
-              <PropertyRef Name="CustomerID" />
-            </Principal>
-            <Dependent Role="Cart">
-              <PropertyRef Name="CustomerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CartDetails_Cart">
           <End Type="ecommerceModel.Cart" Role="Cart" Multiplicity="1" />
           <End Type="ecommerceModel.CartDetail" Role="CartDetail" Multiplicity="*" />
@@ -1295,30 +1259,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Comment_Customers">
-          <End Type="ecommerceModel.Customer" Role="Customer" Multiplicity="0..1" />
-          <End Type="ecommerceModel.Comment" Role="Comment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Customer">
-              <PropertyRef Name="CustomerID" />
-            </Principal>
-            <Dependent Role="Comment">
-              <PropertyRef Name="CustomerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Contact_Customers">
-          <End Type="ecommerceModel.Customer" Role="Customer" Multiplicity="0..1" />
-          <End Type="ecommerceModel.Contact" Role="Contact" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Customer">
-              <PropertyRef Name="CustomerID" />
-            </Principal>
-            <Dependent Role="Contact">
-              <PropertyRef Name="CustomerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ExcludeCoupon_Coupon">
           <End Type="ecommerceModel.Coupon" Role="Coupon" Multiplicity="1" />
           <End Type="ecommerceModel.ExcludeCoupon" Role="ExcludeCoupon" Multiplicity="*" />
@@ -1328,30 +1268,6 @@
             </Principal>
             <Dependent Role="ExcludeCoupon">
               <PropertyRef Name="CouponID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Customers_Districts">
-          <End Type="ecommerceModel.District" Role="District" Multiplicity="0..1" />
-          <End Type="ecommerceModel.Customer" Role="Customer" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="District">
-              <PropertyRef Name="DistrictID" />
-            </Principal>
-            <Dependent Role="Customer">
-              <PropertyRef Name="DistrictID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Customers_Provinces">
-          <End Type="ecommerceModel.Province" Role="Province" Multiplicity="0..1" />
-          <End Type="ecommerceModel.Customer" Role="Customer" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Province">
-              <PropertyRef Name="ProvinceID" />
-            </Principal>
-            <Dependent Role="Customer">
-              <PropertyRef Name="ProvinceID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1586,6 +1502,90 @@
           <End Type="ecommerceModel.Color" Role="Color" Multiplicity="*" />
           <End Type="ecommerceModel.Product" Role="Product" Multiplicity="*" />
         </Association>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FacebookID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="GoogleID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Username" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Passwrord" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ProvinceID" Type="Int32" />
+          <Property Name="DistrictID" Type="Int32" />
+          <Property Name="Phone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="VerificationCode" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="RegistrationDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Carts" Relationship="ecommerceModel.FK_Cart_Customers" FromRole="Customer" ToRole="Cart" />
+          <NavigationProperty Name="Comments" Relationship="ecommerceModel.FK_Comment_Customers" FromRole="Customer" ToRole="Comment" />
+          <NavigationProperty Name="Contacts" Relationship="ecommerceModel.FK_Contact_Customers" FromRole="Customer" ToRole="Contact" />
+          <NavigationProperty Name="District" Relationship="ecommerceModel.FK_Customers_Districts" FromRole="Customer" ToRole="District" />
+          <NavigationProperty Name="Province" Relationship="ecommerceModel.FK_Customers_Provinces" FromRole="Customer" ToRole="Province" />
+        </EntityType>
+        <Association Name="FK_Cart_Customers">
+          <End Type="ecommerceModel.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="ecommerceModel.Cart" Role="Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Customers">
+          <End Type="ecommerceModel.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="ecommerceModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contact_Customers">
+          <End Type="ecommerceModel.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="ecommerceModel.Contact" Role="Contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="Contact">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customers_Districts">
+          <End Type="ecommerceModel.District" Role="District" Multiplicity="0..1" />
+          <End Type="ecommerceModel.Customer" Role="Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="District">
+              <PropertyRef Name="DistrictID" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="DistrictID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customers_Provinces">
+          <End Type="ecommerceModel.Province" Role="Province" Multiplicity="0..1" />
+          <End Type="ecommerceModel.Customer" Role="Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Province">
+              <PropertyRef Name="ProvinceID" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="ProvinceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1693,26 +1693,6 @@
                 <ScalarProperty Name="Discount" ColumnName="Discount" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="CouponID" ColumnName="CouponID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Customers">
-            <EntityTypeMapping TypeName="ecommerceModel.Customer">
-              <MappingFragment StoreEntitySet="Customers">
-                <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
-                <ScalarProperty Name="VerificationCode" ColumnName="VerificationCode" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="DistrictID" ColumnName="DistrictID" />
-                <ScalarProperty Name="ProvinceID" ColumnName="ProvinceID" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="FullName" ColumnName="FullName" />
-                <ScalarProperty Name="Passwrord" ColumnName="Passwrord" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="GoogleID" ColumnName="GoogleID" />
-                <ScalarProperty Name="FacebookID" ColumnName="FacebookID" />
-                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1895,6 +1875,26 @@
               <ScalarProperty Name="ColorID" ColumnName="ColorID" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="ecommerceModel.Customer">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
+                <ScalarProperty Name="VerificationCode" ColumnName="VerificationCode" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="DistrictID" ColumnName="DistrictID" />
+                <ScalarProperty Name="ProvinceID" ColumnName="ProvinceID" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Passwrord" ColumnName="Passwrord" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="GoogleID" ColumnName="GoogleID" />
+                <ScalarProperty Name="FacebookID" ColumnName="FacebookID" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

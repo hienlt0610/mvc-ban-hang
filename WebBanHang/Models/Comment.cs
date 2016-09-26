@@ -21,7 +21,7 @@ namespace WebBanHang.Models
         public Nullable<int> CustomerID { get; set; }
         public Nullable<byte> Rate { get; set; }
     
-        public virtual Customer Customer { get; set; }
         public virtual Product Product { get; set; }
+        public virtual Customer Customer { get; set; }
     }
 }

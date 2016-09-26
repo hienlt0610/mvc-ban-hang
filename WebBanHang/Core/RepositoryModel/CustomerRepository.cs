@@ -19,5 +19,10 @@ namespace WebBanHang.Core.RepositoryModel
         {
             return FetchAll().Any(item => item.Username == username);
         }
+
+        public Customer FindByEmail(String email)
+        {
+            return FetchAll().Where(item => item.Email.Equals(email)).FirstOrDefault();
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace WebBanHang.Models
         }
     
         public int CustomerID { get; set; }
-        public Nullable<long> FacebookID { get; set; }
+        public string FacebookID { get; set; }
         public string GoogleID { get; set; }
         public string Username { get; set; }
         public string Passwrord { get; set; }
@@ -32,7 +32,7 @@ namespace WebBanHang.Models
         public Nullable<int> ProvinceID { get; set; }
         public Nullable<int> DistrictID { get; set; }
         public string Phone { get; set; }
-        public string Status { get; set; }
+        public bool Status { get; set; }
         public string VerificationCode { get; set; }
         public System.DateTime RegistrationDate { get; set; }
     

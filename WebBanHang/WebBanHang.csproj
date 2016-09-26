@@ -189,7 +189,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProductManagerController.cs" />
-    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\WidgetController.cs" />
     <Compile Include="Core\BaseController.cs" />
     <Compile Include="Core\DbContextRepository.cs" />
@@ -301,10 +301,12 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\AssetUtil.cs" />
     <Compile Include="Utils\DefaultableDictionary.cs" />
+    <Compile Include="Utils\EncryptUtils.cs" />
     <Compile Include="Utils\HtmlExtension.cs" />
     <Compile Include="Utils\ImageHelper.cs" />
     <Compile Include="Utils\ModelUtils.cs" />
     <Compile Include="Utils\StringUtils.cs" />
+    <Compile Include="ViewModels\SignInViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -670,16 +672,17 @@
     <Content Include="Views\Home\SideBarMenu.cshtml" />
     <Content Include="Views\Widget\Navbar.cshtml" />
     <Content Include="Views\Home\ShowGroupItem.cshtml" />
-    <Content Include="Views\User\Register.cshtml" />
+    <Content Include="Views\Customer\Register.cshtml" />
     <Content Include="Views\Product\Detail.cshtml" />
     <Content Include="Views\Category\Detail.cshtml" />
     <Content Include="Views\Category\ListGroupProduct.cshtml" />
     <Content Include="Views\Category\ShowProductInCategory.cshtml" />
     <Content Include="Views\Error\Index.cshtml" />
-    <Content Include="Views\Error\Error404.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Shared\_LayoutTest.cshtml" />
     <Content Include="Views\ProductManager\Index.cshtml" />
     <Content Include="Views\ProductManager\Add.cshtml" />
+    <Content Include="Views\Customer\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
