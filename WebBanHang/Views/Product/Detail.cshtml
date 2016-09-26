@@ -1,235 +1,86 @@
-﻿@using WebBanHang.Utils
+﻿@model Product
 @{
-    ViewBag.Title = "Detail";
-    @model Product
+    ViewBag.Title = "Chi tiết sản phẩm";    
 }
+
 <div class="breadcrumb">
     <div class="container">
         <div class="breadcrumb-inner">
             <ul class="list-inline list-unstyled">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Woman</a></li>
-                <li class="active">Samsung Galaxy S4 32GB White</li>
+                <li>@Html.ActionLink("Trang chủ", "Index", "Home")</li>
+                @ShowBreadcrumb(Model.GroupProduct)
             </ul>
         </div><!-- /.breadcrumb-inner -->
     </div><!-- /.container -->
 </div>
+<!-- /.breadcrumb -->
+
 <div class="body-content outer-top-xs">
     <div class="container">
         <div class="row single-product outer-bottom-sm ">
-            <div class="col-md-12">
+            <!-- /.sidebar -->
+            <div class="col-md-9">
                 <div class="row  wow fadeInUp animated" style="visibility: visible; animation-name: fadeInUp;">
                     <div class="col-xs-12 col-sm-6 col-md-5 gallery-holder">
                         <div class="product-item-holder size-big single-product-gallery small-gallery">
-
-                            <div id="owl-single-product" class="owl-carousel owl-theme" style="opacity: 1; display: block;">
-                                <div class="owl-wrapper-outer">
-                                    <div class="owl-wrapper" style="width: 6048px; left: 0px; display: block; transition: all 200ms ease; transform: translate3d(-336px, 0px, 0px);">
-                                        <div class="owl-item" style="width: 336px;">
-                                            <div class="single-product-gallery-item" id="slide1">
-                                                <a data-lightbox="image-1" data-title="Gallery" href="assets/images/single-product/1.jpg">
-                                                    <img class="img-responsive" alt="" src="assets/images/single-product/1.jpg">
-                                                </a>
-                                            </div>
-                                        </div><div class="owl-item" style="width: 336px;">
-                                            <div class="single-product-gallery-item" id="slide2">
-                                                <a data-lightbox="image-1" data-title="Gallery" href="assets/images/single-product/2.jpg">
-                                                    <img class="img-responsive" alt="" src="assets/images/single-product/2.jpg">
-                                                </a>
-                                            </div>
-                                        </div><div class="owl-item" style="width: 336px;">
-                                            <div class="single-product-gallery-item" id="slide3">
-                                                <a data-lightbox="image-1" data-title="Gallery" href="assets/images/single-product/3.jpg">
-                                                    <img class="img-responsive" alt="" src="assets/images/single-product/3.jpg">
-                                                </a>
-                                            </div>
-                                        </div><div class="owl-item" style="width: 336px;">
-                                            <div class="single-product-gallery-item" id="slide4">
-                                                <a data-lightbox="image-1" data-title="Gallery" href="assets/images/single-product/1.jpg">
-                                                    <img class="img-responsive" alt="" src="assets/images/single-product/1.jpg">
-                                                </a>
-                                            </div>
-                                        </div><div class="owl-item" style="width: 336px;">
-                                            <div class="single-product-gallery-item" id="slide5">
-                                                <a data-lightbox="image-1" data-title="Gallery" href="assets/images/single-product/2.jpg">
-                                                    <img class="img-responsive" alt="" src="assets/images/single-product/2.jpg">
-                                                </a>
-                                            </div>
-                                        </div><div class="owl-item" style="width: 336px;">
-                                            <div class="single-product-gallery-item" id="slide6">
-                                                <a data-lightbox="image-1" data-title="Gallery" href="assets/images/single-product/3.jpg">
-                                                    <img class="img-responsive" alt="" src="assets/images/single-product/3.jpg">
-                                                </a>
-                                            </div>
-                                        </div><div class="owl-item" style="width: 336px;">
-                                            <div class="single-product-gallery-item" id="slide7">
-                                                <a data-lightbox="image-1" data-title="Gallery" href="assets/images/single-product/1.jpg">
-                                                    <img class="img-responsive" alt="" src="assets/images/single-product/1.jpg">
-                                                </a>
-                                            </div>
-                                        </div><div class="owl-item" style="width: 336px;">
-                                            <div class="single-product-gallery-item" id="slide8">
-                                                <a data-lightbox="image-1" data-title="Gallery" href="assets/images/single-product/2.jpg">
-                                                    <img class="img-responsive" alt="" src="assets/images/single-product/2.jpg">
-                                                </a>
-                                            </div>
-                                        </div><div class="owl-item" style="width: 336px;">
-                                            <div class="single-product-gallery-item" id="slide9">
-                                                <a data-lightbox="image-1" data-title="Gallery" href="assets/images/single-product/3.jpg">
-                                                    <img class="img-responsive" alt="" src="assets/images/single-product/3.jpg">
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div id="owl-single-product">
+                                @foreach (ImageProduct image in Model.ImageProducts) { 
+                                    <div class="single-product-gallery-item" id="slide1">
+                                        <a data-lightbox="image-1" data-title="Gallery" href="@Url.Content(ImageHelper.ImageUrl(image.ImageUrl))">
+                                            <img class="img-responsive" alt="" src="/Content/images//blank.gif" data-echo="@Url.Content(ImageHelper.ImageUrl(image.ImageUrl))" />
+                                        </a>
                                 </div><!-- /.single-product-gallery-item -->
-                                <!-- /.single-product-gallery-item -->
-                                <!-- /.single-product-gallery-item -->
-                                <!-- /.single-product-gallery-item -->
-                                <!-- /.single-product-gallery-item -->
-                                <!-- /.single-product-gallery-item -->
-                                <!-- /.single-product-gallery-item -->
-                                <!-- /.single-product-gallery-item -->
-                                <!-- /.single-product-gallery-item -->
-
-                                <div class="owl-controls clickable"><div class="owl-pagination"><div class="owl-page"><span class=""></span></div><div class="owl-page active"><span class=""></span></div><div class="owl-page"><span class=""></span></div><div class="owl-page"><span class=""></span></div><div class="owl-page"><span class=""></span></div><div class="owl-page"><span class=""></span></div><div class="owl-page"><span class=""></span></div><div class="owl-page"><span class=""></span></div><div class="owl-page"><span class=""></span></div></div></div>
-                            </div><!-- /.single-product-slider -->
-
-
+                                }
+                            </div>
                             <div class="single-product-gallery-thumbs gallery-thumbs">
-
-                                <div id="owl-single-product-thumbnails" class="owl-carousel owl-theme" style="opacity: 1; display: block;">
-                                    <div class="owl-wrapper-outer">
-                                        <div class="owl-wrapper" style="width: 1512px; left: 0px; display: block;">
-                                            <div class="owl-item" style="width: 84px;">
-                                                <div class="item">
-                                                    <a class="horizontal-thumb active" data-target="#owl-single-product" data-slide="1" href="#slide1">
-                                                        <img class="img-responsive" width="85" alt="" src="assets/images/single-product/sm1.jpg">
-                                                    </a>
-                                                </div>
-                                            </div><div class="owl-item" style="width: 84px;">
-                                                <div class="item">
-                                                    <a class="horizontal-thumb active" data-target="#owl-single-product" data-slide="2" href="#slide2">
-                                                        <img class="img-responsive" width="85" alt="" src="assets/images/single-product/sm2.jpg">
-                                                    </a>
-                                                </div>
-                                            </div><div class="owl-item" style="width: 84px;">
-                                                <div class="item">
-
-                                                    <a class="horizontal-thumb active" data-target="#owl-single-product" data-slide="3" href="#slide3">
-                                                        <img class="img-responsive" width="85" alt="" src="assets/images/single-product/sm3.jpg">
-                                                    </a>
-                                                </div>
-                                            </div><div class="owl-item" style="width: 84px;">
-                                                <div class="item">
-
-                                                    <a class="horizontal-thumb active" data-target="#owl-single-product" data-slide="4" href="#slide4">
-                                                        <img class="img-responsive" width="85" alt="" src="assets/images/single-product/sm1.jpg">
-                                                    </a>
-                                                </div>
-                                            </div><div class="owl-item" style="width: 84px;">
-                                                <div class="item">
-
-                                                    <a class="horizontal-thumb" data-target="#owl-single-product" data-slide="5" href="#slide5">
-                                                        <img class="img-responsive" width="85" alt="" src="assets/images/single-product/sm2.jpg">
-                                                    </a>
-                                                </div>
-                                            </div><div class="owl-item" style="width: 84px;">
-                                                <div class="item">
-
-                                                    <a class="horizontal-thumb" data-target="#owl-single-product" data-slide="6" href="#slide6">
-                                                        <img class="img-responsive" width="85" alt="" src="assets/images/single-product/sm3.jpg">
-                                                    </a>
-                                                </div>
-                                            </div><div class="owl-item" style="width: 84px;">
-                                                <div class="item">
-
-                                                    <a class="horizontal-thumb" data-target="#owl-single-product" data-slide="7" href="#slide7">
-                                                        <img class="img-responsive" width="85" alt="" src="assets/images/single-product/sm1.jpg">
-                                                    </a>
-                                                </div>
-                                            </div><div class="owl-item" style="width: 84px;">
-                                                <div class="item">
-
-                                                    <a class="horizontal-thumb" data-target="#owl-single-product" data-slide="8" href="#slide8">
-                                                        <img class="img-responsive" width="85" alt="" src="assets/images/single-product/sm2.jpg">
-                                                    </a>
-                                                </div>
-                                            </div><div class="owl-item" style="width: 84px;">
-                                                <div class="item">
-
-                                                    <a class="horizontal-thumb" data-target="#owl-single-product" data-slide="9" href="#slide9">
-                                                        <img class="img-responsive" width="85" alt="" src="assets/images/single-product/sm3.jpg">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
+                                <div id="owl-single-product-thumbnails">
+                                    @foreach(ImageProduct image in Model.ImageProducts){
+                                        <div class="item">
+                                        <a class="horizontal-thumb active" data-target="#owl-single-product" data-slide="@(Model.ImageProducts.ToList().IndexOf(image)+1)" href="#slide1">
+                                            <img class="img-responsive" width="85" alt="" src="/Content/images//blank.gif" data-echo="@Url.Content(ImageHelper.ImageUrl(image.ImageUrl))" />
+                                        </a>
                                     </div>
-
-
-
-
-
-
-
-
-
-                                    <div class="owl-controls clickable"><div class="owl-pagination"><div class="owl-page active"><span class=""></span></div><div class="owl-page"><span class=""></span></div><div class="owl-page"><span class=""></span></div></div></div>
-                                </div><!-- /#owl-single-product-thumbnails -->
-
-
-
-                            </div><!-- /.gallery-thumbs -->
-
-                        </div><!-- /.single-product-gallery -->
+                                    }
+                                </div>
+                            </div>
+                        </div>
                     </div><!-- /.gallery-holder -->
                     <div class="col-sm-6 col-md-7 product-info-block">
                         <div class="product-info">
-                            <h1 class="name">Samsung Galaxy S4 32GB White</h1>
-
-                            <div class="rating-reviews m-t-20">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <div class="rating rateit-small rateit"><button id="rateit-reset-5" data-role="none" class="rateit-reset" aria-label="reset rating" aria-controls="rateit-range-5" style="display: none;"></button><div id="rateit-range-5" class="rateit-range" tabindex="0" role="slider" aria-label="rating" aria-owns="rateit-reset-5" aria-valuemin="0" aria-valuemax="5" aria-valuenow="4" aria-readonly="true" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 64px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        <div class="reviews">
-                                            <a href="#" class="lnk">(06 Reviews)</a>
-                                        </div>
-                                    </div>
-                                </div><!-- /.row -->
-                            </div><!-- /.rating-reviews -->
-
+                            <h1 class="name">@Model.ProductName</h1>
+                            <p>&nbsp;</p>
                             <div class="stock-container info-container m-t-10">
                                 <div class="row">
                                     <div class="col-sm-3">
                                         <div class="stock-box">
-                                            <span class="label">Availability :</span>
+                                            <span class="label">Tình trạng :</span>
                                         </div>
                                     </div>
                                     <div class="col-sm-9">
                                         <div class="stock-box">
-                                            <span class="value">In Stock</span>
+                                            <span class="value available">Còn hàng</span>
                                         </div>
                                     </div>
                                 </div><!-- /.row -->
                             </div><!-- /.stock-container -->
 
-                            <div class="description-container m-t-20">
-                                Suspendisse posuere arcu diam, id accumsan eros pharetra ac. Nulla enim risus, facilisis bibendum gravida eget, lacinia id purus. Suspendisse posuere arcu diam, id accumsan eros pharetra ac. Nulla enim risus, facilisis bibendum gravida eget, lacinia id purus. Susp endisse posuere arcu diam, id accumsan eros pharetra ac.
-                            </div><!-- /.description-container -->
-
                             <div class="price-container info-container m-t-20">
                                 <div class="row">
 
 
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-8">
                                         <div class="price-box">
-                                            <span class="price">$800.00</span>
-                                            <span class="price-strike">$900.00</span>
+                                            @if(Model.isSale()){
+                                                <div class="price">@Html.FormatCurrency(@Model.SalePrice) đ</div>
+                                                <div class="price-strike">@Html.FormatCurrency(@Model.Price) đ</div>
+                                                <div>Tiết kiệm: @Html.FormatCurrency((Model.Price - Model.SalePrice)) đ</div>
+                                            }else{
+                                                <div class="price">@Html.FormatCurrency(Model.Price) đ</div>
+                                            }
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                         <div class="favorite-button m-t-10">
                                             <a class="btn btn-primary" data-toggle="tooltip" data-placement="right" title="" href="#" data-original-title="Wishlist">
                                                 <i class="fa fa-heart"></i>
@@ -250,7 +101,7 @@
                                 <div class="row">
 
                                     <div class="col-sm-2">
-                                        <span class="label">Qty :</span>
+                                        <span class="label">S.Lượng :</span>
                                     </div>
 
                                     <div class="col-sm-2">
@@ -266,7 +117,7 @@
                                     </div>
 
                                     <div class="col-sm-7">
-                                        <a href="#" class="btn btn-primary"><i class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART</a>
+                                        <a href="#" class="btn btn-primary"><i class="fa fa-shopping-cart inner-right-vs"></i> Thêm vào giỏ hàng</a>
                                     </div>
 
 
@@ -293,157 +144,123 @@
                     </div><!-- /.col-sm-7 -->
                 </div><!-- /.row -->
 
-
                 <div class="product-tabs inner-bottom-xs  wow fadeInUp animated" style="visibility: visible; animation-name: fadeInUp;">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <ul id="product-tabs" class="nav nav-tabs nav-tab-cell">
-                                <li class=""><a data-toggle="tab" href="#description">DESCRIPTION</a></li>
-                                <li class="active"><a data-toggle="tab" href="#review">REVIEW</a></li>
-                                <li class=""><a data-toggle="tab" href="#tags">TAGS</a></li>
-                            </ul><!-- /.nav-tabs #product-tabs -->
+                    @if(Model.ProductOptions.Count >= 0){
+                    <!--Thong so ky thuat-->
+                    <section class="section featured-product wow fadeInUp animated animated" style="visibility: visible; animation-name: fadeInUp;">
+                        <h3 class="section-title">Thông số kỹ thuật</h3>
+                        <div class="js-content-2">
+                            <table id="chi-tiet" cellspacing="0" class="table table-bordered table-detail">
+                                <colgroup>
+                                    <col style="width: 40%;">
+                                    <col>
+                                </colgroup>
+                                <tbody>
+                                    <tr class="active">
+                                        <td colspan="2"><strong>Thông tin chung</strong></td>
+                                    </tr>
+                                    @foreach(ProductOption option in Model.ProductOptions){
+                                    <tr>
+                                        <td>@option.Option.OptionName</td>
+                                        <td class="last">
+                                            @option.Value
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="col-sm-9">
+                    </section>
+                    <!--/Thong so ky thuat-->
+                    }
+                    <!--Chi tiet san pham-->
+                    <section class="section featured-product wow fadeInUp animated animated" style="visibility: visible; margin-top:10px; animation-name: fadeInUp;">
+                        <h3 class="section-title">Chi tiết sản phẩm</h3>
+                        <div class="tab-pane active">
+                            ffffffffffffff
+                        </div>
+                    </section>
+                    <!--/Chi tiet san pham-->
 
-                            <div class="tab-content">
-
-                                <div id="description" class="tab-pane">
-                                    <div class="product-tab">
-                                        <p class="text">Suspendisse posuere arcu diam, id accumsan eros pharetra ac. Nulla enim risus, facilisis bibendum gravida eget, lacinia id purus. Suspendisse posuere arcu diam, id accumsan eros pharetra ac. Nulla enim risus, facilisis bibendum gravida eget, lacinia id purus. Susp endisse posuere arcu diam, id accumsan eros pharetra ac. Nulla enim risus, facilisis bibe ndum gravida eget, lacinia id purus. Susp endisse posuere arcu diam, id accumsan eros pharetra ac. Nulla enim risus, facilisis bibendum gravida eget, lacinia id purus. Suspendisse posuere arcu diam, id accumsan eros pharetra ac. Nulla enim risus, facilisis bibendum gravida eget, lacinia id purus.</p><p></p><p class="text"> Suspendisse posuere arcu diam, id accumsan eros pharetra ac. Nulla enim risus, facilisis bibendum gravida eget, lacinia id purus. Susp endisse posuere arcu diam, id accumsan eros pharetra ac. Nulla enim risus, facilisis bibe ndum gravida eget, lacinia id purus. Susp endisse posuere arcu diam, id accumsan eros pharetra ac. Nulla enim risus, facilisis bibendum gravida eget, lacinia id purus.</p>
+                    <div class="row">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab-review" data-toggle="tab" aria-expanded="true">Bình luận (2)</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="tab-review" class="tab-pane active">
+                                <form class="form-horizontal">
+                                    <div id="review">
+                                        <div>
+                                            <table class="table table-striped table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="width: 50%;"><strong><span>harvey</span></strong></td>
+                                                        <td class="text-right"><span>20/01/2016</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                                                            <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <table class="table table-striped table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="width: 50%;"><strong><span>Andrson</span></strong></td>
+                                                        <td class="text-right"><span>20/01/2016</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                                                            <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="text-right"></div>
                                     </div>
-                                </div><!-- /.tab-pane -->
-
-                                <div id="review" class="tab-pane active">
-                                    <div class="product-tab">
-
-                                        <div class="product-reviews">
-                                            <h4 class="title">Customer Reviews</h4>
-
-                                            <div class="reviews">
-                                                <div class="review">
-                                                    <div class="review-title"><span class="summary">Best Product For me :)</span><span class="date"><i class="fa fa-calendar"></i><span>20 minutes ago</span></span></div>
-                                                    <div class="text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit.Aliquam suscipit nisl in adipiscin"</div>
-                                                    <div class="author m-t-15"><i class="fa fa-pencil-square-o"></i> <span class="name">Michael Lee</span></div>
-                                                </div>
-
-                                            </div><!-- /.reviews -->
-                                        </div><!-- /.product-reviews -->
-
-
-
-                                        <div class="product-add-review">
-                                            <h4 class="title">Write your own review</h4>
-                                            <div class="review-table">
-                                                <div class="table-responsive">
-                                                    <table class="table table-bordered">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="cell-label">&nbsp;</th>
-                                                                <th>1 star</th>
-                                                                <th>2 stars</th>
-                                                                <th>3 stars</th>
-                                                                <th>4 stars</th>
-                                                                <th>5 stars</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td class="cell-label">Quality</td>
-                                                                <td><input type="radio" name="quality" class="radio" value="1"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="2"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="3"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="4"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="5"></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="cell-label">Price</td>
-                                                                <td><input type="radio" name="quality" class="radio" value="1"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="2"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="3"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="4"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="5"></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="cell-label">Value</td>
-                                                                <td><input type="radio" name="quality" class="radio" value="1"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="2"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="3"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="4"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="5"></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table><!-- /.table .table-bordered -->
-                                                </div><!-- /.table-responsive -->
-                                            </div><!-- /.review-table -->
-
-                                            <div class="review-form">
-                                                <div class="form-container">
-                                                    <form role="form" class="cnt-form">
-
-                                                        <div class="row">
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <label for="exampleInputName">Your Name <span class="astk">*</span></label>
-                                                                    <input type="text" class="form-control txt" id="exampleInputName" placeholder="">
-                                                                </div><!-- /.form-group -->
-                                                                <div class="form-group">
-                                                                    <label for="exampleInputSummary">Summary <span class="astk">*</span></label>
-                                                                    <input type="text" class="form-control txt" id="exampleInputSummary" placeholder="">
-                                                                </div><!-- /.form-group -->
-                                                            </div>
-
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label for="exampleInputReview">Review <span class="astk">*</span></label>
-                                                                    <textarea class="form-control txt txt-review" id="exampleInputReview" rows="4" placeholder=""></textarea>
-                                                                </div><!-- /.form-group -->
-                                                            </div>
-                                                        </div><!-- /.row -->
-
-                                                        <div class="action text-right">
-                                                            <button class="btn btn-primary btn-upper">SUBMIT REVIEW</button>
-                                                        </div><!-- /.action -->
-
-                                                    </form><!-- /.cnt-form -->
-                                                </div><!-- /.form-container -->
-                                            </div><!-- /.review-form -->
-
-                                        </div><!-- /.product-add-review -->
-
-                                    </div><!-- /.product-tab -->
-                                </div><!-- /.tab-pane -->
-
-                                <div id="tags" class="tab-pane">
-                                    <div class="product-tag">
-
-                                        <h4 class="title">Product Tags</h4>
-                                        <form role="form" class="form-inline form-cnt">
-                                            <div class="form-container">
-
-                                                <div class="form-group">
-                                                    <label for="exampleInputTag">Add Your Tags: </label>
-                                                    <input type="email" id="exampleInputTag" class="form-control txt">
-
-
-                                                </div>
-
-                                                <button class="btn btn-upper btn-primary" type="submit">ADD TAGS</button>
-                                            </div><!-- /.form-container -->
-                                        </form><!-- /.form-cnt -->
-
-                                        <form role="form" class="form-inline form-cnt">
-                                            <div class="form-group">
-                                                <label>&nbsp;</label>
-                                                <span class="text col-md-offset-3">Use spaces to separate tags. Use single quotes (') for phrases.</span>
-                                            </div>
-                                        </form><!-- /.form-cnt -->
-
-                                    </div><!-- /.product-tab -->
-                                </div><!-- /.tab-pane -->
-
-                            </div><!-- /.tab-content -->
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
+                                    <h2>Write a review</h2>
+                                    <div class="form-group required">
+                                        <div class="col-sm-12">
+                                            <label for="input-name" class="control-label">Your Name</label>
+                                            <input type="text" class="form-control" id="input-name" value="" name="name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group required">
+                                        <div class="col-sm-12">
+                                            <label for="input-review" class="control-label">Your Review</label>
+                                            <textarea class="form-control" id="input-review" rows="5" name="text"></textarea>
+                                            <div class="help-block"><span class="text-danger">Note:</span> HTML is not translated!</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group required">
+                                        <div class="col-sm-12">
+                                            <label class="control-label">Rating</label>
+                                            &nbsp;&nbsp;&nbsp; Bad&nbsp;
+                                            <input type="radio" value="1" name="rating">
+                                            &nbsp;
+                                            <input type="radio" value="2" name="rating">
+                                            &nbsp;
+                                            <input type="radio" value="3" name="rating">
+                                            &nbsp;
+                                            <input type="radio" value="4" name="rating">
+                                            &nbsp;
+                                            <input type="radio" value="5" name="rating">
+                                            &nbsp;Good
+                                        </div>
+                                    </div>
+                                    <div class="buttons">
+                                        <div class="pull-right">
+                                            <button class="btn btn-primary" id="button-review" type="button">Continue</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div><!-- /.product-tabs -->
                 <!-- ============================================== UPSELL PRODUCTS ============================================== -->
                 <section class="section featured-product wow fadeInUp animated" style="visibility: visible; animation-name: fadeInUp;">
@@ -459,7 +276,7 @@
                                             <div class="product">
                                                 <div class="product-image">
                                                     <div class="image">
-                                                        <a href="detail.html"><img src="assets/images/products/4.jpg" alt=""></a>
+                                                        <a href="detail.html"><img src="/Content/images//products/4.jpg" alt=""></a>
                                                     </div><!-- /.image -->
 
                                                     <div class="tag sale"><span>sale</span></div>
@@ -516,7 +333,7 @@
                                             <div class="product">
                                                 <div class="product-image">
                                                     <div class="image">
-                                                        <a href="detail.html"><img src="assets/images/products/3.jpg" alt=""></a>
+                                                        <a href="detail.html"><img src="/Content/images//products/3.jpg" alt=""></a>
                                                     </div><!-- /.image -->
 
                                                     <div class="tag sale"><span>sale</span></div>
@@ -573,7 +390,7 @@
                                             <div class="product">
                                                 <div class="product-image">
                                                     <div class="image">
-                                                        <a href="detail.html"><img src="assets/images/products/1.jpg" alt=""></a>
+                                                        <a href="detail.html"><img src="/Content/images//products/1.jpg" alt=""></a>
                                                     </div><!-- /.image -->
 
                                                     <div class="tag hot"><span>hot</span></div>
@@ -630,7 +447,7 @@
                                             <div class="product">
                                                 <div class="product-image">
                                                     <div class="image">
-                                                        <a href="detail.html"><img src="assets/images/products/2.jpg" alt=""></a>
+                                                        <a href="detail.html"><img src="/Content/images//products/2.jpg" alt=""></a>
                                                     </div><!-- /.image -->
 
                                                     <div class="tag new"><span>new</span></div>
@@ -687,7 +504,7 @@
                                             <div class="product">
                                                 <div class="product-image">
                                                     <div class="image">
-                                                        <a href="detail.html"><img src="assets/images/products/2.jpg" alt=""></a>
+                                                        <a href="detail.html"><img src="/Content/images//products/2.jpg" alt=""></a>
                                                     </div><!-- /.image -->
 
                                                     <div class="tag hot"><span>hot</span></div>
@@ -744,7 +561,7 @@
                                             <div class="product">
                                                 <div class="product-image">
                                                     <div class="image">
-                                                        <a href="detail.html"><img src="assets/images/products/6.jpg" alt=""></a>
+                                                        <a href="detail.html"><img src="/Content/images//products/6.jpg" alt=""></a>
                                                     </div><!-- /.image -->
 
                                                     <div class="tag new"><span>new</span></div>
@@ -808,7 +625,283 @@
                 <!-- ============================================== UPSELL PRODUCTS : END ============================================== -->
 
             </div><!-- /.col -->
-            <div class="clearfix"></div>
+            <div class="col-md-3 sidebar">
+                <div class="sidebar-module-container">
+                    <div class="sidebar-widget hot-deals wow fadeInUp animated" style="visibility: visible; animation-name: fadeInUp;">
+                        <h3 class="section-title">hot deals</h3>
+                        <div class="owl-carousel sidebar-carousel custom-carousel owl-theme outer-top-xs" style="opacity: 1; display: block;">
+
+                            <div class="owl-wrapper-outer">
+                                <div class="owl-wrapper" style="width: 1578px; left: 0px; display: block;">
+                                    <div class="owl-item" style="width: 263px;">
+                                        <div class="item">
+                                            <div class="products">
+                                                <div class="hot-deal-wrapper">
+                                                    <div class="image">
+                                                        <img src="/Content/images//hot-deals/1.jpg" alt="">
+                                                    </div>
+                                                    <div class="sale-offer-tag"><span>35%<br>off</span></div>
+                                                    <div class="timing-wrapper">
+                                                        <div class="box-wrapper">
+                                                            <div class="date box">
+                                                                <span class="key">120</span>
+                                                                <span class="value">Days</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="box-wrapper">
+                                                            <div class="hour box">
+                                                                <span class="key">20</span>
+                                                                <span class="value">HRS</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="box-wrapper">
+                                                            <div class="minutes box">
+                                                                <span class="key">36</span>
+                                                                <span class="value">MINS</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="box-wrapper hidden-md">
+                                                            <div class="seconds box">
+                                                                <span class="key">60</span>
+                                                                <span class="value">SEC</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div><!-- /.hot-deal-wrapper -->
+
+                                                <div class="product-info text-left m-t-20">
+                                                    <h3 class="name"><a href="detail.html">Apple Iphone 5s 32GB Gold</a></h3>
+                                                    <div class="rating rateit-small rateit"><button id="rateit-reset-2" data-role="none" class="rateit-reset" aria-label="reset rating" aria-controls="rateit-range-2" style="display: none;"></button><div id="rateit-range-2" class="rateit-range" tabindex="0" role="slider" aria-label="rating" aria-owns="rateit-reset-2" aria-valuemin="0" aria-valuemax="5" aria-valuenow="4" aria-readonly="true" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 64px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
+
+                                                    <div class="product-price">
+                                                        <span class="price">
+                                                            $600.00
+                                                        </span>
+
+                                                        <span class="price-before-discount">$800.00</span>
+
+                                                    </div><!-- /.product-price -->
+
+                                                </div><!-- /.product-info -->
+
+                                                <div class="cart clearfix animate-effect">
+                                                    <div class="action">
+
+                                                        <div class="add-cart-button btn-group">
+                                                            <button class="btn btn-primary icon" data-toggle="dropdown" type="button">
+                                                                <i class="fa fa-shopping-cart"></i>
+                                                            </button>
+                                                            <button class="btn btn-primary" type="button">Add to cart</button>
+
+                                                        </div>
+
+                                                    </div><!-- /.action -->
+                                                </div><!-- /.cart -->
+                                            </div>
+                                        </div>
+                                    </div><div class="owl-item" style="width: 263px;">
+                                        <div class="item">
+                                            <div class="products">
+                                                <div class="hot-deal-wrapper">
+                                                    <div class="image">
+                                                        <img src="/Content/images//hot-deals/2.jpg" alt="">
+                                                    </div>
+                                                    <div class="sale-offer-tag"><span>35%<br>off</span></div>
+                                                    <div class="timing-wrapper">
+                                                        <div class="box-wrapper">
+                                                            <div class="date box">
+                                                                <span class="key">120</span>
+                                                                <span class="value">Days</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="box-wrapper">
+                                                            <div class="hour box">
+                                                                <span class="key">20</span>
+                                                                <span class="value">HRS</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="box-wrapper">
+                                                            <div class="minutes box">
+                                                                <span class="key">36</span>
+                                                                <span class="value">MINS</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="box-wrapper hidden-md">
+                                                            <div class="seconds box">
+                                                                <span class="key">60</span>
+                                                                <span class="value">SEC</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div><!-- /.hot-deal-wrapper -->
+
+                                                <div class="product-info text-left m-t-20">
+                                                    <h3 class="name"><a href="detail.html">Apple Iphone 5s 32GB Gold</a></h3>
+                                                    <div class="rating rateit-small rateit"><button id="rateit-reset-3" data-role="none" class="rateit-reset" aria-label="reset rating" aria-controls="rateit-range-3" style="display: none;"></button><div id="rateit-range-3" class="rateit-range" tabindex="0" role="slider" aria-label="rating" aria-owns="rateit-reset-3" aria-valuemin="0" aria-valuemax="5" aria-valuenow="4" aria-readonly="true" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 64px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
+
+                                                    <div class="product-price">
+                                                        <span class="price">
+                                                            $600.00
+                                                        </span>
+
+                                                        <span class="price-before-discount">$800.00</span>
+
+                                                    </div><!-- /.product-price -->
+
+                                                </div><!-- /.product-info -->
+
+                                                <div class="cart clearfix animate-effect">
+                                                    <div class="action">
+
+                                                        <div class="add-cart-button btn-group">
+                                                            <button class="btn btn-primary icon" data-toggle="dropdown" type="button">
+                                                                <i class="fa fa-shopping-cart"></i>
+                                                            </button>
+                                                            <button class="btn btn-primary" type="button">Add to cart</button>
+
+                                                        </div>
+
+                                                    </div><!-- /.action -->
+                                                </div><!-- /.cart -->
+                                            </div>
+                                        </div>
+                                    </div><div class="owl-item" style="width: 263px;">
+                                        <div class="item">
+                                            <div class="products">
+                                                <div class="hot-deal-wrapper">
+                                                    <div class="image">
+                                                        <img src="/Content/images//hot-deals/3.jpg" alt="">
+                                                    </div>
+                                                    <div class="sale-offer-tag"><span>35%<br>off</span></div>
+                                                    <div class="timing-wrapper">
+                                                        <div class="box-wrapper">
+                                                            <div class="date box">
+                                                                <span class="key">120</span>
+                                                                <span class="value">Days</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="box-wrapper">
+                                                            <div class="hour box">
+                                                                <span class="key">20</span>
+                                                                <span class="value">HRS</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="box-wrapper">
+                                                            <div class="minutes box">
+                                                                <span class="key">36</span>
+                                                                <span class="value">MINS</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="box-wrapper hidden-md">
+                                                            <div class="seconds box">
+                                                                <span class="key">60</span>
+                                                                <span class="value">SEC</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div><!-- /.hot-deal-wrapper -->
+
+                                                <div class="product-info text-left m-t-20">
+                                                    <h3 class="name"><a href="detail.html">Apple Iphone 5s 32GB Gold</a></h3>
+                                                    <div class="rating rateit-small rateit"><button id="rateit-reset-4" data-role="none" class="rateit-reset" aria-label="reset rating" aria-controls="rateit-range-4" style="display: none;"></button><div id="rateit-range-4" class="rateit-range" tabindex="0" role="slider" aria-label="rating" aria-owns="rateit-reset-4" aria-valuemin="0" aria-valuemax="5" aria-valuenow="4" aria-readonly="true" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 64px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
+
+                                                    <div class="product-price">
+                                                        <span class="price">
+                                                            $600.00
+                                                        </span>
+
+                                                        <span class="price-before-discount">$800.00</span>
+
+                                                    </div><!-- /.product-price -->
+
+                                                </div><!-- /.product-info -->
+
+                                                <div class="cart clearfix animate-effect">
+                                                    <div class="action">
+
+                                                        <div class="add-cart-button btn-group">
+                                                            <button class="btn btn-primary icon" data-toggle="dropdown" type="button">
+                                                                <i class="fa fa-shopping-cart"></i>
+                                                            </button>
+                                                            <button class="btn btn-primary" type="button">Add to cart</button>
+
+                                                        </div>
+
+                                                    </div><!-- /.action -->
+                                                </div><!-- /.cart -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="owl-controls clickable"><div class="owl-buttons"><div class="owl-prev"></div><div class="owl-next"></div></div></div>
+                        </div><!-- /.sidebar-widget -->
+                    </div>
+                    <!-- ============================================== HOT DEALS: END ============================================== -->					<!-- ============================================== COLOR============================================== -->
+                    <div class="sidebar-widget  wow fadeInUp outer-top-vs  animated" style="visibility: visible; animation-name: fadeInUp;">
+                        <div id="advertisement" class="advertisement owl-carousel owl-theme" style="opacity: 1; display: block;">
+                            <div class="owl-wrapper-outer">
+                                <div class="owl-wrapper" style="width: 1578px; left: 0px; display: block;">
+                                    <div class="owl-item" style="width: 263px;">
+                                        <div class="item bg-color">
+                                            <div class="container-fluid">
+                                                <div class="caption vertical-top text-left">
+                                                    <div class="big-text">
+                                                        Save<span class="big">50%</span>
+                                                    </div>
+
+
+                                                    <div class="excerpt">
+                                                        on selected items
+                                                    </div>
+                                                </div><!-- /.caption -->
+                                            </div><!-- /.container-fluid -->
+                                        </div>
+                                    </div><div class="owl-item" style="width: 263px;">
+                                        <div class="item" style="background-image: url('/Content/images//advertisement/1.jpg');">
+
+                                        </div>
+                                    </div><div class="owl-item" style="width: 263px;">
+                                        <div class="item bg-color">
+                                            <div class="container-fluid">
+                                                <div class="caption vertical-top text-left">
+                                                    <div class="big-text">
+                                                        Save<span class="big">50%</span>
+                                                    </div>
+
+
+                                                    <div class="excerpt fadeInDown-2">
+                                                        on selected items
+                                                    </div>
+                                                </div><!-- /.caption -->
+                                            </div><!-- /.container-fluid -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- /.item -->
+                            <!-- /.item -->
+                            <!-- /.item -->
+
+                            <div class="owl-controls clickable"><div class="owl-pagination"><div class="owl-page active"><span class=""></span></div><div class="owl-page"><span class=""></span></div><div class="owl-page"><span class=""></span></div></div><div class="owl-buttons"><div class="owl-prev"></div><div class="owl-next"></div></div></div>
+                        </div><!-- /.owl-carousel -->
+                    </div>
+
+                    <!-- ============================================== COLOR: END ============================================== -->
+                </div>
+            </div><div class="clearfix"></div>
         </div><!-- /.row -->
         <!-- ============================================== BRANDS CAROUSEL ============================================== -->
         <div id="brands-carousel" class="logo-slider wow fadeInUp animated" style="visibility: visible; animation-name: fadeInUp;">
@@ -821,61 +914,61 @@
                             <div class="owl-item" style="width: 190px;">
                                 <div class="item m-t-15">
                                     <a href="#" class="image">
-                                        <img src="assets/images/brands/brand1.png" alt="">
+                                        <img data-echo="/Content/images//brands/brand1.png" src="/Content/images//blank.gif" alt="">
                                     </a>
                                 </div>
                             </div><div class="owl-item" style="width: 190px;">
                                 <div class="item m-t-10">
                                     <a href="#" class="image">
-                                        <img src="assets/images/brands/brand2.png" alt="">
+                                        <img data-echo="/Content/images//brands/brand2.png" src="/Content/images//blank.gif" alt="">
                                     </a>
                                 </div>
                             </div><div class="owl-item" style="width: 190px;">
                                 <div class="item">
                                     <a href="#" class="image">
-                                        <img src="assets/images/brands/brand3.png" alt="">
+                                        <img data-echo="/Content/images//brands/brand3.png" src="/Content/images//blank.gif" alt="">
                                     </a>
                                 </div>
                             </div><div class="owl-item" style="width: 190px;">
                                 <div class="item">
                                     <a href="#" class="image">
-                                        <img src="assets/images/brands/brand4.png" alt="">
+                                        <img data-echo="/Content/images//brands/brand4.png" src="/Content/images//blank.gif" alt="">
                                     </a>
                                 </div>
                             </div><div class="owl-item" style="width: 190px;">
                                 <div class="item">
                                     <a href="#" class="image">
-                                        <img src="assets/images/brands/brand5.png" alt="">
+                                        <img data-echo="/Content/images//brands/brand5.png" src="/Content/images//blank.gif" alt="">
                                     </a>
                                 </div>
                             </div><div class="owl-item" style="width: 190px;">
                                 <div class="item">
                                     <a href="#" class="image">
-                                        <img src="assets/images/brands/brand6.png" alt="">
+                                        <img data-echo="/Content/images//brands/brand6.png" src="/Content/images//blank.gif" alt="">
                                     </a>
                                 </div>
                             </div><div class="owl-item" style="width: 190px;">
                                 <div class="item">
                                     <a href="#" class="image">
-                                        <img src="assets/images/brands/brand2.png" alt="">
+                                        <img data-echo="/Content/images//brands/brand2.png" src="/Content/images//blank.gif" alt="">
                                     </a>
                                 </div>
                             </div><div class="owl-item" style="width: 190px;">
                                 <div class="item">
                                     <a href="#" class="image">
-                                        <img src="assets/images/brands/brand4.png" alt="">
+                                        <img data-echo="/Content/images//brands/brand4.png" src="/Content/images//blank.gif" alt="">
                                     </a>
                                 </div>
                             </div><div class="owl-item" style="width: 190px;">
                                 <div class="item">
                                     <a href="#" class="image">
-                                        <img data-echo="assets/images/brands/brand1.png" src="assets/images/blank.gif" alt="">
+                                        <img data-echo="/Content/images//brands/brand1.png" src="/Content/images//blank.gif" alt="">
                                     </a>
                                 </div>
                             </div><div class="owl-item" style="width: 190px;">
                                 <div class="item">
                                     <a href="#" class="image">
-                                        <img data-echo="assets/images/brands/brand5.png" src="assets/images/blank.gif" alt="">
+                                        <img data-echo="/Content/images//brands/brand5.png" src="/Content/images//blank.gif" alt="">
                                     </a>
                                 </div>
                             </div>
@@ -898,3 +991,24 @@
         <!-- ============================================== BRANDS CAROUSEL : END ============================================== -->
     </div><!-- /.container -->
 </div>
+
+@helper ShowBreadcrumb(GroupProduct group, int currGroupID = -1)
+{
+    if (currGroupID == -1)
+    {
+        currGroupID = group.GroupID;
+    }
+
+    if (group.ParentGroupID != null)
+    {
+        @ShowBreadcrumb(group.GroupProduct1, currGroupID)
+    }
+    if (group.GroupID == currGroupID)
+    {
+        <li class="active">@group.GroupName</li>
+    }
+    else
+    {
+        <li><a href="@Url.Action("Detail", "Category",  new { id = group.GroupID })">@group.GroupName</a></li>
+    }
+}
