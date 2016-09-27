@@ -23,7 +23,7 @@
                                     @Html.Raw("<div class=\"row\">")
                                 }
                                 <div class="col-sm-12 col-md-3">
-                                <h2 class="title">@subLevel2.GroupName</h2>
+                                <h2 class="title">@Html.ActionLink(@subLevel2.GroupName, "Category", new { id = subLevel2.GroupID })</h2>
                                 <ul class="links list-unstyled margin-bottom-10">
                                     @foreach (var subLevel3 in subLevel2.GroupProducts1)
                                     {
@@ -43,7 +43,7 @@
                 }
                 else
                 {
-                    <a href="@Url.Action("View", "GroupProduct", new { id = group.GroupID})"><i class="icon fa fa-@group.Icon fa-fw"></i>@group.GroupName</a>
+                    <a href="@Url.Action("View", "Category", new { id = group.GroupID})"><i class="icon fa fa-@group.Icon fa-fw"></i>@group.GroupName</a>
                 }
             </li><!-- /.menu-item -->
         }

@@ -1,21 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using WebBanHang.Core;
 using WebBanHang.Core.RepositoryModel;
 using WebBanHang.Models;
+using WebBanHang.Utils;
+using WebBanHang.ViewModels;
 
 namespace WebBanHang.Controllers
 {
-    public class UserController : BaseController
+    public class CustomerController : BaseController
     {
+        CustomerRepository customerRepo;
         //
         // GET: /User/
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index","Home");
+        }
+
+        public CustomerController()
+        {
+            customerRepo = Repository.Create<CustomerRepository>();
         }
 
         [HttpPost]
@@ -68,13 +78,29 @@ namespace WebBanHang.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-            return View();
+            return View(new SignInViewModel());
         }
 
         [HttpPost]
-        public ActionResult Login(FormCollection form, Customer customer)
+        public ActionResult Login(SignInViewModel model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                var customer = customerRepo.FindByEmail(model.Email);
+                if (customer == null)
+                {
+                    ModelState.AddModelError("Email", "Email không tồn tại");
+                    return View(model);
+                }
+                if (!EncryptUtils.PwdCompare(model.Password, customer.Passwrord))
+                {
+                    ModelState.AddModelError("Password", "Mật khẩu không chính xác");
+                    return View(model);
+                }
+                FormsAuthentication.SetAuthCookie(model.Email,false);
+                return RedirectToAction("Index","Home");
+            }
+            return View(model);
         }
 	}
 }

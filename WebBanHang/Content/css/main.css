@@ -3374,7 +3374,6 @@ a {
 }
 .single-product .product-info .stock-container .stock-box .value {
   font-size: 14px;
-  color: #ff7878;
 }
 .single-product .product-info .description-container {
   line-height: 20px;
@@ -3393,9 +3392,9 @@ a {
 }
 .single-product .product-info .price-container .price-box .price-strike {
   color: #aaa;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 300;
-  line-height: 50px;
+  line-height: 30px;
   text-decoration: line-through;
 }
 .single-product .product-info .quantity-container {
@@ -5117,7 +5116,6 @@ a {
 .table > tfoot > tr > td {
   vertical-align: middle;
   border: none;
-  padding: 30px;
 }
 .body-content .my-wishlist-page .my-wishlist table tbody .close-btn a,
 .body-content .my-wishlist-page .my-wishlist table tbody .close-btn a:hover {
@@ -5158,12 +5156,12 @@ a {
 .body-content .sign-in-page .sign-in .social-sign-in .facebook-sign-in:focus {
   background-color: #153470;
 }
-.body-content .sign-in-page .sign-in .social-sign-in .twitter-sign-in {
-  background-color: #22aadf;
+.body-content .sign-in-page .sign-in .social-sign-in .google-sign-in {
+  background-color: #CF4332;
 }
-.body-content .sign-in-page .sign-in .social-sign-in .twitter-sign-in:hover,
-.body-content .sign-in-page .sign-in .social-sign-in .twitter-sign-in:focus {
-  background-color: #0084B9;
+.body-content .sign-in-page .sign-in .social-sign-in .google-sign-in:hover,
+.body-content .sign-in-page .sign-in .social-sign-in .google-sign-in:focus {
+  background-color: #A53327;
 }
 .body-content .sign-in-page .create-new-account > span {
   font-size: 20px;
@@ -5184,7 +5182,6 @@ a {
   font-weight: 400;
 }
 .body-content .sign-in-page .register-form .form-group {
-  margin-bottom: 25px;
 }
 
 .margin-bottom-10{
@@ -5252,4 +5249,16 @@ a {
 .icon-cart{
     font-size: 18px;
     margin-right: 8px;
+}
+
+td{
+    margin:0px;
+    padding:0px;
+}
+
+.available{
+    color:#abd07e;
+}
+.out-of-stock{
+    color: #ff7878;
 }

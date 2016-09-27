@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using WebBanHang.Core;
 using WebBanHang.Core.RepositoryModel;
 using WebBanHang.Models;
+using WebBanHang.ViewModels;
 
 namespace WebBanHang.Controllers
 {
@@ -28,13 +29,29 @@ namespace WebBanHang.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(FormCollection form, Product product)
+        public ActionResult Add(FormCollection form, ProductViewModel viewModel)
         {
-            StringBuilder builder = new StringBuilder();
-            product.CreateDate = DateTime.Now;
+            if(!ModelState.IsValid)
+            {
+                var groupRepo = Repository.Create<GroupProductRepository>();
+                ViewBag.GroupProducts = groupRepo.FetchAll();
+                return View(viewModel);
+            }
+            Product product = new Product
+            {
+                ProductName = viewModel.ProductName,
+                Detail = viewModel.Detail,
+                GroupID = viewModel.GroupID,
+                Price = viewModel.Price,
+                SalePrice = viewModel.SalePrice,
+                Stock = viewModel.Stock,
+                Active = viewModel.Active,
+                CreateDate = DateTime.Now
+            };
             var productRepo = Repository.Create<ProductRepository>();
             Product insert = productRepo.Insert(product);
             productRepo.SaveChanges();
+
             return RedirectToAction("Add");
         }
 	}

@@ -1,0 +1,66 @@
+﻿@model SignInViewModel
+@{
+    ViewBag.Title = "Đăng nhập";
+}
+
+<div class="breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-inner">
+            <ul class="list-inline list-unstyled">
+                <li><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+                <li class='active'>ViewBag.Title</li>
+            </ul>
+        </div><!-- /.breadcrumb-inner -->
+    </div><!-- /.container -->
+</div><!-- /.breadcrumb -->
+<div class="body-content outer-top-bd">
+    <div class="container">
+        <div class="sign-in-page inner-bottom-sm">
+            <div class="row">
+                <!-- Sign-in -->
+                <div class="col-md-6 col-sm-6 sign-in">
+                    <h4 class="">Đăng nhập</h4>
+                    <p class="">Chào bạn, nếu bạn có tài khoản, hãy đăng nhập</p>
+                    <div class="social-sign-in outer-top-xs">
+                        <a href="#" class="facebook-sign-in"><i class="fa fa-facebook"></i> Đăng nhập với Facebook</a>
+                        <a href="#" class="google-sign-in"><i class="fa fa-google-plus"></i> Đăng nhập với Google</a>
+                    </div>
+                    @using (@Html.BeginForm("Login", "Customer", FormMethod.Post, new { @class = "register-form outer-top-xs", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            <label class="info-title" for="exampleInputEmail1">Địa chỉ Email: <span>*</span></label>
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control unicase-form-control text-input", id = "txtEmail", type = "email" })
+                            @Html.ValidationMessageFor(model => model.Email)
+                        </div>
+                        <div class="form-group">
+                            <label class="info-title" for="exampleInputPassword1">Mật khẩu: <span>*</span></label>
+                            @Html.TextBox("Password", null, new { @class = "form-control unicase-form-control text-input", id = "txtPassword", type = "password", @autocomplete = "off" })
+                            @Html.ValidationMessageFor(model => model.Password)
+                        </div>
+                        <div class="radio">
+                            <label>
+                                @Html.CheckBoxFor(model => model.Remember, new { name = "remember", id = "remember"}) Ghi nhớ đăng nhập!
+                            </label>
+                            <a href="@Url.Action("ForgetPassword")" class="forgot-password pull-right">Quên mật khẩu?</a>
+                        </div>
+                        <button type="submit" class="btn-upper btn btn-primary checkout-page-button">Đăng nhập</button>
+                    }
+                </div>
+                <!-- Sign-in -->
+                <!-- create a new account -->
+                <div class="col-md-6 col-sm-6 create-new-account">
+                    <h4 class="checkout-subtitle">Khách hàng mới</h4>
+                    <p class="text title-tag-line">Tạo tài khoản mới</p>
+                    <p><em>Khi tạo tài khoản mới bạn có thể mua sắm thoải mới hơn, cập nhật về tình trạng của đơn hàng dễ dàng, và có thể theo dõi các đơn hàng bạn đã thực hiện trước đây.</em></p>
+                    <a href="@Url.Action("Register")" class="btn btn-primary">Đăng ký</a>
+                </div>
+                <!-- create a new account -->
+            </div><!-- /.row -->
+        </div><!-- /.sigin-in-->
+    </div><!-- /.container -->
+</div><!-- /.body-content -->
+
+<script>
+    $("input#txtPassword").val('');
+</script>
