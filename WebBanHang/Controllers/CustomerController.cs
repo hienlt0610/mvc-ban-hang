@@ -29,49 +29,31 @@ namespace WebBanHang.Controllers
         }
 
         [HttpPost]
-        public ActionResult Register(FormCollection form, Customer customer){
-            int err = 0;
-            var cusRepository = Repository.Create<CustomerRepository>();
-            String userName = form["txtUser"];
-            if (userName.Trim().Length == 0)
+        public ActionResult Register(SignUpViewModel model){
+            var existCustomer = customerRepo.FindByEmail(model.Email);
+            if (existCustomer != null)
             {
-                ViewData["ErrUser"] = "Vui long nhap username";
-                err++;
+                ModelState.AddModelError("Email", "Email đã tồn tại...");
             }
-            else
+            if (ModelState.IsValid)
             {
-                if (cusRepository.checkExistCustomer(userName.Trim()))
-                {
-                    ViewData["ErrUser"] = "User ton tai";
-                    err++;
-                }
+                Customer customer = new Customer { 
+                    Email = model.Email,
+                    Passwrord=EncryptUtils.MD5(model.Password),
+                    FullName = model.FullName,
+                    Status = false,
+                    RegistrationDate =DateTime.Now
+                };
+                customerRepo.Insert(customer);
+                customerRepo.SaveChanges();
+                return RedirectToAction("Index", "Home");
             }
-            if(form["txtPassword"].Trim().Length == 0){
-                ViewData["ErrPassword1"] = "Vui long nhap mat khau";
-                err++;
-            }
-            else
-            {
-                if (!form["txtAgainPassword"].Trim().Equals(form["txtPassword"].Trim()))
-                {
-                    ViewData["ErrPassword2"] = "Hai mat khau khong khop";
-                    err++;
-                }
-            }
-
-
-            if (err == 0)
-            {
-                string s = "";
-                return Content("Dang ky thanh cong!!!");
-            }
-            return View(); 
+            return View(model); 
         }
 
         [HttpGet]
         public ActionResult Register()
         {
-            int i = 1;
             return View();   
         }
 

@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Login";
-    @model Customer
+    @model SignUpViewModel
 }
 
 <div class="breadcrumb">
@@ -23,57 +23,46 @@
                 <div class="col-md-6 col-sm-6 create-new-account">
                     <h4 class="checkout-subtitle">Tạo tài khoản mới</h4>
                     <p class="text title-tag-line">Tạo cho bạn một tài khoản mua sắm</p>
-                    <form method="post" class="form-horizontal">
+                    @using (Html.BeginForm("Register", "Customer", FormMethod.Post))
+                    {   
+                        @Html.AntiForgeryToken()
                         <div class="form-group">
-                            <label for="txtUser" class="col-sm-3 control-label">Tài khoản:</label>
+                            <label for="txtFullName" class="col-sm-3 control-label">Họ tên:</label>
                             <div class="col-sm-9">
-                                <input name="txtUser" type="text" class="form-control" id="txtUser" placeholder="Tài khoản">
-                                @if (ViewData["ErrUser"] != null)
-                                {
-                                    <p class="help-block red-text">@ViewData["ErrUser"]</p>
-                                }
+                                @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", id = "txtFullName", placeholder = "Nhập họ tên" })
+                                @Html.ValidationMessageFor(m=>m.FullName)
                             </div>
                         </div>
-                       
+                        <div class="form-group">
+                            <label for="txtEmail" class="col-sm-3 control-label">Email:</label>
+                            <div class="col-sm-9">
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", id = "txtEmail", placeholder = "Email" })
+                                @Html.ValidationMessageFor(m=>m.Email)
+
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label for="txtPassword" class="col-sm-3 control-label">Mật khẩu:</label>
                             <div class="col-sm-9">
-                                <input name="txtPassword" type="text" class="form-control" id="txtPassword" placeholder="Mật khẩu">
-                                @if (ViewData["ErrPassword1"] != null)
-                                {
-                                    <p class="help-block red-text">@ViewData["ErrPassword1"]</p>
-                                }
+                                @Html.TextBoxFor(m => m.Password, new {@class = "form-control",id="txtPassword",placeholder="Mật khẩu",type="password"})
+                                @Html.ValidationMessageFor(m=>m.Password)
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="txtAgainPassword" class="col-sm-3 control-label">Xác nhận mật khẩu:</label>
                             <div class="col-sm-9">
-                                <input name="txtAgainPassword" type="text" class="form-control" id="txtAgainPassword" placeholder="Xác nhận mật khẩu">
-                                @if (ViewData["ErrPassword2"] != null)
-                                {
-                                    <p class="help-block red-text">@ViewData["ErrPassword2"]</p>
-                                }
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="txtEmail" class="col-sm-3 control-label">Email:</label>
-                            <div class="col-sm-9">
-                                <input name="txtEmail" type="text" class="form-control" id="txtEmail" placeholder="Email">
-                                @if (ViewData["ErrEmail"] != null)
-                                {
-                                    <p class="help-block red-text">@ViewData["ErrEmail"]</p>
-                                }
+                                @Html.TextBoxFor(m => m.ConfirmPassword, new {@class = "form-control",id="txtAgainPassword",placeholder="Xác nhận",type="password"})
+                                @Html.ValidationMessageFor(m=>m.ConfirmPassword)
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-9">
-                                <button type="submit" class="btn btn-default">Đăng nhập</button>
+                                <button type="submit" class="btn btn-default">Đăng ký</button>
                             </div>
                         </div>
-                    </form>
+                    }
                 </div>
                 <!-- create a new account -->
             </div><!-- /.row -->

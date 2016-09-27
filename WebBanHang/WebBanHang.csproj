@@ -308,6 +308,7 @@
     <Compile Include="Utils\StringUtils.cs" />
     <Compile Include="ViewModels\SignInViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
+    <Compile Include="ViewModels\SignUpViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\animate.min.css" />
