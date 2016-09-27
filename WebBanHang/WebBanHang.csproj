@@ -192,6 +192,7 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\WidgetController.cs" />
     <Compile Include="Core\BaseController.cs" />
+    <Compile Include="Core\CustomerPrincipal.cs" />
     <Compile Include="Core\DbContextRepository.cs" />
     <Compile Include="Core\IRepository.cs" />
     <Compile Include="Core\RepositoryModel.cs" />
@@ -201,6 +202,7 @@
     <Compile Include="Core\RepositoryModel\GroupProductRepository.cs" />
     <Compile Include="Core\RepositoryModel\MenuRepository.cs" />
     <Compile Include="Core\RepositoryModel\ProductRepository.cs" />
+    <Compile Include="Core\UserManager.cs" />
     <Compile Include="Core\WebDbContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -300,6 +302,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\AssetUtil.cs" />
+    <Compile Include="Utils\AuthUtils.cs" />
     <Compile Include="Utils\DefaultableDictionary.cs" />
     <Compile Include="Utils\EncryptUtils.cs" />
     <Compile Include="Utils\HtmlExtension.cs" />

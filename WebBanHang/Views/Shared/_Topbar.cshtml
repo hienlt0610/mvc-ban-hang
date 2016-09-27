@@ -4,9 +4,16 @@
         <div class="header-top-inner">
             <div class="cnt-account">
                 <ul class="list-unstyled">
-                    <li><a href="#"><i class="icon fa fa-user"></i>@User.Identity.Name</a></li>
-                    <li><a href="@Url.Action("Login", "Customer")"><i class="icon fa fa-sign-in"></i>Đăng nhập</a></li>
-                    <li><a href="@Url.Action("Register", "Customer")"><i class="icon fa fa-sign-out"></i>Đăng ký</a></li>
+                    @if (!Request.IsAuthenticated)
+                    {
+                        <li><a href="@Url.Action("Login", "Customer")"><i class="icon fa fa-sign-in"></i>Đăng nhập</a></li>
+                        <li><a href="@Url.Action("Register", "Customer")"><i class="icon fa fa-sign-out"></i>Đăng ký</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="@Url.Action("Login", "Customer")"><i class="icon fa fa-user"></i>@UserManager.User.FullName</a></li>
+                        <li><a href="@Url.Action("Logout", "Customer")"><i class="icon fa fa-sign-out"></i>Thoát</a></li>
+                    }
                 </ul>
             </div><!-- /.cnt-account -->
             <div class="clearfix"></div>

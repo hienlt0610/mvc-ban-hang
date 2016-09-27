@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -77,7 +78,7 @@ namespace WebBanHang.Controllers
             }
             if (ModelState.IsValid)
             {
-                FormsAuthentication.SetAuthCookie(model.Email,false);
+                Response.SetAuthCookie<Customer>(FormsAuthentication.FormsCookieName, model.Remember, customer);
                 return RedirectToAction("Index","Home");
             }
             return View(model);
