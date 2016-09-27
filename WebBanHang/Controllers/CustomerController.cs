@@ -84,23 +84,27 @@ namespace WebBanHang.Controllers
         [HttpPost]
         public ActionResult Login(SignInViewModel model)
         {
+            var customer = customerRepo.FindByEmail(model.Email);
+            if (customer == null)
+            {
+                ModelState.AddModelError("Email", "Email không tồn tại");
+            }
+            if (!EncryptUtils.PwdCompare(model.Password, customer.Passwrord))
+            {
+                ModelState.AddModelError("Password", "Mật khẩu không chính xác");
+            }
             if (ModelState.IsValid)
             {
-                var customer = customerRepo.FindByEmail(model.Email);
-                if (customer == null)
-                {
-                    ModelState.AddModelError("Email", "Email không tồn tại");
-                    return View(model);
-                }
-                if (!EncryptUtils.PwdCompare(model.Password, customer.Passwrord))
-                {
-                    ModelState.AddModelError("Password", "Mật khẩu không chính xác");
-                    return View(model);
-                }
                 FormsAuthentication.SetAuthCookie(model.Email,false);
                 return RedirectToAction("Index","Home");
             }
             return View(model);
+        }
+
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index","Home");
         }
 	}
 }
