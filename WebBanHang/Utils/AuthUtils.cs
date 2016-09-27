@@ -9,7 +9,7 @@ namespace WebBanHang.Utils
 {
     public static class AuthUtils
     {
-        public static int SetAuthCookie<T>(this HttpResponseBase responseBase, string name, bool rememberMe, T userData)
+        public static int SetAuthCookie(this HttpResponseBase responseBase, string name, bool rememberMe, object userData)
         {
             /// In order to pickup the settings from config, we create a default cookie and use its values to create a 
             /// new one.

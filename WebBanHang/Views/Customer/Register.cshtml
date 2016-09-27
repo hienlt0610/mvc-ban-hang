@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Login";
+    ViewBag.Title = "Đăng ký";
     @model SignUpViewModel
 }
 
@@ -20,45 +20,45 @@
         <div class="sign-in-page inner-bottom-sm">
             <div class="row">
                 <!-- create a new account -->
-                <div class="col-md-6 col-sm-6 create-new-account">
+                <div class="col-md-8 col-sm-6 create-new-account">
                     <h4 class="checkout-subtitle">Tạo tài khoản mới</h4>
                     <p class="text title-tag-line">Tạo cho bạn một tài khoản mua sắm</p>
-                    @using (Html.BeginForm("Register", "Customer", FormMethod.Post))
+                    @using (Html.BeginForm("Register", "Customer", FormMethod.Post, new { @class = "form-horizontal outer-top-xs" }))
                     {   
                         @Html.AntiForgeryToken()
                         <div class="form-group">
                             <label for="txtFullName" class="col-sm-3 control-label">Họ tên:</label>
-                            <div class="col-sm-9">
-                                @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", id = "txtFullName", placeholder = "Nhập họ tên" })
-                                @Html.ValidationMessageFor(m=>m.FullName)
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(m => m.FullName, new { @class = "form-control unicase-form-control text-input", id = "txtFullName", placeholder = "Họ và tên" })
+                                @Html.ValidationLabel("FullName", "error")
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="txtEmail" class="col-sm-3 control-label">Email:</label>
-                            <div class="col-sm-9">
-                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", id = "txtEmail", placeholder = "Email" })
-                                @Html.ValidationMessageFor(m=>m.Email)
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control unicase-form-control text-input", id = "txtEmail", placeholder = "Địa chỉ email" })
+                                @Html.ValidationLabel("Email", "error")
 
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="txtPassword" class="col-sm-3 control-label">Mật khẩu:</label>
-                            <div class="col-sm-9">
-                                @Html.TextBoxFor(m => m.Password, new {@class = "form-control",id="txtPassword",placeholder="Mật khẩu",type="password"})
-                                @Html.ValidationMessageFor(m=>m.Password)
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(m => m.Password, new { @class = "form-control unicase-form-control text-input", id = "txtPassword", placeholder = "Mật khẩu", type = "password" })
+                                @Html.ValidationLabel("Password", "error")
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="txtAgainPassword" class="col-sm-3 control-label">Xác nhận mật khẩu:</label>
-                            <div class="col-sm-9">
-                                @Html.TextBoxFor(m => m.ConfirmPassword, new {@class = "form-control",id="txtAgainPassword",placeholder="Xác nhận",type="password"})
-                                @Html.ValidationMessageFor(m=>m.ConfirmPassword)
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control unicase-form-control text-input", id = "txtAgainPassword", placeholder = "Xác nhận lại mật khẩu", type = "password" })
+                                @Html.ValidationLabel("ConfirmPassword", "error")
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-9">
+                            <div class="col-sm-offset-3 col-sm-9">
                                 <button type="submit" class="btn btn-default">Đăng ký</button>
                             </div>
                         </div>

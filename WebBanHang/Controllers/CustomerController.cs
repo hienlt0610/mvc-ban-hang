@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Facebook;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Security.Principal;
@@ -30,6 +32,7 @@ namespace WebBanHang.Controllers
         }
 
         [HttpPost]
+        [OnlyGuest]
         public ActionResult Register(SignUpViewModel model){
             var existCustomer = customerRepo.FindByEmail(model.Email);
             if (existCustomer != null)
@@ -43,28 +46,32 @@ namespace WebBanHang.Controllers
                     Passwrord=EncryptUtils.MD5(model.Password),
                     FullName = model.FullName,
                     Status = false,
-                    RegistrationDate =DateTime.Now
+                    RegistrationDate = DateTime.Now
                 };
-                customerRepo.Insert(customer);
+                customer = customerRepo.Insert(customer);
                 customerRepo.SaveChanges();
+                Response.SetAuthCookie(FormsAuthentication.FormsCookieName, false, customer);
                 return RedirectToAction("Index", "Home");
             }
             return View(model); 
         }
 
         [HttpGet]
+        [OnlyGuest]
         public ActionResult Register()
         {
             return View();   
         }
 
         [HttpGet]
+        [OnlyGuest]
         public ActionResult Login()
         {
             return View(new SignInViewModel());
         }
 
         [HttpPost]
+        [OnlyGuest]
         public ActionResult Login(SignInViewModel model)
         {
             var customer = customerRepo.FindByEmail(model.Email);
@@ -78,7 +85,7 @@ namespace WebBanHang.Controllers
             }
             if (ModelState.IsValid)
             {
-                Response.SetAuthCookie<Customer>(FormsAuthentication.FormsCookieName, model.Remember, customer);
+                Response.SetAuthCookie(FormsAuthentication.FormsCookieName, model.Remember, customer);
                 return RedirectToAction("Index","Home");
             }
             return View(model);
@@ -88,6 +95,75 @@ namespace WebBanHang.Controllers
         {
             FormsAuthentication.SignOut();
             return RedirectToAction("Index","Home");
+        }
+
+        [Authorize]
+        public ActionResult Test()
+        {
+            return Content("Hello");
+        }
+
+        public ActionResult FacebookLogin()
+        {
+            var fb = new FacebookClient();
+            var loginUrl = fb.GetLoginUrl(new
+            {
+                client_id = ConfigurationManager.AppSettings["FbAppId"],
+                client_secret = ConfigurationManager.AppSettings["FbAppSecret"],
+                redirect_uri = RedirectUri.AbsoluteUri,
+                response_type = "code",
+                scope = "email"
+            });
+            return Redirect(loginUrl.AbsoluteUri);
+        }
+        public ActionResult FacebookCallback(string code)
+        {
+            var fb = new FacebookClient();
+            dynamic result = fb.Post("oauth/access_token", new
+            {
+                client_id = ConfigurationManager.AppSettings["FbAppId"],
+                client_secret = ConfigurationManager.AppSettings["FbAppSecret"],
+                redirect_uri = RedirectUri.AbsoluteUri,
+                code = code
+            });
+            var access_token = result.access_token;
+            if (!String.IsNullOrEmpty(access_token))
+            {
+                fb.AccessToken = access_token;
+                dynamic me = fb.Get("me?fields=id,email,name");
+                String fbID = me.id;
+                fbID = fbID.Trim();
+                if (!string.IsNullOrEmpty(fbID))
+                {
+                    Customer customer = customerRepo.FindByFacebookID(fbID);
+                    if (customer == null)
+                    {
+                        customer = new Customer
+                        {
+                            FacebookID = me.id,
+                            Email = me.email,
+                            FullName = me.name,
+                            Status = true,
+                            RegistrationDate = DateTime.Now
+                        };
+                        customer = customerRepo.Insert(customer);
+                        customerRepo.SaveChanges();
+                    }
+                    Response.SetAuthCookie(FormsAuthentication.FormsCookieName, false, customer);
+                }
+            }
+            return RedirectToAction("Index","Home");
+        }
+        private Uri RedirectUri
+        {
+            get
+            {
+                var uriBuilder = new UriBuilder(Request.Url);
+                uriBuilder.Query = null;
+                uriBuilder.Fragment = null;
+                uriBuilder.Path = Url.Action("FacebookCallback");
+                return uriBuilder.Uri;
+            }
         }
 	}
 }

@@ -22,10 +22,10 @@
                     <h4 class="">Đăng nhập</h4>
                     <p class="">Chào bạn, nếu bạn có tài khoản, hãy đăng nhập</p>
                     <div class="social-sign-in outer-top-xs">
-                        <a href="#" class="facebook-sign-in"><i class="fa fa-facebook"></i> Đăng nhập với Facebook</a>
+                        <a href="@Url.Action("FacebookLogin")" class="facebook-sign-in"><i class="fa fa-facebook"></i> Đăng nhập với Facebook</a>
                         <a href="#" class="google-sign-in"><i class="fa fa-google-plus"></i> Đăng nhập với Google</a>
                     </div>
-                    @using (@Html.BeginForm("Login", "Customer", FormMethod.Post, new { @class = "register-form outer-top-xs", role = "form" }))
+                    @using (@Html.BeginForm("Login", "Customer", FormMethod.Post, new { @class = "outer-top-xs", role = "form" }))
                     {
                         @Html.AntiForgeryToken()
                         <div class="form-group">

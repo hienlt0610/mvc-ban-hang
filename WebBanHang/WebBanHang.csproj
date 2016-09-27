@@ -39,6 +39,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Facebook, Version=6.0.10.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
+      <HintPath>..\packages\Facebook.7.0.6\lib\net45\Facebook.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
@@ -194,6 +198,7 @@
     <Compile Include="Core\BaseController.cs" />
     <Compile Include="Core\CustomerPrincipal.cs" />
     <Compile Include="Core\DbContextRepository.cs" />
+    <Compile Include="Core\GuestAttribute.cs" />
     <Compile Include="Core\IRepository.cs" />
     <Compile Include="Core\RepositoryModel.cs" />
     <Compile Include="Core\RepositoryModel\ColorRepository.cs" />
@@ -309,6 +314,7 @@
     <Compile Include="Utils\ImageHelper.cs" />
     <Compile Include="Utils\ModelUtils.cs" />
     <Compile Include="Utils\StringUtils.cs" />
+    <Compile Include="Utils\UrlHelpers.cs" />
     <Compile Include="ViewModels\SignInViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\SignUpViewModel.cs" />

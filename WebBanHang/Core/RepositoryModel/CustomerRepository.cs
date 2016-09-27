@@ -24,5 +24,10 @@ namespace WebBanHang.Core.RepositoryModel
         {
             return FetchAll().Where(item => item.Email.Equals(email)).FirstOrDefault();
         }
+
+        public Customer FindByFacebookID(String fbID)
+        {
+            return FetchAll().Where(item => item.FacebookID.Equals(fbID)).FirstOrDefault();
+        }
     }
 }
