@@ -17,7 +17,7 @@ namespace WebBanHang.ViewModels
         public String Email { get; set; }
 
         [Required(ErrorMessage="Vui lòng nhập mật khẩu")]
-        [MinLength(6,ErrorMessage="Mật khẩu không được dưới 6 ký tự")]
+        //[MinLength(6,ErrorMessage="Mật khẩu không được dưới 6 ký tự")]
         [MaxLength(16, ErrorMessage="Mật khẩu không quá 16 ký tự")]
         public String Password { get; set; }
 
