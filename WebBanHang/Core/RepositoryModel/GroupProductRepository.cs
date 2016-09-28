@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
@@ -33,30 +34,45 @@ namespace WebBanHang.Core.RepositoryModel
             return products;
         }
 
-        public List<Product> GetProductInGroups(int group, String sort)
+        public List<Product> GetProductInGroups(int group, NameValueCollection filter)
         {
-            List<Product> model = null;
-            switch (sort)
+            IEnumerable<Product> model = GetProductInGroups(group).OrderByDescending(item => item.CreateDate);
+
+            if (!String.IsNullOrEmpty(filter["color"]))
             {
-                case "name_asc":
-                    model = GetProductInGroups(group).OrderBy(item => item.ProductName).ToList();
-                    break;
-                case "name_desc":
-                    model = GetProductInGroups(group).OrderByDescending(item => item.ProductName).ToList();
-                    break;
-                case "price_asc":
-                    model = GetProductInGroups(group).
-                        OrderBy(item => item.isSale() ? item.SalePrice : item.Price)
-                        .ToList();
-                    break;
-                case "price_desc":
-                    model = GetProductInGroups(group).OrderByDescending(item => item.isSale() ? item.SalePrice : item.Price).ToList();
-                    break;
-                default:
-                    model = GetProductInGroups(group).OrderByDescending(item => item.CreateDate).ToList();
-                    break;
+                model = model.Where(product => product.Colors.Any(color => color.ColorID.ToString().Equals(filter["color"])));
             }
-            return model;
+
+            if (!String.IsNullOrEmpty(filter["range_price"]))
+            {
+                string[] minMax = filter["range_price"].Split(',');
+                if (minMax.Length == 2)
+                {
+                    long min = minMax[0].ToIntWithDef(0);
+                    long max = minMax[1].ToIntWithDef(0);
+                    model = model.Where(item => (item.isSale() && item.SalePrice >= min && item.SalePrice <= max) || (!item.isSale() && item.Price >= min && item.Price <= max));
+                }
+            }
+            
+            if (!String.IsNullOrEmpty(filter["sort"]))
+            {
+                switch (filter["sort"])
+                {
+                    case "name_asc":
+                        model = model.OrderBy(item => item.ProductName);
+                        break;
+                    case "name_desc":
+                        model = model.OrderByDescending(item => item.ProductName);
+                        break;
+                    case "price_asc":
+                        model = model.OrderBy(item => item.isSale() ? item.SalePrice : item.Price);
+                        break;
+                    case "price_desc":
+                        model = model.OrderByDescending(item => item.isSale() ? item.SalePrice : item.Price);
+                        break;
+                }
+            }
+            return model.ToList();
         }
 
         public IEnumerable<GroupProduct> GetListSubGroups(int groupID)

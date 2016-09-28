@@ -30,8 +30,9 @@ namespace WebBanHang.Controllers
         {
             if (id == null)
                 return RedirectToAction("Error404", "Error");
-            var model = groupRepository.FindById(id);
+            var model = Repository.GroupProduct.FindById(id);
             if (model == null) return RedirectToAction("Error404", "Error");
+            ViewData["ListColor"] = Repository.Color.FetchAll();
             return View(model);
         }
 
@@ -43,14 +44,14 @@ namespace WebBanHang.Controllers
             return PartialView(model);
         }
 
-        public ActionResult ShowProductInCategory(int id, int? page, String sort)
+        public ActionResult ShowProductInCategory(int id, int? page)
         {
             var config = Repository.Create<ConfigRepository>().FindById("product_per_page");
             var pageSize = config.Value.ToIntWithDef(1);
             if (pageSize < 1) pageSize = 1;
             int pageNumber = (page ?? 1);
 
-            var model = groupRepository.GetProductInGroups(id, sort);
+            var model = groupRepository.GetProductInGroups(id, Request.QueryString);
 
             ViewData["groupID"] = id;
             return PartialView(model.ToPagedList(pageNumber, pageSize));

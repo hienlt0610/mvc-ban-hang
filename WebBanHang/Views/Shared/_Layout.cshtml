@@ -34,6 +34,7 @@
     <link href="~/Content/css/red.css" rel="alternate stylesheet" title="Red color">
     <link href="~/Content/css/orange.css" rel="alternate stylesheet" title="Orange color">
     <link href="~/Content/css/dark-green.css" rel="alternate stylesheet" title="Darkgreen color">
+    <link href="https://stevenbenner.github.io/jquery-powertip/styles/jquery.powertip.css" rel="alternate stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700" rel="stylesheet">
     <!-- Demo Purpose Only. Should be removed in production : END -->
     <!-- Icons/Glyphs -->
@@ -41,6 +42,7 @@
     <!-- Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,700' rel='stylesheet' type='text/css'>
 
+    <link rel="stylesheet" href="~/Content/css/jquery.smallipop.min.css" type="text/css" media="all" title="Screen" />
     <!-- Favicon -->
     <link rel="shortcut icon" href="~/Content/images/favicon.ico">
     <!-- HTML5 elements and media queries Support for IE8 : HTML5 shim and Respond.js -->
@@ -62,6 +64,8 @@
         <script type="text/javascript" src="~/Content/js/lightbox.min.js"></script>
         <script src="~/Content/js/bootstrap-select.min.js"></script>
         <script src="~/Content/js/wow.min.js"></script>
+        <script type="text/javascript" src="~/Content/js/modernizr.js"></script>
+        <script type="text/javascript" src="~/Content/js/jquery.smallipop.min.js"></script>
 </head>
 <body class="cnt-home">
 
@@ -71,5 +75,6 @@
     <!-- JavaScripts placed at the end of the document so the pages load faster -->
     
     <script src="~/Content/js/scripts.js"></script>
+    @RenderSection("masterjs", required: false)
 </body>
 </html>

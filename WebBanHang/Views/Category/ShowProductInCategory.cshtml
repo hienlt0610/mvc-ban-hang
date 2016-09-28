@@ -1,5 +1,7 @@
 ﻿@model PagedList.IPagedList<Product>
-
+@{
+    int i = 0;
+}
 <div class='col-md-9'>
     <div class="clearfix filters-container m-t-10">
         <div class="row">
@@ -43,11 +45,11 @@
                                     <span class="caret"></span>
                                 </button>
                                 <ul role="menu" class="dropdown-menu">
-                                    <li role="presentation"><a href="@q("sort","default")">Mặc định</a></li>
-                                    <li role="presentation"><a href="@q("sort", "name_asc")">Tên sản phẩm: A - Z</a></li>
-                                    <li role="presentation"><a href="@q("sort", "name_desc")">Tên sản phẩm: Z - A</a></li>
-                                    <li role="presentation"><a href="@q("sort", "price_asc")">Giá: từ thấp đến cao</a></li>
-                                    <li role="presentation"><a href="@q("sort", "price_desc")">Giá: từ cao xuống thấp</a></li>
+                                    <li role="presentation"><a href="?@Url.QueryString("sort","default")">Mặc định</a></li>
+                                    <li role="presentation"><a href="?@Url.QueryString("sort", "name_asc")">Tên sản phẩm: A - Z</a></li>
+                                    <li role="presentation"><a href="?@Url.QueryString("sort", "name_desc")">Tên sản phẩm: Z - A</a></li>
+                                    <li role="presentation"><a href="?@Url.QueryString("sort", "price_asc")">Giá: từ thấp đến cao</a></li>
+                                    <li role="presentation"><a href="?@Url.QueryString("sort", "price_desc")">Giá: từ cao xuống thấp</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -60,12 +62,12 @@
             <!-- /.col -->
             <div class="col col-sm-6 col-md-3 text-right">
                 @Html.PagedListPager(Model,
-                page => Url.Action("Detail",
-                    new { id = ViewData["groupID"], page = page }),
+                    page => Url.Action("Detail", new { id = ViewData["groupID"] }) + "?" + Url.QueryString("page", page.ToString()),
                     new PagedListRenderOptions
                     {
-                        UlElementClasses = new List<String>() { "list-inline", "list-unstyled" }
-                        
+                        UlElementClasses = new List<String>() { "pagination" },
+                        ContainerDivClasses = new List<String>() { "" }
+
                     })
                 <!-- /.pagination-container -->
             </div>
@@ -81,6 +83,10 @@
                     <div class="row">
                         @foreach (Product product in Model)
                         {
+                            if (i % 4 == 0 && i > 0)
+                            {
+                                @Html.Raw("</div><div class=\"row\">");
+                            }
                             <div class="col-sm-6 col-md-3 wow fadeInUp">
                                 <div class="products">
                                     <div class="product">
@@ -135,6 +141,7 @@
                                 </div>
                                 <!-- /.products -->
                             </div><!-- /.item -->
+                            i++;
                         }
                     </div>
                     <!-- /.row -->
@@ -973,12 +980,14 @@
         <div class="clearfix filters-container">
 
             <div class="text-right">
-                @Html.PagedListPager(Model, 
+                @Html.PagedListPager(Model,
                 page => Url.Action("Detail",
-                    new { id = ViewData["groupID"], page = page }), 
+                    new { id = ViewData["groupID"], page = page }),
                     new PagedListRenderOptions
                     {
-                        UlElementClasses = new List<String>() { "list-inline", "list-unstyled" }
+                        UlElementClasses = new List<String>() { "pagination" },
+                        ContainerDivClasses = new List<String>() { "" }
+
                     })
                 <!-- /.pagination-container -->
             </div>
@@ -989,30 +998,3 @@
     </div>
     <!-- /.search-result-container -->
 </div>
-
-@helper q(String name,String value)
-{ 
-    Dictionary<String, object> dict = new Dictionary<string,object>();
-    Request.QueryString.CopyTo(dict);
-    if(!dict.ContainsKey(name))
-    {
-        dict.Add(name,value);
-    }
-    else
-    {
-        dict[name] = value;
-    }
-    int i = 0;
-    foreach (String key in dict.Keys)
-    {
-        if (i == 0)
-        {
-            @Html.Raw("?"+key+"="+dict[key])
-        }
-        else
-        {
-            @Html.Raw("&"+key+"="+dict[key])
-        }
-        i++;
-    }
-}

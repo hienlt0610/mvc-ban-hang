@@ -31,59 +31,52 @@
                         <!-- ============================================== PRICE SILDER============================================== -->
                         <div class="sidebar-widget outer-bottom-xs wow fadeInUp">
                             <div class="widget-header">
-                                <h4 class="widget-title">Price Slider</h4>
+                                <h4 class="widget-title">Lọc theo giá</h4>
                             </div>
-                            <div class="sidebar-widget-body m-t-20">
-                                <div class="price-range-holder">
+                            <div class="sidebar-widget-body">
+                                <ul class="list">
+                                    <li><a href="?@Url.QueryString("range_price","0,10000000")">0&nbsp;₫ - 10.000.000&nbsp;₫ </a></li>
+                                    <li><a href="?@Url.QueryString("range_price", "10000000,20000000")">10.000.000&nbsp;₫ - 20.000.000&nbsp;₫ </a></li>
+                                    <li><a href="?@Url.QueryString("range_price", "20000000,30000000")">20.000.000&nbsp;₫ - 30.000.000&nbsp;₫ </a></li>
+                                    <li><a href="?@Url.QueryString("range_price", "30000000,40000000")">30.000.000&nbsp;₫ - 40.000.000&nbsp;₫ </a></li>
+                                    <li><a href="?@Url.QueryString("range_price", "40000000,50000000")">40.000.000&nbsp;₫ - 50.000.000&nbsp;₫ </a></li>
+                                </ul>
+                                <div>Hoặc chọn giá khác</div>
+                                <div class="price-range-holder m-t-10">
                                     <span class="min-max">
-                                        <span class="pull-left">$200.00</span>
-                                        <span class="pull-right">$800.00</span>
+                                        <span class="pull-left">0đ</span>
+                                        <span class="pull-right">50.000.000đ</span>
                                     </span>
                                     <input type="text" id="amount" style="border:0; color:#666666; font-weight:bold;text-align:center;">
                                     <input type="text" class="price-slider" value="">
 
                                 </div>
                                 <!-- /.price-range-holder -->
-                                <a href="#" class="lnk btn btn-primary">Show Now</a>
+                                <a href="#" id="btn_price_filter" class="lnk btn btn-primary">Lọc</a>
                             </div>
                             <!-- /.sidebar-widget-body -->
                         </div>
                         <!-- /.sidebar-widget -->
                         <!-- ============================================== PRICE SILDER : END ============================================== -->
-                        <!-- ============================================== MANUFACTURES============================================== -->
-                        <div class="sidebar-widget outer-bottom-xs wow fadeInUp">
-                            <div class="widget-header">
-                                <h4 class="widget-title">Manufactures</h4>
-                            </div>
-                            <div class="sidebar-widget-body m-t-10">
-                                <ul class="list">
-                                    <li><a href="#">Forever 18</a></li>
-                                    <li><a href="#">Nike</a></li>
-                                    <li><a href="#">Dolce & Gabbana</a></li>
-                                    <li><a href="#">Alluare</a></li>
-                                    <li><a href="#">Chanel</a></li>
-                                    <li><a href="#">Other Brand</a></li>
-                                </ul>
-                                <!--<a href="#" class="lnk btn btn-primary">Show Now</a>-->
-                            </div>
-                            <!-- /.sidebar-widget-body -->
-                        </div>
-                        <!-- /.sidebar-widget -->
-                        <!-- ============================================== MANUFACTURES: END ============================================== -->
-                        <!-- ============================================== COLOR============================================== -->
+                       <!-- ============================================== COLOR============================================== -->
                         <div class="sidebar-widget wow fadeInUp outer-bottom-xs ">
                             <div class="widget-header">
-                                <h4 class="widget-title">Colors</h4>
+                                <h4 class="widget-title">Lọc theo màu</h4>
                             </div>
                             <div class="sidebar-widget-body m-t-10">
-                                <ul class="list">
-                                    <li><a href="#">Red</a></li>
-                                    <li><a href="#">Blue</a></li>
-                                    <li><a href="#">Yellow</a></li>
-                                    <li><a href="#">Pink</a></li>
-                                    <li><a href="#">Brown</a></li>
-                                    <li><a href="#">Teal</a></li>
+                                <ul class="list list-color">
+                                    @foreach (Color color in (IEnumerable<Color>)ViewData["ListColor"])
+                                    {
+                                        String colorID = HttpContext.Current.Request.QueryString["color"];
+                                        String active = "";
+                                        if(color.ColorID.ToString().Equals(colorID))
+                                        {
+                                            active = "active";
+                                        }
+                                        <li><a class="@active" data-toggle="tooltip" title="Màu @color.ColorName" style="background:#@color.HexCode" href="?@Url.QueryString("color",@color.ColorID.ToString())"></a></li>
+                                    }
                                 </ul>
+                                <div class="clearfix"></div>
                             </div>
                             <!-- /.sidebar-widget-body -->
                         </div>
@@ -202,4 +195,57 @@
     {
         <li><a href="@Url.Action("Detail", new { id = group.GroupID })">@group.GroupName</a></li>
     }
+}
+
+@section masterjs
+{
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            $("#btn_price_filter").click(function () {
+                url = replaceParam('range_price', $(".price-slider").val());
+                window.location.href = url;
+                return false;
+            });
+        }); 
+        function replaceParam(key, value) {
+            var pathname = window.location.pathname;
+            var params = toParams(window.location.search);
+            params[key] = value;
+
+            return pathname + "?" + jQuery.param(params)
+        }
+
+        function toParams(searchUrl) {
+            var result = {}
+            if (searchUrl == '')
+                return result;
+
+            var queryString = searchUrl.substr(1);
+
+            var params = queryString.split("&");
+
+            jQuery.each(params, function (index, param) {
+                var keyPair = param.split("=");
+
+                var key = keyPair[0];
+                var value = keyPair[1];
+
+                if (result[key] == undefined)
+                    result[key] = value
+                else {
+
+                    if (result[key] instanceof Array) //current var is an array just push another to it
+                        result[key].push(value)
+                    else { //duplicate var, then it must store as an array
+                        result[key] = [result[key]]
+                        result[key].push(value)
+                    }
+                }
+            })
+
+            return result;
+
+        }
+    </script>
 }

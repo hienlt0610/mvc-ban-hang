@@ -1545,6 +1545,9 @@ a {
   font-family: 'Open Sans Condensed', sans-serif;
   margin: 0px;
 }
+.sidebar .sidebar-module-container .sidebar-widget .sidebar-widget-body {
+    padding:8px;
+}
 .sidebar .sidebar-module-container .sidebar-widget .sidebar-widget-body .accordion .accordion-group .accordion-heading .accordion-toggle {
   clear: both;
   display: block;
@@ -1651,7 +1654,6 @@ a {
   margin-top: 15px;
 }
 .sidebar .sidebar-module-container .sidebar-widget .sidebar-widget-body .list li {
-  clear: both;
   display: block;
   font-family: 'Roboto', sans-serif;
   font-size: 13px;
@@ -5280,3 +5282,30 @@ label.error {
 .btn-label {position: relative;left: -12px;display: inline-block;padding: 6px 12px;background: rgba(0,0,0,0.15);border-radius: 3px 0 0 3px;}
 .btn-labeled {padding-top: 0;padding-bottom: 0;}
 .btn-labeled i {font-size:15px;}
+
+
+/*===================================================================================*/
+/*  Color filter
+/*===================================================================================*/
+
+.list-color li{
+	float:left;
+	margin-right:5px;
+    margin-bottom:5px;
+}
+.list-color li a{
+	display:block;
+	width:20px;
+	height:20px;
+	background:red;
+	position:relative;
+}
+.list-color a.active:before{
+	display:block;
+	position:relative;
+	font-family: FontAwesome;
+	color:#ffffff;
+	top:-7px;
+	left:4px;
+	content: "\f078";
+}

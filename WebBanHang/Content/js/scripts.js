@@ -1,5 +1,17 @@
-(function($) {
+﻿(function($) {
     "use strict";
+function addThousandsSeparator(input) {
+    var output = input
+    if (parseFloat(input)) {
+        input = new String(input); // so you can perform string operations
+        var parts = input.split("."); // remove the decimal part
+        parts[0] = parts[0].split("").reverse().join("").replace(/(\d{3})(?!$)/g, "$1,").split("").reverse().join("");
+        output = parts.join(".");
+    }
+
+    return output;
+}
+
     /*===================================================================================*/
 /*	OWL CAROUSEL
 /*===================================================================================*/
@@ -297,12 +309,14 @@ $(document).ready(function () {
 // Price Slider
 if ($('.price-slider').length > 0) {
     $('.price-slider').slider({
-        min: 100,
-        max: 700,
-        step: 10,
-        value: [200, 500],
-        handle: "square"
-
+        min: 0,
+        max: 50000000,
+        step: 1000000,
+        value: [0, 50000000],
+        handle: "square",
+        formatter: function (value) {
+            return 'Từ ' + addThousandsSeparator(value[0]) + ' đến ' + addThousandsSeparator(value[1]);
+        }
     });
 
 }
@@ -410,6 +424,4 @@ $('#transitionType li a').click(function () {
     return false;
 
 });
-
-
 })(jQuery);
