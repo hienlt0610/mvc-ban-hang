@@ -26,8 +26,8 @@
                             <div id="owl-single-product">
                                 @foreach (ImageProduct image in Model.ImageProducts) { 
                                     <div class="single-product-gallery-item" id="slide1">
-                                        <a data-lightbox="image-1" data-title="Gallery" href="@Url.Content(ImageHelper.ImageUrl(image.ImageUrl))">
-                                            <img class="img-responsive" alt="" src="/Content/images//blank.gif" data-echo="@Url.Content(ImageHelper.ImageUrl(image.ImageUrl))" />
+                                        <a data-lightbox="image-@(Model.ImageProducts.ToList().IndexOf(image))" data-title="Gallery" href="@ImageHelper.ImageUrl(image.ImageName)">
+                                            <img class="img-responsive" alt="" src="/Content/images//blank.gif" data-echo="@(ImageHelper.ImageUrl(image.ImageName))?w=370&h=450" />
                                         </a>
                                 </div><!-- /.single-product-gallery-item -->
                                 }
@@ -36,8 +36,8 @@
                                 <div id="owl-single-product-thumbnails">
                                     @foreach(ImageProduct image in Model.ImageProducts){
                                         <div class="item">
-                                        <a class="horizontal-thumb active" data-target="#owl-single-product" data-slide="@(Model.ImageProducts.ToList().IndexOf(image)+1)" href="#slide1">
-                                            <img class="img-responsive" width="85" alt="" src="/Content/images//blank.gif" data-echo="@Url.Content(ImageHelper.ImageUrl(image.ImageUrl))" />
+                                        <a class="horizontal-thumb active" data-target="#owl-single-product" data-slide="@(Model.ImageProducts.ToList().IndexOf(image))" href="#slide1">
+                                            <img class="img-responsive" alt="" src="/Content/images//blank.gif" data-echo="@(ImageHelper.ImageUrl(image.ImageName))?w=85&h=85" />
                                         </a>
                                     </div>
                                     }

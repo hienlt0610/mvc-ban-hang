@@ -86,7 +86,15 @@
                                     <div class="product">
                                         <div class="product-image">
                                             <div class="image">
-                                                <a href="@Url.Action("Detail", "Product", new { id = product.ProductID })"><img width="188px" src="assets/images/blank.gif" data-echo="@Url.Content("~/Content/images/products/c1.jpg")" alt=""></a>
+                                                @{
+                                                    var imgUrl = ImageHelper.DefaultImage();
+                                                    if (product.ImageProducts.Count > 0)
+                                                    {
+                                                        imgUrl = ImageHelper.ImageUrl(product.ImageProducts.FirstOrDefault().ImageName);
+                                                    }
+                                                    imgUrl += "?w=195&h=250";
+                                                }
+                                                <a href="@Url.Action("Detail", "Product", new { id = product.ProductID })"><img src="assets/images/blank.gif" data-echo="@imgUrl" alt=""></a>
                                             </div>
                                             <!-- /.image -->
                                             <div class="tag new"><span>new</span></div>
@@ -116,15 +124,10 @@
                                         </div>
                                         <!-- /.product-info -->
                                         <div class="cart clearfix animate-effect">
-                                            <div class="action">
-                                                <ul class="list-unstyled">
-                                                    <li class="add-cart-button btn-group">
-                                                        <button class="btn btn-primary" type="button"><i class="fa fa-shopping-cart icon-cart"></i> Add to cart</button>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <!-- /.action -->
-                                        </div>
+                                            <a href="#" class="btn btn-labeled btn-info">
+                                                <span class="btn-label"><i class="fa fa-shopping-cart"></i></span>Thêm giỏ hàng
+                                            </a>
+                                        </div><!-- /.cart -->
                                         <!-- /.cart -->
                                     </div>
                                     <!-- /.product -->

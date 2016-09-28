@@ -99,7 +99,7 @@
           <Property Name="StartDate" Type="smalldatetime" Nullable="false" />
           <Property Name="EndDate" Type="smalldatetime" Nullable="false" />
           <Property Name="Indefinite" Type="bit" />
-          <Property Name="Active" Type="bit" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Customers">
           <Key>
@@ -154,7 +154,7 @@
           </Key>
           <Property Name="ImageID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Caption" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="ImageUrl" Type="varchar" MaxLength="255" />
+          <Property Name="ImageName" Type="varchar" MaxLength="255" />
           <Property Name="ProductID" Type="int" />
         </EntityType>
         <EntityType Name="Menus">
@@ -799,7 +799,6 @@
           <EntitySet Name="Districts" EntityType="ecommerceModel.District" />
           <EntitySet Name="ExcludeCoupons" EntityType="ecommerceModel.ExcludeCoupon" />
           <EntitySet Name="GroupProducts" EntityType="ecommerceModel.GroupProduct" />
-          <EntitySet Name="ImageProducts" EntityType="ecommerceModel.ImageProduct" />
           <EntitySet Name="Menus" EntityType="ecommerceModel.Menu" />
           <EntitySet Name="OptionGroups" EntityType="ecommerceModel.OptionGroup" />
           <EntitySet Name="Options" EntityType="ecommerceModel.Option" />
@@ -883,10 +882,6 @@
             <End Role="GroupProduct" EntitySet="GroupProducts" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
-          <AssociationSet Name="FK_ImageProducts_Products" Association="ecommerceModel.FK_ImageProducts_Products">
-            <End Role="Product" EntitySet="Products" />
-            <End Role="ImageProduct" EntitySet="ImageProducts" />
-          </AssociationSet>
           <AssociationSet Name="FK_OrderDetails_Products" Association="ecommerceModel.FK_OrderDetails_Products">
             <End Role="Product" EntitySet="Products" />
             <End Role="OrderDetail" EntitySet="OrderDetails" />
@@ -923,6 +918,11 @@
           <AssociationSet Name="FK_Customers_Provinces" Association="ecommerceModel.FK_Customers_Provinces">
             <End Role="Province" EntitySet="Provinces" />
             <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <EntitySet Name="ImageProducts" EntityType="ecommerceModel.ImageProduct" />
+          <AssociationSet Name="FK_ImageProducts_Products" Association="ecommerceModel.FK_ImageProducts_Products">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ImageProduct" EntitySet="ImageProducts" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="sysdiagram">
@@ -1033,7 +1033,7 @@
           <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Indefinite" Type="Boolean" />
-          <Property Name="Active" Type="Boolean" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ExcludeCoupons" Relationship="ecommerceModel.FK_ExcludeCoupon_Coupon" FromRole="Coupon" ToRole="ExcludeCoupon" />
         </EntityType>
         <EntityType Name="District">
@@ -1072,16 +1072,6 @@
           <NavigationProperty Name="GroupProducts1" Relationship="ecommerceModel.FK_GroupProducts_GroupProducts" FromRole="GroupProduct" ToRole="GroupProduct1" />
           <NavigationProperty Name="GroupProduct1" Relationship="ecommerceModel.FK_GroupProducts_GroupProducts" FromRole="GroupProduct1" ToRole="GroupProduct" />
           <NavigationProperty Name="Products" Relationship="ecommerceModel.FK_Products_GroupProducts" FromRole="GroupProduct" ToRole="Product" />
-        </EntityType>
-        <EntityType Name="ImageProduct">
-          <Key>
-            <PropertyRef Name="ImageID" />
-          </Key>
-          <Property Name="ImageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Caption" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="ImageUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="ProductID" Type="Int32" />
-          <NavigationProperty Name="Product" Relationship="ecommerceModel.FK_ImageProducts_Products" FromRole="ImageProduct" ToRole="Product" />
         </EntityType>
         <EntityType Name="Menu">
           <Key>
@@ -1408,11 +1398,11 @@
           <NavigationProperty Name="CartDetails" Relationship="ecommerceModel.FK_CartDetails_Products" FromRole="Product" ToRole="CartDetail" />
           <NavigationProperty Name="Comments" Relationship="ecommerceModel.FK_Comment_Products" FromRole="Product" ToRole="Comment" />
           <NavigationProperty Name="GroupProduct" Relationship="ecommerceModel.FK_Products_GroupProducts" FromRole="Product" ToRole="GroupProduct" />
-          <NavigationProperty Name="ImageProducts" Relationship="ecommerceModel.FK_ImageProducts_Products" FromRole="Product" ToRole="ImageProduct" />
           <NavigationProperty Name="OrderDetails" Relationship="ecommerceModel.FK_OrderDetails_Products" FromRole="Product" ToRole="OrderDetail" />
           <NavigationProperty Name="ProductOptions" Relationship="ecommerceModel.FK_ProductOptions_Products" FromRole="Product" ToRole="ProductOption" />
           <NavigationProperty Name="Quantities" Relationship="ecommerceModel.FK_Quantity_Products" FromRole="Product" ToRole="Quantity" />
           <NavigationProperty Name="Colors" Relationship="ecommerceModel.ColorProducts" FromRole="Product" ToRole="Color" />
+          <NavigationProperty Name="ImageProducts" Relationship="ecommerceModel.FK_ImageProducts_Products" FromRole="Product" ToRole="ImageProduct" />
         </EntityType>
         <Association Name="FK_CartDetails_Products">
           <End Type="ecommerceModel.Product" Role="Product" Multiplicity="1" />
@@ -1447,18 +1437,6 @@
             </Principal>
             <Dependent Role="Product">
               <PropertyRef Name="GroupID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ImageProducts_Products">
-          <End Type="ecommerceModel.Product" Role="Product" Multiplicity="0..1" />
-          <End Type="ecommerceModel.ImageProduct" Role="ImageProduct" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Product">
-              <PropertyRef Name="ProductID" />
-            </Principal>
-            <Dependent Role="ImageProduct">
-              <PropertyRef Name="ProductID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1583,6 +1561,28 @@
             </Principal>
             <Dependent Role="Customer">
               <PropertyRef Name="ProvinceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ImageProduct">
+          <Key>
+            <PropertyRef Name="ImageID" />
+          </Key>
+          <Property Name="ImageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Caption" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ImageName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ProductID" Type="Int32" />
+          <NavigationProperty Name="Product" Relationship="ecommerceModel.FK_ImageProducts_Products" FromRole="ImageProduct" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK_ImageProducts_Products">
+          <End Type="ecommerceModel.Product" Role="Product" Multiplicity="0..1" />
+          <End Type="ecommerceModel.ImageProduct" Role="ImageProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="ImageProduct">
+              <PropertyRef Name="ProductID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1723,16 +1723,6 @@
                 <ScalarProperty Name="ParentGroupID" ColumnName="ParentGroupID" />
                 <ScalarProperty Name="GroupName" ColumnName="GroupName" />
                 <ScalarProperty Name="GroupID" ColumnName="GroupID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ImageProducts">
-            <EntityTypeMapping TypeName="ecommerceModel.ImageProduct">
-              <MappingFragment StoreEntitySet="ImageProducts">
-                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
-                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
-                <ScalarProperty Name="Caption" ColumnName="Caption" />
-                <ScalarProperty Name="ImageID" ColumnName="ImageID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1892,6 +1882,16 @@
                 <ScalarProperty Name="GoogleID" ColumnName="GoogleID" />
                 <ScalarProperty Name="FacebookID" ColumnName="FacebookID" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ImageProducts">
+            <EntityTypeMapping TypeName="ecommerceModel.ImageProduct">
+              <MappingFragment StoreEntitySet="ImageProducts">
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="ImageName" ColumnName="ImageName" />
+                <ScalarProperty Name="Caption" ColumnName="Caption" />
+                <ScalarProperty Name="ImageID" ColumnName="ImageID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

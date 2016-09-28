@@ -405,6 +405,13 @@ img[src="assets/images/blank.gif"] {
 .best-product .product:first-child {
   margin-bottom: 30px;
 }
+.products .product{
+  padding:5px;
+}
+
+.products .product .product-image{
+  text-align:center;
+}
 #owl-main .owl-controls .owl-buttons .icon {
   position: relative;
   top: 8px;
@@ -3296,7 +3303,7 @@ a {
   right: 14px;
 }
 .search-result-container .category-product .product .cart {
-  opacity: 1;
+  
 }
 .search-result-container .category-product .product .cart .lnk {
   margin: 8px 0px !important;
@@ -5269,3 +5276,7 @@ label.error {
 	padding: 2px 8px;
 	margin-top: 2px;
 }
+
+.btn-label {position: relative;left: -12px;display: inline-block;padding: 6px 12px;background: rgba(0,0,0,0.15);border-radius: 3px 0 0 3px;}
+.btn-labeled {padding-top: 0;padding-bottom: 0;}
+.btn-labeled i {font-size:15px;}

@@ -12,10 +12,11 @@ namespace WebBanHang.Utils
     {
         public static String ImageUrl(String imageName)
         {
+            if (String.IsNullOrEmpty(imageName)) return DefaultImage();
             String imageUrl = "~/Resource/" + imageName;
             if (!isImageExist(imageUrl))
                 return DefaultImage();
-            return imageUrl;
+            return ResolveServerUrl(VirtualPathUtility.ToAbsolute(imageUrl),false);
         }
 
         public static String ThumbUrl(String imageName, int width, int height)
@@ -41,7 +42,19 @@ namespace WebBanHang.Utils
 
         public static String DefaultImage()
         {
-            return "~/Content/images/no_image.jpg";
+            return ResolveServerUrl(VirtualPathUtility.ToAbsolute("~/Content/images/no_image.jpg"),false);
         }
+
+        public static string ResolveServerUrl(string serverUrl, bool forceHttps)
+        {
+            if (serverUrl.IndexOf("://") > -1)
+                return serverUrl;
+
+            string newUrl = serverUrl;
+            Uri originalUri = System.Web.HttpContext.Current.Request.Url;
+            newUrl = (forceHttps ? "https" : originalUri.Scheme) +
+                "://" + originalUri.Authority + newUrl;
+            return newUrl;
+        } 
     }
 }

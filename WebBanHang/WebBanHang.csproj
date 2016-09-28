@@ -551,7 +551,11 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Resource\173408_1.jpg" />
-    <Content Include="Resource\thumbnails\173408_1_100_200.jpg" />
+    <Content Include="Resource\balo.jpg" />
+    <Content Include="Resource\balo1.jpg" />
+    <Content Include="Resource\balo2.jpg" />
+    <Content Include="Resource\balo3.jpg" />
+    <Content Include="Resource\balo4.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\fonts\bebas\bebasneuebold.eot" />

@@ -27,7 +27,7 @@ namespace WebBanHang.Models
         public System.DateTime StartDate { get; set; }
         public System.DateTime EndDate { get; set; }
         public Nullable<bool> Indefinite { get; set; }
-        public Nullable<bool> Active { get; set; }
+        public bool Active { get; set; }
     
         public virtual ICollection<ExcludeCoupon> ExcludeCoupons { get; set; }
     }

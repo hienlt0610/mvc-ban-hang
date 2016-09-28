@@ -488,13 +488,14 @@
                                                     <div class="image">
                                                         <a href="@Url.Action("Detail", "Product", new { id = product.ProductID})">
                                                             @{
-                                                                var thumbUrl = ImageHelper.DefaultImage();
+                                                                var imgUrl = ImageHelper.DefaultImage();
                                                                 if (product.ImageProducts.Count > 0)
                                                                 {
-                                                                    thumbUrl = ImageHelper.ThumbUrl(product.ImageProducts.FirstOrDefault().ImageUrl, 100, 200);
+                                                                    imgUrl = ImageHelper.ImageUrl(product.ImageProducts.FirstOrDefault().ImageName);
                                                                 }
+                                                                imgUrl += "?w=195&h=250";
                                                             }
-                                                            <img width="195px" src="@Url.Content("~/Content/images/blank.gif")" data-echo="@Url.Content(thumbUrl)" alt="">
+                                                            <img src="@Url.Content("~/Content/images/blank.gif")" data-echo="@Url.Content(imgUrl)" alt="">
                                                         </a>
                                                     </div><!-- /.image -->
                                                     <div class="tag new"><span>new</span></div>
@@ -524,28 +525,9 @@
 
                                                 </div><!-- /.product-info -->
                                                 <div class="cart clearfix animate-effect">
-                                                    <div class="action">
-                                                        <ul class="list-unstyled">
-                                                            <li class="add-cart-button btn-group">
-                                                                <button class="btn btn-primary icon" data-toggle="dropdown" type="button">
-                                                                    <i class="fa fa-shopping-cart"></i>
-                                                                </button>
-                                                                <button class="btn btn-primary" type="button">Add to cart</button>
-
-                                                            </li>
-
-                                                            <li class="lnk wishlist">
-                                                                <a class="add-to-cart" href="@Url.Action("Detail", "Product", new { id = product.ProductID},null)" title="Wishlist">
-                                                                    <i class="icon fa fa-heart"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li class="lnk">
-                                                                <a class="add-to-cart" href="@Url.Action("Detail", "Product", new { id = product.ProductID},null)" title="Compare">
-                                                                    <i class="fa fa-retweet"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div><!-- /.action -->
+                                                    <a href="#" class="btn btn-labeled btn-info">
+                                                        <span class="btn-label"><i class="fa fa-shopping-cart"></i></span>Thêm giỏ hàng
+                                                    </a>
                                                 </div><!-- /.cart -->
                                             </div><!-- /.product -->
 

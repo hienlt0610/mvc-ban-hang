@@ -16,7 +16,6 @@
         <EntityTypeShape EntityType="ecommerceModel.District" Width="1.5" PointX="4.5" PointY="3.25" />
         <EntityTypeShape EntityType="ecommerceModel.ExcludeCoupon" Width="1.5" PointX="14" PointY="5" />
         <EntityTypeShape EntityType="ecommerceModel.GroupProduct" Width="1.5" PointX="3.75" PointY="6.75" />
-        <EntityTypeShape EntityType="ecommerceModel.ImageProduct" Width="1.5" PointX="8.25" PointY="17.375" />
         <EntityTypeShape EntityType="ecommerceModel.Menu" Width="1.5" PointX="0.75" PointY="6.375" />
         <EntityTypeShape EntityType="ecommerceModel.OptionGroup" Width="1.5" PointX="6.75" PointY="22.25" />
         <EntityTypeShape EntityType="ecommerceModel.Option" Width="1.5" PointX="9" PointY="22.125" />
@@ -46,7 +45,6 @@
         <AssociationConnector Association="ecommerceModel.FK_CartDetails_Products" />
         <AssociationConnector Association="ecommerceModel.FK_Comment_Products" />
         <AssociationConnector Association="ecommerceModel.FK_Products_GroupProducts" />
-        <AssociationConnector Association="ecommerceModel.FK_ImageProducts_Products" />
         <AssociationConnector Association="ecommerceModel.FK_OrderDetails_Products" />
         <AssociationConnector Association="ecommerceModel.FK_ProductOptions_Products" />
         <AssociationConnector Association="ecommerceModel.FK_Quantity_Products" />
@@ -57,6 +55,8 @@
         <AssociationConnector Association="ecommerceModel.FK_Contact_Customers" />
         <AssociationConnector Association="ecommerceModel.FK_Customers_Districts" />
         <AssociationConnector Association="ecommerceModel.FK_Customers_Provinces" />
+        <EntityTypeShape EntityType="ecommerceModel.ImageProduct" Width="1.5" PointX="8.25" PointY="15" />
+        <AssociationConnector Association="ecommerceModel.FK_ImageProducts_Products" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
