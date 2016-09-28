@@ -18,7 +18,6 @@ namespace WebBanHang.Controllers
 {
     public class CustomerController : BaseController
     {
-        CustomerRepository customerRepo;
         //
         // GET: /User/
         public ActionResult Index()
@@ -26,15 +25,10 @@ namespace WebBanHang.Controllers
             return RedirectToAction("Index","Home");
         }
 
-        public CustomerController()
-        {
-            customerRepo = Repository.Create<CustomerRepository>();
-        }
-
         [HttpPost]
         [OnlyGuest]
         public ActionResult Register(SignUpViewModel model){
-            var existCustomer = customerRepo.FindByEmail(model.Email);
+            var existCustomer = Repository.Customer.FindByEmail(model.Email);
             if (existCustomer != null)
             {
                 ModelState.AddModelError("Email", "Email đã tồn tại...");
@@ -48,8 +42,8 @@ namespace WebBanHang.Controllers
                     Status = false,
                     RegistrationDate = DateTime.Now
                 };
-                customer = customerRepo.Insert(customer);
-                customerRepo.SaveChanges();
+                customer = Repository.Customer.Insert(customer);
+                Repository.Customer.SaveChanges();
                 Response.SetAuthCookie(FormsAuthentication.FormsCookieName, false, customer);
                 return RedirectToAction("Index", "Home");
             }
@@ -74,18 +68,18 @@ namespace WebBanHang.Controllers
         [OnlyGuest]
         public ActionResult Login(SignInViewModel model)
         {
-            var customer = customerRepo.FindByEmail(model.Email);
+            var customer = Repository.Customer.FindByEmail(model.Email);
             if (customer == null)
             {
                 ModelState.AddModelError("Email", "Email không tồn tại");
             }
-            if (!EncryptUtils.PwdCompare(model.Password, customer.Passwrord))
+            if (customer != null && !EncryptUtils.PwdCompare(model.Password, customer.Passwrord))
             {
                 ModelState.AddModelError("Password", "Mật khẩu không chính xác");
             }
             if (ModelState.IsValid)
             {
-                Response.SetAuthCookie(FormsAuthentication.FormsCookieName, model.Remember, customer);
+                SyncLogin(customer,model.Remember);
                 return RedirectToAction("Index","Home");
             }
             return View(model);
@@ -100,6 +94,7 @@ namespace WebBanHang.Controllers
         [Authorize]
         public ActionResult Test()
         {
+            var session = Session["b"];
             return Content("Hello");
         }
 
@@ -135,7 +130,7 @@ namespace WebBanHang.Controllers
                 fbID = fbID.Trim();
                 if (!string.IsNullOrEmpty(fbID))
                 {
-                    Customer customer = customerRepo.FindByFacebookID(fbID);
+                    Customer customer = Repository.Customer.FindByFacebookID(fbID);
                     if (customer == null)
                     {
                         customer = new Customer
@@ -146,14 +141,15 @@ namespace WebBanHang.Controllers
                             Status = true,
                             RegistrationDate = DateTime.Now
                         };
-                        customer = customerRepo.Insert(customer);
-                        customerRepo.SaveChanges();
+                        customer = Repository.Customer.Insert(customer);
+                        Repository.Customer.SaveChanges();
                     }
-                    Response.SetAuthCookie(FormsAuthentication.FormsCookieName, false, customer);
+                    SyncLogin(customer, false);
                 }
             }
             return RedirectToAction("Index","Home");
         }
+
         private Uri RedirectUri
         {
             get
@@ -164,6 +160,12 @@ namespace WebBanHang.Controllers
                 uriBuilder.Path = Url.Action("FacebookCallback");
                 return uriBuilder.Uri;
             }
+        }
+
+        private void SyncLogin(Customer userdata, bool remember)
+        {
+            if (userdata == null) return;
+            Response.SetAuthCookie(FormsAuthentication.FormsCookieName, false, userdata);
         }
 	}
 }

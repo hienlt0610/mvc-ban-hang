@@ -14,11 +14,11 @@ namespace WebBanHang.Core
 {
     public class BaseController : Controller
     {
-        protected DbContextRepository Repository { get; set; }
+        protected UnitOfWork Repository { get; set; }
         public BaseController()
         {
             ecommerceEntities entity = new ecommerceEntities();
-            Repository = new DbContextRepository(entity);
+            Repository = new UnitOfWork(entity);
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)

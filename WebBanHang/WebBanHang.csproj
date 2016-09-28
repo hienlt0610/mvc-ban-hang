@@ -197,7 +197,7 @@
     <Compile Include="Controllers\WidgetController.cs" />
     <Compile Include="Core\BaseController.cs" />
     <Compile Include="Core\CustomerPrincipal.cs" />
-    <Compile Include="Core\DbContextRepository.cs" />
+    <Compile Include="Core\UnitOfWork.cs" />
     <Compile Include="Core\GuestAttribute.cs" />
     <Compile Include="Core\IRepository.cs" />
     <Compile Include="Core\RepositoryModel.cs" />
