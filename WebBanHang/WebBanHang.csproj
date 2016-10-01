@@ -198,6 +198,8 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminBaseController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AuthController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
@@ -208,9 +210,13 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\WidgetController.cs" />
     <Compile Include="Core\BaseController.cs" />
+    <Compile Include="Core\MyRazorViewEngine.cs" />
+    <Compile Include="Core\RepositoryModel\UserRepository.cs" />
+    <Compile Include="Core\UserPrincipal.cs" />
     <Compile Include="Core\CustomerPrincipal.cs" />
+    <Compile Include="Core\SecurityAttribute.cs" />
     <Compile Include="Core\UnitOfWork.cs" />
-    <Compile Include="Core\GuestAttribute.cs" />
+    <Compile Include="Core\OnlyGuestAttribute.cs" />
     <Compile Include="Core\IRepository.cs" />
     <Compile Include="Core\RepositoryModel.cs" />
     <Compile Include="Core\RepositoryModel\ColorRepository.cs" />
@@ -310,6 +316,9 @@
     <Compile Include="Models\Quantity.cs">
       <DependentUpon>Ecommerce.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Role.cs">
+      <DependentUpon>Ecommerce.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>Ecommerce.tt</DependentUpon>
     </Compile>
@@ -327,11 +336,73 @@
     <Compile Include="Utils\ModelUtils.cs" />
     <Compile Include="Utils\StringUtils.cs" />
     <Compile Include="Utils\UrlHelpers.cs" />
+    <Compile Include="ViewModels\AdminLoginViewModel.cs" />
     <Compile Include="ViewModels\SignInViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\SignUpViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\admin\css\bootstrap-flex.css" />
+    <Content Include="Content\admin\css\bootstrap-grid.css" />
+    <Content Include="Content\admin\css\bootstrap-reboot.css" />
+    <Content Include="Content\admin\css\chartist.css" />
+    <Content Include="Content\admin\css\style.css" />
+    <Content Include="Content\admin\css\tables.stack-mixin.css" />
+    <Content Include="Content\admin\css\tablesaw.stackonly.css" />
+    <Content Include="Content\admin\css\weather-icons-wind.css" />
+    <Content Include="Content\admin\css\weather-icons-wind.min.css" />
+    <Content Include="Content\admin\css\weather-icons.css" />
+    <Content Include="Content\admin\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\admin\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\admin\fonts\ionicons.svg" />
+    <Content Include="Content\admin\fonts\Material-Design-Iconic-Font.svg" />
+    <Content Include="Content\admin\fonts\Pe-icon-7-stroke.svg" />
+    <Content Include="Content\admin\fonts\Simple-Line-Icons.svg" />
+    <Content Include="Content\admin\fonts\themify.svg" />
+    <Content Include="Content\admin\fonts\typicons.svg" />
+    <Content Include="Content\admin\fonts\weathericons-regular-webfont.svg" />
+    <Content Include="Content\admin\images\users\avatar-1.jpg" />
+    <Content Include="Content\admin\images\users\avatar-10.jpg" />
+    <Content Include="Content\admin\images\users\avatar-2.jpg" />
+    <Content Include="Content\admin\images\users\avatar-3.jpg" />
+    <Content Include="Content\admin\images\users\avatar-4.jpg" />
+    <Content Include="Content\admin\images\users\avatar-5.jpg" />
+    <Content Include="Content\admin\images\users\avatar-6.jpg" />
+    <Content Include="Content\admin\images\users\avatar-7.jpg" />
+    <Content Include="Content\admin\images\users\avatar-8.jpg" />
+    <Content Include="Content\admin\images\users\avatar-9.jpg" />
+    <Content Include="Content\admin\js\bootstrap.js" />
+    <Content Include="Content\admin\js\bootstrap.min.js" />
+    <Content Include="Content\admin\js\detect.js" />
+    <Content Include="Content\admin\js\jquery.app.js" />
+    <Content Include="Content\admin\js\jquery.core.js" />
+    <Content Include="Content\admin\js\jquery.min.js" />
+    <Content Include="Content\admin\js\jquery.nicescroll.js" />
+    <Content Include="Content\admin\js\modernizr.min.js" />
+    <Content Include="Content\admin\js\tether.min.js" />
+    <Content Include="Content\admin\js\waves.js" />
+    <Content Include="Content\admin\pages\chartjs.init.js" />
+    <Content Include="Content\admin\pages\jquery.autocomplete.init.js" />
+    <Content Include="Content\admin\pages\jquery.c3-chart.init.js" />
+    <Content Include="Content\admin\pages\jquery.chart-widgets.init.js" />
+    <Content Include="Content\admin\pages\jquery.chartist.init.js" />
+    <Content Include="Content\admin\pages\jquery.charts-sparkline.js" />
+    <Content Include="Content\admin\pages\jquery.dashboard.js" />
+    <Content Include="Content\admin\pages\jquery.fileuploads.init.js" />
+    <Content Include="Content\admin\pages\jquery.flot.init.js" />
+    <Content Include="Content\admin\pages\jquery.form-pickers.init.js" />
+    <Content Include="Content\admin\pages\jquery.formadvanced.init.js" />
+    <Content Include="Content\admin\pages\jquery.fullcalendar.js" />
+    <Content Include="Content\admin\pages\jquery.morris.init.js" />
+    <Content Include="Content\admin\pages\jquery.peity.init.js" />
+    <Content Include="Content\admin\pages\jquery.rating.js" />
+    <Content Include="Content\admin\pages\jquery.sweet-alert.init.js" />
+    <Content Include="Content\admin\pages\jquery.tree.js" />
+    <Content Include="Content\admin\pages\jquery.ui-sliders.js" />
+    <Content Include="Content\admin\pages\jquery.wizard-init.js" />
+    <Content Include="Content\admin\pages\jquery.xeditable.js" />
+    <Content Include="Content\admin\plugins\switchery\switchery.min.css" />
+    <Content Include="Content\admin\plugins\switchery\switchery.min.js" />
     <Content Include="Content\css\animate.min.css" />
     <Content Include="Content\css\blue.css" />
     <Content Include="Content\css\bootstrap-select.min.css" />
@@ -353,6 +424,7 @@
     <Content Include="Content\css\owl.transitions.css" />
     <Content Include="Content\css\rateit.css" />
     <Content Include="Content\css\red.css" />
+    <Content Include="Content\favicon.ico" />
     <Content Include="Content\fonts\bebas\bebasneuebold.svg" />
     <Content Include="Content\fonts\bebas\bebasneueregular.svg" />
     <Content Include="Content\fonts\fjalla\fjallaone-regular.svg" />
@@ -650,7 +722,54 @@
     </Content>
     <Content Include="Content\fonts\fontawesome-webfont.woff2" />
     <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Admin\Views\Shared\_LayoutPage.cshtml" />
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
+    <Content Include="Content\admin\css\bootstrap-flex.css.map" />
+    <Content Include="Content\admin\css\bootstrap-grid.css.map" />
+    <Content Include="Content\admin\css\bootstrap-reboot.css.map" />
+    <Content Include="Content\admin\css\chartist.css.map" />
+    <Content Include="Content\admin\css\style.css.map" />
+    <Content Include="Content\admin\css\tables.stack-mixin.css.map" />
+    <Content Include="Content\admin\css\tablesaw.stackonly.css.map" />
+    <Content Include="Content\admin\css\weather-icons-wind.css.map" />
+    <Content Include="Content\admin\css\weather-icons-wind.min.css.map" />
+    <Content Include="Content\admin\css\weather-icons.css.map" />
+    <Content Include="Content\admin\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\admin\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\admin\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\admin\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\admin\fonts\FontAwesome.otf" />
+    <Content Include="Content\admin\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\admin\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\admin\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\admin\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\admin\fonts\ionicons.eot" />
+    <Content Include="Content\admin\fonts\ionicons.ttf" />
+    <Content Include="Content\admin\fonts\ionicons.woff" />
+    <Content Include="Content\admin\fonts\Material-Design-Iconic-Font.eot" />
+    <Content Include="Content\admin\fonts\Material-Design-Iconic-Font.ttf" />
+    <Content Include="Content\admin\fonts\Material-Design-Iconic-Font.woff" />
+    <Content Include="Content\admin\fonts\Material-Design-Iconic-Font.woff2" />
+    <Content Include="Content\admin\fonts\Pe-icon-7-stroke.eot" />
+    <Content Include="Content\admin\fonts\Pe-icon-7-stroke.ttf" />
+    <Content Include="Content\admin\fonts\Pe-icon-7-stroke.woff" />
+    <Content Include="Content\admin\fonts\Simple-Line-Icons.eot" />
+    <Content Include="Content\admin\fonts\Simple-Line-Icons.ttf" />
+    <Content Include="Content\admin\fonts\Simple-Line-Icons.woff" />
+    <Content Include="Content\admin\fonts\Simple-Line-Icons.woff2" />
+    <Content Include="Content\admin\fonts\themify.eot" />
+    <Content Include="Content\admin\fonts\themify.ttf" />
+    <Content Include="Content\admin\fonts\themify.woff" />
+    <Content Include="Content\admin\fonts\typicons.eot" />
+    <Content Include="Content\admin\fonts\typicons.ttf" />
+    <Content Include="Content\admin\fonts\typicons.woff" />
+    <Content Include="Content\admin\fonts\weathericons-regular-webfont.eot" />
+    <Content Include="Content\admin\fonts\weathericons-regular-webfont.ttf" />
+    <Content Include="Content\admin\fonts\weathericons-regular-webfont.woff" />
+    <Content Include="Content\admin\fonts\weathericons-regular-webfont.woff2" />
+    <Content Include="Areas\Admin\Views\Auth\Login.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Header.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\RightSidebar.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -713,8 +832,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\Admin\Views\Shared\" />
-    <Folder Include="Content\admin\" />
+    <Folder Include="Areas\Admin\Views\Admin\" />
     <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>

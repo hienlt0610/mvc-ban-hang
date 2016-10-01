@@ -44,7 +44,7 @@ namespace WebBanHang.Controllers
                 };
                 customer = Repository.Customer.Insert(customer);
                 Repository.Customer.SaveChanges();
-                Response.SetAuthCookie(FormsAuthentication.FormsCookieName, false, customer);
+                SyncLogin(customer,false);
                 return RedirectToAction("Index", "Home");
             }
             return View(model); 
@@ -165,7 +165,7 @@ namespace WebBanHang.Controllers
         private void SyncLogin(Customer userdata, bool remember)
         {
             if (userdata == null) return;
-            Response.SetAuthCookie(FormsAuthentication.FormsCookieName, false, userdata);
+            Response.SetAuthCookie(FormsAuthentication.FormsCookieName, remember, userdata.CustomerID);
         }
 	}
 }

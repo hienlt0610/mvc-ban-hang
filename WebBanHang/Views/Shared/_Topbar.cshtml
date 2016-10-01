@@ -4,14 +4,14 @@
         <div class="header-top-inner">
             <div class="cnt-account">
                 <ul class="list-unstyled">
-                    @if (!Request.IsAuthenticated)
+                    @if (!User.Identity.IsAuthenticated)
                     {
                         <li><a href="@Url.Action("Login", "Customer")"><i class="icon fa fa-sign-in"></i>Đăng nhập</a></li>
                         <li><a href="@Url.Action("Register", "Customer")"><i class="icon fa fa-sign-out"></i>Đăng ký</a></li>
                     }
                     else
                     {
-                        <li><a href="@Url.Action("Login", "Customer")"><i class="icon fa fa-user"></i>@UserManager.User.FullName</a></li>
+                        <li><a href="@Url.Action("Login", "Customer")"><i class="icon fa fa-user"></i>@UserManager.CurrentCustomer.FullName</a></li>
                         <li><a href="@Url.Action("Logout", "Customer")"><i class="icon fa fa-sign-out"></i>Thoát</a></li>
                     }
                 </ul>

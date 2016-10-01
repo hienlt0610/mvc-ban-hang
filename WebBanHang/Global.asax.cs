@@ -19,30 +19,12 @@ namespace WebBanHang
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+            ViewEngines.Engines.Clear();
+            ViewEngines.Engines.Add(new MyRazorViewEngine());
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-        }
-
-        protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
-        {
-            HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
-            if(authCookie != null)
-            {
-                FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-                JavaScriptSerializer js = new JavaScriptSerializer();
-                var dataToken = HttpContext.Current.Request.RequestContext.RouteData.DataTokens["area"];
-                String area = dataToken != null ? dataToken.ToString() : "";
-                if (!area.Equals("Admin"))
-                {
-                    Customer customer = js.Deserialize<Customer>(authTicket.UserData);
-                    var identity = new GenericIdentity(authTicket.Name, "Forms");
-                    CustomerPrincipal principal = new CustomerPrincipal(identity);
-                    principal.UserData = customer;
-                    HttpContext.Current.User = principal;
-                }
-            }
         }
     }
 }

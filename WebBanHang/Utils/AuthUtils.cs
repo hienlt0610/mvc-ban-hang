@@ -9,11 +9,13 @@ namespace WebBanHang.Utils
 {
     public static class AuthUtils
     {
-        public static int SetAuthCookie(this HttpResponseBase responseBase, string name, bool rememberMe, object userData)
+        public static int SetAuthCookie(this HttpResponseBase responseBase,String cookieName, bool rememberMe, object userData)
         {
+
             /// In order to pickup the settings from config, we create a default cookie and use its values to create a 
             /// new one.
-            var cookie = FormsAuthentication.GetAuthCookie(name, rememberMe);
+            var cookie = FormsAuthentication.GetAuthCookie(cookieName, rememberMe);
+            cookie.Name = cookieName;
             var ticket = FormsAuthentication.Decrypt(cookie.Value);
             JavaScriptSerializer js = new JavaScriptSerializer();
             var newTicket = new FormsAuthenticationTicket(ticket.Version, ticket.Name, ticket.IssueDate, ticket.Expiration,

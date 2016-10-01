@@ -14,14 +14,20 @@ namespace WebBanHang.Models
     
     public partial class User
     {
+        public User()
+        {
+            this.Roles = new HashSet<Role>();
+        }
+    
         public int UserID { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string FullName { get; set; }
-        public byte[] Email { get; set; }
-        public Nullable<byte> UserRule { get; set; }
+        public string Email { get; set; }
         public string IP { get; set; }
-        public string Status { get; set; }
-        public Nullable<System.DateTime> RegistrationDate { get; set; }
+        public bool Status { get; set; }
+        public System.DateTime RegistrationDate { get; set; }
+    
+        public virtual ICollection<Role> Roles { get; set; }
     }
 }

@@ -24,7 +24,7 @@ namespace WebBanHang.Models
         public Nullable<int> CustomerID { get; set; }
         public System.DateTime CreateDate { get; set; }
     
-        public virtual ICollection<CartDetail> CartDetails { get; set; }
         public virtual Customer Customer { get; set; }
+        public virtual ICollection<CartDetail> CartDetails { get; set; }
     }
 }

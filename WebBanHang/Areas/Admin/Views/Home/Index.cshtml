@@ -1,8 +1,47 @@
 ﻿
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_LayoutTest.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPage.cshtml";
 }
 
-<h2>Index</h2>
+<div class="container">
+
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="btn-group pull-right m-t-15">
+                <button type="button" class="btn btn-custom dropdown-toggle waves-effect waves-light"
+                        data-toggle="dropdown" aria-expanded="false">
+                    Settings <span class="m-l-5">
+                        <i class="fa fa-cog"></i>
+                    </span>
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
+                </div>
+
+            </div>
+            <h4 class="page-title">Starter Page</h4>
+        </div>
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="footer text-right">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    2016 © Uplon.
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- End Footer -->
+
+
+</div> <!-- container -->
 

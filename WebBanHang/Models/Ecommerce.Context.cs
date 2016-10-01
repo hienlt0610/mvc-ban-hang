@@ -34,9 +34,11 @@ namespace WebBanHang.Models
         public virtual DbSet<Configuration> Configurations { get; set; }
         public virtual DbSet<Contact> Contacts { get; set; }
         public virtual DbSet<Coupon> Coupons { get; set; }
+        public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<District> Districts { get; set; }
         public virtual DbSet<ExcludeCoupon> ExcludeCoupons { get; set; }
         public virtual DbSet<GroupProduct> GroupProducts { get; set; }
+        public virtual DbSet<ImageProduct> ImageProducts { get; set; }
         public virtual DbSet<Menu> Menus { get; set; }
         public virtual DbSet<OptionGroup> OptionGroups { get; set; }
         public virtual DbSet<Option> Options { get; set; }
@@ -44,11 +46,10 @@ namespace WebBanHang.Models
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<Payment> Payments { get; set; }
         public virtual DbSet<ProductOption> ProductOptions { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Province> Provinces { get; set; }
         public virtual DbSet<Quantity> Quantities { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Product> Products { get; set; }
-        public virtual DbSet<Customer> Customers { get; set; }
-        public virtual DbSet<ImageProduct> ImageProducts { get; set; }
     }
 }

@@ -19,6 +19,7 @@ namespace WebBanHang.Core
         private GroupProductRepository groupProductRepository;
         private MenuRepository menuRepository;
         private ProductRepository productRepository;
+        private UserRepository userRepository;
 
         public UnitOfWork(DbContext dbContext)
         {
@@ -108,6 +109,15 @@ namespace WebBanHang.Core
 
         }
 
+        public UserRepository User
+        {
+            get
+            {
+                if (userRepository == null)
+                    userRepository = new UserRepository(_dbContext);
+                return userRepository;
+            }
+        }
 
         public T Create<T>() where T : class
         {

@@ -17,7 +17,7 @@ namespace WebBanHang.Models
         public int ImageID { get; set; }
         public string Caption { get; set; }
         public string ImageName { get; set; }
-        public Nullable<int> ProductID { get; set; }
+        public int ProductID { get; set; }
     
         public virtual Product Product { get; set; }
     }
