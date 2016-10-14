@@ -525,7 +525,7 @@
 
                                                 </div><!-- /.product-info -->
                                                 <div class="cart clearfix animate-effect">
-                                                    <a href="#" class="btn btn-labeled btn-info">
+                                                    <a data-id="@product.ProductID" href="#" onclick="addcart(@product.ProductID, event, this);return false;" class="btn btn-labeled btn-info">
                                                         <span class="btn-label"><i class="fa fa-shopping-cart"></i></span>Thêm giỏ hàng
                                                     </a>
                                                 </div><!-- /.cart -->
@@ -1602,3 +1602,33 @@
         <!-- ============================================== BRANDS CAROUSEL : END ============================================== -->
     </div><!-- /.container -->
 </div><!-- /#top-banner-and-menu -->
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" data-backdrop="false" role="dialog">
+    <div class="modal-dialog" style="width:300px;">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Chọn màu sắc</h4>
+            </div>
+            <div class="modal-body" style="text-align:center">
+                <select class="form-control" id="list_color">
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button id="btn_add" type="button" class="btn btn-success" data-dismiss="modal">Thêm vào giỏ</button>
+                <button id="btn_cancel" type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section masterjs{
+    <script>
+        
+    </script>
+}

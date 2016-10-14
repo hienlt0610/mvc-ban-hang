@@ -1,0 +1,142 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var cart = ShoppingCart.Instance;
+}
+
+<!-- ============================================== HEADER : END ============================================== -->
+<div class="breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-inner">
+            <ul class="list-inline list-unstyled">
+                <li><a href="#">Home</a></li>
+                <li class='active'>Shopping Cart</li>
+            </ul>
+        </div><!-- /.breadcrumb-inner -->
+    </div><!-- /.container -->
+</div><!-- /.breadcrumb -->
+
+<div class="body-content outer-top-xs">
+    <div class="container">
+        <div class="row inner-bottom-sm">
+            @if (cart.Items.Count > 0) { 
+            <div class="shopping-cart">
+                <div class="col-md-8 col-sm-12 shopping-cart-table ">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width:120px;">Hình ảnh</th>
+                                    <th class="text-left">Sản phẩm</th>
+                                    <th class="text-left" style="width:150px;">Số lượng</th>
+                                    <th class="text-right" style="width:120px;">Giá</th>
+                                    <th class="text-right" style="width:120px;">Tổng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach(var item in cart.Items){
+                                    <tr>
+                                    <td class="text-center">
+                                        <a href="@Url.Action("Detail", "Product", new { id = item.ProductID })">
+                                            @{
+                                                var imgUrl = ImageHelper.DefaultImage();
+                                                if (item.Product.ImageProducts.FirstOrDefault() != null)
+                                                {
+                                                    imgUrl = ImageHelper.ImageUrl(item.Product.ImageProducts.FirstOrDefault().ImageName);
+                                                }
+                                            }
+                                            <img src="@imgUrl?w=80&h=80" alt="Aspire Ultrabook Laptop" title="Aspire Ultrabook Laptop" class="img-thumbnail">
+                                        </a>
+                                        </td>
+                                    <td class="text-left">
+                                        <a href="@Url.Action("Detail", "Product", new { id = item.ProductID })">@item.Product.ProductName</a><br>
+                                        @if (item.Color != null)
+                                        {
+                                            <small>Màu: @item.Color.ColorName</small>
+                                        }
+                                    </td>
+                                    <td class="text-left">
+                                        <div class="input-group btn-block quantity">
+                                            <input type="number" name="quantity" value="@item.Quantity" size="1" min="1" max="5" class="form-control">
+                                            <span class="input-group-btn">
+                                                <button type="button" data-toggle="tooltip" title="" class="btn btn-primary item-update" data-original-title="Update" data-id="@item.ProductID" data-color="@item.ColorID"><i class="fa fa-refresh"></i></button>
+                                                <button type="button" data-toggle="tooltip" title="" class="btn btn-danger item-remove" onclick="" data-original-title="Remove" data-id="@item.ProductID" data-color="@item.ColorID"><i class="fa fa-times-circle"></i></button>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="text-right">@Html.FormatCurrency(item.Price) đ</td>
+                                    <td class="text-right">@Html.FormatCurrency(item.TotalPrice) đ</td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div><!-- /.shopping-cart-table -->	
+                <div class="col-md-4 col-sm-12 cart-shopping-total">
+                    @Html.Action("CartTotal", "Cart")
+                </div><!-- /.cart-shopping-total -->	
+            </div><!-- /.shopping-cart -->
+            }
+            else
+            {
+                <div class="sb-ec-bxc" style="text-align:center;">
+                    <h3 class="sb-ec-bxl txt-normal">Không có sản phẩm nào trong giỏ hàng</h3>
+                    <a class="btn btn-success" href="@Url.Action("Index","Home")">Tiếp tục mua hàng</a>
+                </div>
+            }
+        </div> <!-- /.row -->
+        </div><!-- /.container -->
+</div><!-- /.body-content -->
+
+
+@section masterjs{
+    <script>
+        $(".item-remove").on('click', function () {
+            var item = $(this);
+            var productId = $(this).data('id');
+            var colorId = $(this).data('color');
+            if (colorId == 0) {
+                $.post("/Cart/RemoveCart", { id: productId }, function (data) {
+                    item.parents("tr").remove();
+                    $("#cart_shop").html(data);
+                    updateCart();
+                });
+            } else {
+                $.post("/Cart/RemoveCart", { id: productId, color: colorId }, function (data) {
+                    item.parents("tr").remove();
+                    $("#cart_shop").html(data);
+                });
+            }
+        });
+
+        $('.item-update').on('click', function (e) {
+            e.preventDefault();
+            var btnUpdate = $(this);
+            var product_id = $(this).data('id');
+            var color_id = $(this).data('color');
+            var currQuatity = $('.quantity input').val();
+            if (currQuatity.length == 0 || parseInt(currQuatity) <= 0) {
+                $('.quantity input').val(1);
+                currQuatity = 1;
+            }
+            $.post('Cart/UpdateCart', { id: product_id, color: color_id, quantity: currQuatity }, function (data) {
+                //$('.shopping-cart-table tbody tr td:nth-child(5)').text(data);
+                btnUpdate.parents().eq(3).find('td:nth-child(5)').text(data);
+                $.get('Cart/CartTotal', function (data) {
+                    $('.cart-shopping-total').html(data);
+                });
+                $.get('Cart/ShoppingCartView', function (data) {
+                    $("#cart_shop").html(data);
+                });
+            });
+        });
+
+        function updateCart() {
+            var item_count = $(".shopping-cart-table table tbody tr").length;
+            if(item_count == 0){
+                $(".shopping-cart").html('<div class="sb-ec-bxc" style="text-align:center;"> <h3 class="sb-ec-bxl txt-normal">Không có sản phẩm nào trong giỏ hàng</h3> <a class="btn btn-success" href="@Url.Action("Index","Home")">Tiếp tục mua hàng</a> </div>');
+            }
+        }
+    </script>
+}

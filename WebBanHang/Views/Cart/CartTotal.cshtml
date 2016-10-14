@@ -1,0 +1,25 @@
+﻿@model ShoppingCart
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                <div class="cart-sub-total">
+                    Tạm tính: <span class="inner-left-md">@Html.FormatCurrency(Model.GetTotal()) VNĐ</span>
+                </div>
+                <div class="cart-grand-total">
+                    Thành tiền: <span class="inner-left-md">@Html.FormatCurrency(Model.GetTotal()) VNĐ</span>
+                </div>
+            </th>
+        </tr>
+    </thead><!-- /thead -->
+    <tbody>
+        <tr>
+            <td>
+                <div class="cart-checkout-btn" style="text-align:center;">
+                    <button type="submit" class="btn btn-primary">THANH TOÁN NGAY</button>
+                </div>
+            </td>
+        </tr>
+    </tbody><!-- /tbody -->
+</table><!-- /table -->
+

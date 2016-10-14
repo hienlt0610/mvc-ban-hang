@@ -12,16 +12,22 @@ using System.Configuration;
 using System.Web.Security;
 using System.Web.Script.Serialization;
 using System.Security.Principal;
+using AutoMapper;
 
 namespace WebBanHang.Core
 {
     public class BaseController : Controller
     {
         protected UnitOfWork Repository { get; set; }
+        protected IMapper Mapper { get; set; }
+        protected ShoppingCart Cart {
+            get { return ShoppingCart.Instance; }
+        }
         public BaseController()
         {
             ecommerceEntities entity = new ecommerceEntities();
             Repository = new UnitOfWork(entity);
+            Mapper = AutoMapperConfig.MapperConfiguration.CreateMapper();
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -35,6 +41,11 @@ namespace WebBanHang.Core
                                         .WithDefaultValue("none");
             ViewBag.Data = viewBagData;
             base.OnActionExecuting(filterContext);
+        }
+
+        protected override void Initialize(System.Web.Routing.RequestContext requestContext)
+        {
+            base.Initialize(requestContext);
         }
 
         protected override void OnAuthentication(System.Web.Mvc.Filters.AuthenticationContext filterContext)

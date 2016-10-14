@@ -5032,8 +5032,7 @@ File: Menu
       top: 6px;
       -webkit-transform: rotate(-45deg);
       transform: rotate(-45deg); }
-  #topnav .navigation-menu > li.active > a {
-    color: #64b0f2; }
+  #topnav .navigation-menu > li.active > a {}
   #topnav .navigation-menu > li.active li.active > a {
     color: #64b0f2; }
   #topnav .navigation-menu > li.active li.active li.active > a {

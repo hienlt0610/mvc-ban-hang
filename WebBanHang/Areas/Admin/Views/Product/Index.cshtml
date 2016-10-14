@@ -1,0 +1,93 @@
+﻿@model IEnumerable<WebBanHang.Models.Product>
+
+@{
+    ViewBag.Title = "Sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPage.cshtml";
+}
+
+<div class="container">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="btn-group pull-right m-t-15">
+                <a href="@Url.Action("Create")" class="btn btn-primary waves-effect waves-light">
+                    <span class="btn-label">
+                        <i class="zmdi zmdi-assignment"></i>
+                    </span>Thêm mới
+                </a>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card-box table-responsive">
+                <div id="datatable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap4 no-footer">
+                        <div class="col-md-12">
+                            <table id="datatable" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="datatable_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th style="width: 20px;"></th>
+                                        <th>Hình ảnh</th>
+                                        <th>Sản phẩm</th>
+                                        <th >Giá</th>
+                                        <th>Số lượng</th>
+                                        <th>Tình trạng</th>
+                                        <th width="85px"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                    <tr role="row" class="odd">
+                                        <td style='text-align:center;vertical-align:middle'>@Html.CheckBox("action")</td>
+                                        <td style='text-align:center;vertical-align:middle;'>
+                                            @if (item.ImageProducts.Count > 0)
+                                            {
+                                                var firstImg = item.ImageProducts.FirstOrDefault();
+                                                <img class="img-thumbnail" src="@ImageHelper.ImageUrl(firstImg.ImageName)?w=50&h=50" />
+                                            }
+                                        </td>
+                                        <td style='vertical-align:middle'>@item.ProductName</td>
+                                        <td style="text-align: right; vertical-align: middle">@item.Price</td>
+                                        <td style='text-align:center;vertical-align:middle'>@item.Stock</td>
+                                        <td style='text-align:center;vertical-align:middle'>
+                                            @if (item.Active)
+                                            {
+                                                <span class="label label-primary">Active</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="label label-danger">Unactive</span>
+                                            }
+                                        </td>
+                                        <td style='text-align: center; vertical-align: middle;'>
+                                            <a href="@Url.Action("Edit", new { id = item.ProductID })" class="btn waves-effect waves-light btn-warning"> <i class="fa fa-wrench"></i> </a>
+                                            <a href="@Url.Action("Delete", new { id = item.ProductID })" class="btn waves-effect waves-light btn-danger"> <i class="fa fa-remove"></i> </a>
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $('#datatable').DataTable({
+        });
+    });
+
+</script>
+
+
+
+}

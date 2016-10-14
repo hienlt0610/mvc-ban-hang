@@ -424,4 +424,63 @@ $('#transitionType li a').click(function () {
     return false;
 
 });
+
+var lastId;
+var lastBtn;
+$(".cart a").on('click', function (event) {
+    event.preventDefault();
+    lastBtn = $(this);
+    var id = $(this).data("id");
+    lastId = id;
+    $.getJSON("/Cart/GetListColor/" + id, function (data) {
+        var items = [];
+        if (data.status == "OK") {
+            if (parseInt(data.count) > 0) {
+                $.each(data.colors, function (key, val) {
+                    items.push("<option value='" + val.color_id + "' id='color" + key + "'>" + val.color_name + "</option>");
+                });
+                $("#list_color").html(items.join(""));
+                $("#myModal").modal("show");
+            } else {
+                add_to_cart(id, null);
+            }
+        }
+    });
+    return false;
+});
+
+$('#btn_add').on('click', function (e) {
+    e.stopPropagation();
+    add_to_cart(lastId, $("#list_color").val());
+    $("#myModal").modal("hide");
+});
+
+function add_to_cart(productid, colorid) {
+    if (colorid == null) {
+        $.post("/Cart/AddCart", { id: productid }, function (data) {
+            Msg.success("Thêm giỏ hàng thành công", 1500);
+            $("#cart_shop").html(data);
+        });
+    } else {
+        $.post("/Cart/AddCart", { id: productid, color: colorid }, function (data) {
+            Msg.success("Thêm giỏ hàng thành công", 1500);
+            $("#cart_shop").html(data);
+        });
+    }
+}
+
+$('body').on('click', '.remove', function () {
+    var productId = $(this).data('id');
+    var colorId = $(this).data('color');
+    if (colorId == 0) {
+        $.post("/Cart/RemoveCart", { id: productId }, function (data) {
+            $("#cart_shop").html(data);
+        });
+    } else {
+        $.post("/Cart/RemoveCart", { id: productId, color: colorId }, function (data) {
+            $("#cart_shop").html(data);
+        });
+    }
+});
+
 })(jQuery);

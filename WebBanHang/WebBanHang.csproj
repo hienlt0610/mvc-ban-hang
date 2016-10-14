@@ -39,6 +39,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Facebook, Version=6.0.10.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
       <HintPath>..\packages\Facebook.7.0.6\lib\net45\Facebook.dll</HintPath>
       <Private>True</Private>
@@ -201,17 +205,22 @@
     <Compile Include="Areas\Admin\Controllers\AdminBaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\AuthController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\CheckoutController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProductManagerController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\WidgetController.cs" />
+    <Compile Include="Core\AutoMapperConfig.cs" />
     <Compile Include="Core\BaseController.cs" />
     <Compile Include="Core\MyRazorViewEngine.cs" />
     <Compile Include="Core\RepositoryModel\UserRepository.cs" />
+    <Compile Include="Core\ShoppingCart.cs" />
     <Compile Include="Core\UserPrincipal.cs" />
     <Compile Include="Core\CustomerPrincipal.cs" />
     <Compile Include="Core\SecurityAttribute.cs" />
@@ -240,6 +249,7 @@
     <Compile Include="Models\CartDetail.cs">
       <DependentUpon>Ecommerce.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CartItem.cs" />
     <Compile Include="Models\Color.cs">
       <DependentUpon>Ecommerce.tt</DependentUpon>
     </Compile>
@@ -337,6 +347,7 @@
     <Compile Include="Utils\StringUtils.cs" />
     <Compile Include="Utils\UrlHelpers.cs" />
     <Compile Include="ViewModels\AdminLoginViewModel.cs" />
+    <Compile Include="ViewModels\AdminProductViewModel.cs" />
     <Compile Include="ViewModels\SignInViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\SignUpViewModel.cs" />
@@ -346,6 +357,7 @@
     <Content Include="Content\admin\css\bootstrap-grid.css" />
     <Content Include="Content\admin\css\bootstrap-reboot.css" />
     <Content Include="Content\admin\css\chartist.css" />
+    <Content Include="Content\admin\css\custom.css" />
     <Content Include="Content\admin\css\style.css" />
     <Content Include="Content\admin\css\tables.stack-mixin.css" />
     <Content Include="Content\admin\css\tablesaw.stackonly.css" />
@@ -401,10 +413,27 @@
     <Content Include="Content\admin\pages\jquery.ui-sliders.js" />
     <Content Include="Content\admin\pages\jquery.wizard-init.js" />
     <Content Include="Content\admin\pages\jquery.xeditable.js" />
+    <Content Include="Content\admin\plugins\autoNumeric\autoNumeric.js" />
+    <Content Include="Content\admin\plugins\datatables\buttons.bootstrap4.min.css" />
+    <Content Include="Content\admin\plugins\datatables\buttons.bootstrap4.min.js" />
+    <Content Include="Content\admin\plugins\datatables\buttons.colVis.min.js" />
+    <Content Include="Content\admin\plugins\datatables\buttons.html5.min.js" />
+    <Content Include="Content\admin\plugins\datatables\buttons.print.min.js" />
+    <Content Include="Content\admin\plugins\datatables\dataTables.bootstrap4.min.css" />
+    <Content Include="Content\admin\plugins\datatables\dataTables.bootstrap4.min.js" />
+    <Content Include="Content\admin\plugins\datatables\dataTables.buttons.min.js" />
+    <Content Include="Content\admin\plugins\datatables\dataTables.responsive.min.js" />
+    <Content Include="Content\admin\plugins\datatables\jquery.dataTables.min.js" />
+    <Content Include="Content\admin\plugins\datatables\jszip.min.js" />
+    <Content Include="Content\admin\plugins\datatables\pdfmake.min.js" />
+    <Content Include="Content\admin\plugins\datatables\responsive.bootstrap4.min.css" />
+    <Content Include="Content\admin\plugins\datatables\responsive.bootstrap4.min.js" />
+    <Content Include="Content\admin\plugins\datatables\vfs_fonts.js" />
     <Content Include="Content\admin\plugins\switchery\switchery.min.css" />
     <Content Include="Content\admin\plugins\switchery\switchery.min.js" />
     <Content Include="Content\css\animate.min.css" />
     <Content Include="Content\css\blue.css" />
+    <Content Include="Content\css\bootstrap-msg.min.css" />
     <Content Include="Content\css\bootstrap-select.min.css" />
     <Content Include="Content\css\bootstrap-switch.min.css" />
     <Content Include="Content\css\bootstrap.min.css" />
@@ -424,6 +453,7 @@
     <Content Include="Content\css\owl.transitions.css" />
     <Content Include="Content\css\rateit.css" />
     <Content Include="Content\css\red.css" />
+    <Content Include="Content\css\rmodal.css" />
     <Content Include="Content\favicon.ico" />
     <Content Include="Content\fonts\bebas\bebasneuebold.svg" />
     <Content Include="Content\fonts\bebas\bebasneueregular.svg" />
@@ -605,6 +635,7 @@
     <Content Include="Content\images\star-off.png" />
     <Content Include="Content\images\star-on.png" />
     <Content Include="Content\js\bootstrap-hover-dropdown.min.js" />
+    <Content Include="Content\js\bootstrap-msg.min.js" />
     <Content Include="Content\js\bootstrap-select.min.js" />
     <Content Include="Content\js\bootstrap-slider.min.js" />
     <Content Include="Content\js\bootstrap-switch.min.js" />
@@ -616,6 +647,7 @@
     <Content Include="Content\js\jquery.rateit.min.js" />
     <Content Include="Content\js\lightbox.min.js" />
     <Content Include="Content\js\owl.carousel.min.js" />
+    <Content Include="Content\js\rmodal.js" />
     <Content Include="Content\js\scripts.js" />
     <Content Include="Content\js\wow.min.js" />
     <Content Include="Content\PagedList.css" />
@@ -770,6 +802,13 @@
     <Content Include="Areas\Admin\Views\Auth\Login.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\Header.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\RightSidebar.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Footer.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Index.cshtml" />
+    <Content Include="Content\admin\plugins\datatables\json\scroller-demo.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -828,11 +867,15 @@
     <Content Include="Views\ProductManager\Index.cshtml" />
     <Content Include="Views\ProductManager\Add.cshtml" />
     <Content Include="Views\Customer\Login.cshtml" />
+    <Content Include="Views\Cart\ShoppingCartView.cshtml" />
+    <Content Include="Views\Cart\Index.cshtml" />
+    <Content Include="Views\Cart\CartTotal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\Admin\" />
+    <Folder Include="Views\Checkout\" />
     <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>

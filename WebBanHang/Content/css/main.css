@@ -1167,20 +1167,27 @@ a {
   text-align: center;
 }
 .top-cart-row .dropdown-cart .dropdown-menu {
-  border: 1px solid #e1e1e1;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0;
-  float: right;
-  left: auto;
-  min-width: 0;
-  padding: 24px 22px;
-  right: 0;
-  width: 230px;
-  -moz-box-shadow: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
+	padding:8px;
+	margin:0;
+	z-index:1011;
+	background: #FFF;
+	border:3px solid #3e7cb4;
+	border-width:3px 0px 0px 0px;
+	width:500px;
+	border-radius:0px;
+	right:0;
+	left:auto;
 }
+.top-cart-row .dropdown-cart .dropdown-menu .remove {
+	border-radius:100%;
+	padding:0px 4px;
+	line-height:normal;
+}
+.top-cart-row .dropdown-cart .dropdown-menu > li > .table > tbody > tr > td {
+	border-bottom: 1px solid #ddd;
+	border-top:none 0px;
+}
+.top-cart-row .dropdown-cart .dropdown-menu li > p { margin:30px 0; }
 .top-cart-row .dropdown-cart .dropdown-menu .cart-item.product-summary .name {
   font-size: 13px;
   font-family: 'Open Sans Condensed', sans-serif;
@@ -4836,7 +4843,7 @@ a {
 .shopping-cart .cart-shopping-total table thead tr th {
   background-color: #fafafa;
   text-align: right;
-  padding: 24px 50px;
+  padding: 24px 25px;
   text-transform: uppercase;
 }
 .shopping-cart .cart-shopping-total table thead tr th .cart-sub-total {
@@ -4847,7 +4854,6 @@ a {
   padding: 24px 50px;
 }
 .shopping-cart .cart-shopping-total table tbody tr td .cart-checkout-btn button {
-  float: right !important;
   margin-bottom: 8px;
 }
 .shopping-cart .cart-shopping-total table tbody tr td .cart-checkout-btn span {
@@ -4889,7 +4895,7 @@ a {
 .shopping-cart .cart-shopping-total table thead tr th .cart-sub-total,
 .shopping-cart .cart-shopping-total table thead tr th .cart-grand-total {
   font-family: 'Open Sans Condensed', sans-serif;
-  font-size: 22px;
+  font-size: 20px;
 }
 .shopping-cart-table table tbody tr td .quant-input {
   display: inline-block;
@@ -5308,4 +5314,22 @@ label.error {
 	top:-7px;
 	left:4px;
 	content: "\f078";
+}
+
+.block {
+    height:100px;
+    width:200px;
+    text-align:left;
+}
+.center {
+    margin:auto;
+    background-color:green;
+}
+.left {
+    margin:auto auto auto 0;
+    background-color:red;
+}
+.right {
+    margin:auto 0 auto auto;
+    background-color:yellow;
 }

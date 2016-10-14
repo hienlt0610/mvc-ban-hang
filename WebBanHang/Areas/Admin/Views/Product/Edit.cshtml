@@ -1,0 +1,226 @@
+﻿@model AdminProductViewModel
+
+@{
+    ViewBag.Title = "Sửa Sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPage.cshtml";
+    var groups = (IEnumerable<GroupProduct>)ViewBag.GroupProducts;
+}
+
+<div class="container">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="btn-group pull-right m-t-15">
+                <button type="button" class="btn btn-custom dropdown-toggle waves-effect waves-light"
+                        data-toggle="dropdown" aria-expanded="false">
+                    Settings <span class="m-l-5">
+                        <i class="fa fa-cog"></i>
+                    </span>
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
+                </div>
+
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div>
+    </div>
+
+    <!--Form-->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card-box">
+
+                <h4 class="header-title m-t-0 m-b-30">Thông tin sản phẩm</h4>
+
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-6">
+                        @using (Html.BeginForm("Edit", "Product", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <!--Product title-->
+                            <fieldset class="form-group">
+                                <label for="txtProductName">Tên sản phẩm</label>
+                                @Html.TextBoxFor(m => m.ProductName, new { @class = "form-control", placeholder = "Nhập tên sản phẩm" })
+                                @Html.ValidationMessageFor(m => m.ProductName)
+                            </fieldset>
+                            <!--/Product title-->
+
+                            <!--Product group-->
+                            <fieldset class="form-group">
+                                <label for="exampleInputPassword1">Nhóm sản phẩm:</label>
+                                <div class="dropdown dropdown-submit-input">
+                                    @{Html.EnableClientValidation(false);}
+                                    @Html.HiddenFor(item => item.GroupID, new { Value = (groups.Count() > 0 ? groups.FirstOrDefault().GroupID.ToString() : "") })
+                                    @{Html.EnableClientValidation(true);}
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        @(groups.Count() > 0 ? groups.FirstOrDefault().GroupName : "")
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                        @DropdownTree(groups.Where(item => item.ParentGroupID == null))
+                                    </ul>
+                                    @Html.ValidationMessageFor(model => model.GroupID)
+                                </div>  
+                            </fieldset>
+                            <!--/Product group-->
+
+                            <!--Product detail-->
+                            <fieldset class="form-group">
+                                <label for="txtDetail">Chi tiết</label>
+                                @Html.TextAreaFor(m => m.Detail, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Detail)
+                            </fieldset>
+                            <!--/Product detail-->
+
+                            <!--Product Price-->
+                            <fieldset class="form-group">
+                                <label for="txtPrice">Giá sản phẩm</label>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        @Html.TextBoxFor(m => m.Price, new { @class = "form-control autonumber", id = "txtPrice", data_a_sign = " VNĐ" })
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(m => m.Price)
+                            </fieldset>
+                            <!--/Product title-->
+                            
+                            <!--Product Price-->
+                            <fieldset class="form-group">
+                                <label for="txtSalePrice">Giá sale</label>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        @Html.TextBoxFor(m => m.SalePrice, new { @class = "form-control autonumber", id = "txtSavePrice", data_a_sign = " VNĐ" })
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(m => m.SalePrice)
+                            </fieldset>
+                            <!--/Product title-->
+                            
+                            <!--Product stock-->
+                            <fieldset class="form-group">
+                                <label for="txtStock">Số lượng</label>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        @Html.TextBoxFor(m => m.Stock, new { @class = "form-control autonumber", id = "txtStock" })
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(m => m.Stock)
+                            </fieldset>
+                            <!--/Product stock-->
+                            
+                            <!--Product has color-->
+                            <fieldset class="form-group">
+                                <div class="checkbox checkbox-custom">
+                                    @Html.CheckBoxFor(m => m.UseMultiColor, new { id="chkUseColor" }, false)
+                                    <label for="chkUseColor">
+                                        Sản phẩm có nhiều màu
+                                    </label>
+                                </div>
+                            </fieldset>
+                            <!--/Product stock-->
+                            
+                            <!--Product color-->
+                            <fieldset class="form-group hidden" id="listColor">
+                                <label for="txtStock">Màu sắc</label>
+                                <div id="colors">
+                                    <div class="row m-b-10">
+                                        <div class="col-md-3">
+                                            <input name="Color" class="form-control" type="text" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input name="Quantity" class="form-control" type="text" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button id="addMore" type="button" class="btn btn-primary">Thêm</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <!--/Product color-->
+                            
+                            <input type="submit" class="btn btn-primary" value="Lưu">
+                        }
+                    </div><!-- end col -->
+
+                    
+
+                </div><!-- end row -->
+            </div>
+        </div><!-- end col -->
+    </div>
+    <!-- end row -->
+</div>
+
+<h2>Edit</h2>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section scripts
+{
+    <script>
+        $('.dropdown-submit-input .dropdown-menu a').click(function (e) {
+            e.preventDefault();
+            $submitInput = $(this).closest('.dropdown-submit-input');
+            $submitInput.find('input').val($(this).data('value'));
+            $submitInput.find('button').html($(this).text() + ' <span class="caret"></span>');
+        });
+        $('.autonumber').autoNumeric('init', {pSign: 's', mDec: '0' });
+
+        $('form').submit(function () {
+            var form = $(this);
+            $('form').find('input.autonumber').each(function () {
+                var self = $(this);
+                var v = self.autoNumeric('get');
+                // self.autoNumeric('destroy');
+                self.val(v);
+            });
+        });
+
+        $("#chkUseColor").on('click', function () {
+            $("#txtStock").attr("disabled", $(this).is(':checked') ? true : false);
+            if ($("#chkUseColor").is(":checked")) {
+                $("#listColor").removeClass("hidden");
+            } else {
+                $("#listColor").addClass("hidden");
+            }
+        });
+
+        $("#addMore").on("click", function (e) {
+            e.preventDefault(e);
+            $("#colors").append("<div class=\"row m-b-10\"> <div class=\"col-md-3\"> <input name=\"Color\" class=\"form-control\" type=\"text\" /> </div> <div class=\"col-md-3\"> <input name=\"Quantity\" class=\"form-control\" type=\"text\" /> </div> <div class=\"col-md-3\"> <button type=\"button\" class=\"btn btn-danger btn-sm remove_field\">Xóa</button> </div> </div>");
+        });
+
+        $("#colors").on("click", ".remove_field", function (e) { //user click on remove text
+            e.preventDefault();
+            $(this).parent('div').parent('div').remove();
+        })
+
+    </script>
+}
+
+@helper DropdownTree(IEnumerable<GroupProduct> list)
+{
+    foreach (GroupProduct group in list)
+    {
+        if (group.GroupProducts1.Count == 0)
+        {
+            <li><a class="dropdown-item" href="#" data-value="@group.GroupID">@group.GroupName</a></li>
+        }
+        else
+        {
+            <li class="dropdown-submenu">
+                <a href="#" data-value="@group.GroupID" class="dropdown-item">@group.GroupName</a>
+                <ul class="dropdown-menu">
+                    @DropdownTree(group.GroupProducts1)
+                </ul>
+            </li>
+        }
+    }
+}

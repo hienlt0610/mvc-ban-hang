@@ -1,0 +1,60 @@
+﻿@{
+    var carts = ShoppingCart.Instance;
+}
+
+<div class="dropdown dropdown-cart">
+    <a href="#" class="dropdown-toggle lnk-cart" data-toggle="dropdown">
+        <div class="items-cart-inner">
+            <div class="total-price-basket">
+                <span class="lbl">Giỏ hàng -</span>
+                <span class="total-price">
+                    <span class="value">@Html.FormatCurrency(ShoppingCart.Instance.GetTotal())</span>
+                    <span class="sign">đ</span>
+                </span>
+            </div>
+            <div class="basket">
+                <i class="glyphicon glyphicon-shopping-cart"></i>
+            </div>
+            <div class="basket-item-count"><span class="count">@ShoppingCart.Instance.GetCount()</span></div>
+
+        </div>
+    </a>
+    <ul class="dropdown-menu">
+        <li>
+            <table class="table table-bordered">
+                <tbody>
+                    @foreach (var cartItem in carts.Items)
+                    {
+                        <tr>
+                            @{
+                                var imgUrl = ImageHelper.DefaultImage();
+                                if (cartItem.Product.ImageProducts.FirstOrDefault() != null)
+                                {
+                                    imgUrl = ImageHelper.ImageUrl(cartItem.Product.ImageProducts.FirstOrDefault().ImageName);
+                                }
+                            }
+                            <td class="text-center"><a href="product.html"><img class="img-thumbnail" title="@cartItem.Product.ProductName" alt="@cartItem.Product.ProductName" src="@imgUrl?w=80&h=80"></a></td>
+                            <td class="text-left"><a href="product.html">@cartItem.Product.ProductName @(cartItem.Color != null ? Html.Raw("<span style='color:black;'>(" + cartItem.Color.ColorName + ")</span>") : Html.Raw(""))</a></td>
+                            <td class="text-right" style="width:50px">x @cartItem.Quantity</td>
+                            <td class="text-right" style="width:120px">@Html.FormatCurrency(cartItem.Price) đ</td>
+                            <td class="text-center"><button class="btn btn-danger btn-xs remove" data-id="@cartItem.ProductID" data-color="@cartItem.ColorID" title="Remove" onclick="" type="button"><i class="fa fa-times"></i></button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </li>
+        <li>
+            <div>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td class="text-right"><strong>Tổng cộng</strong></td>
+                            <td class="text-right">@Html.FormatCurrency(ShoppingCart.Instance.GetTotal()) đ</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="checkout"><a href="@Url.Action("Index","Cart")" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Xem giỏ hàng</a>&nbsp;&nbsp;&nbsp;<a href="@Url.Action("Checkout","Cart")" class="btn btn-primary"><i class="fa fa-share"></i> Thanh toán</a></p>
+            </div>
+        </li>
+    </ul>
+</div><!-- /.dropdown-cart -->
