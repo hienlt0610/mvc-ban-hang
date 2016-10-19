@@ -60,8 +60,9 @@ namespace WebBanHang.Controllers
 
         [HttpGet]
         [OnlyGuest]
-        public ActionResult Login()
+        public ActionResult Login(String ReturnUrl)
         {
+            TempData["ReturnUrl"] = ReturnUrl;
             return View(new SignInViewModel());
         }
 
@@ -81,6 +82,8 @@ namespace WebBanHang.Controllers
             if (ModelState.IsValid)
             {
                 SyncLogin(customer,model.Remember);
+                if (TempData["ReturnUrl"] != null && TempData["ReturnUrl"].ToString().Length > 0);
+                    return Redirect(TempData["ReturnUrl"].ToString());
                 return RedirectToAction("Index","Home");
             }
             return View(model);

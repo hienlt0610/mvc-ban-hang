@@ -43,7 +43,7 @@ namespace WebBanHang.Core
         }
 
 
-        public void AddItem(Product product, Color color)
+        public void AddItem(Product product, Color color, int quantity = 1)
         {
             CartItem newItem = new CartItem(product,color);
 
@@ -53,14 +53,14 @@ namespace WebBanHang.Core
                 {
                     if (item.Equals(newItem))
                     {
-                        item.Quantity++;
+                        item.Quantity += quantity;
                         return;
                     }
                 }
             }
             else
             {
-                newItem.Quantity = 1;
+                newItem.Quantity = quantity;
                 Items.Add(newItem);
             }
         }

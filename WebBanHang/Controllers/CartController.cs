@@ -26,13 +26,13 @@ namespace WebBanHang.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddCart(int? id, int? color)
+        public ActionResult AddCart(int? id, int? color, int quantity)
         {
             if (id == null) return HttpNotFound("Id bị trống");
             Product product = Repository.Product.FindById(id);
             Color colorItem = Repository.Color.FindById(color);
             if (product == null) return HttpNotFound("Không tồn tại sản phẩm");
-            Cart.AddItem(product, colorItem);
+            Cart.AddItem(product, colorItem, quantity);
             return PartialView("ShoppingCartView");
         }
 

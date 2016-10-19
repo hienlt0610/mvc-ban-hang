@@ -55,6 +55,11 @@ namespace WebBanHang.Utils
             newUrl = (forceHttps ? "https" : originalUri.Scheme) +
                 "://" + originalUri.Authority + newUrl;
             return newUrl;
-        } 
+        }
+
+        public static String BlankImage()
+        {
+            return "data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=";
+        }
     }
 }

@@ -740,6 +740,18 @@ a {
 .product-tabs .tab-content .tab-pane .product-reviews .reviews .review .author span {
   color: #12cca7;
 }
+
+.product-tabs .product-description{
+  text-align: justify;
+  line-height: 21px;
+}
+
+.product-tabs .product-description img{
+  max-width:100%;
+}
+.product-tabs .product-description p, .product-tabs .product-description div{
+  margin-bottom: 10px;
+}
 #owl-main:hover .owl-prev:hover,
 #owl-main:hover .owl-next:hover {
   background: #0b816a;
@@ -5397,3 +5409,6 @@ label.error {
       background-color: #55b776;
   }
  
+.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
+    outline: 0;
+}

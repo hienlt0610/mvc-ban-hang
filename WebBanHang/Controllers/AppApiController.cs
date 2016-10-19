@@ -156,5 +156,13 @@ namespace WebBanHang.Controllers
             return Content(JsonConvert.SerializeObject(result), "application/json");
         }
 
+        public ActionResult TotalCart()
+        {
+            var total = Cart.GetCount();
+            dynamic result = new ExpandoObject();
+            result.count = total;
+            return Content(JsonConvert.SerializeObject(result), "application/json");
+        }
+
 	}
 }

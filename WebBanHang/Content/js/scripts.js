@@ -427,7 +427,7 @@ $('#transitionType li a').click(function () {
 
 var lastId;
 var lastBtn;
-$(".cart a").on('click', function (event) {
+$("a.add-cart").on('click', function (event) {
     event.preventDefault();
     lastBtn = $(this);
     var id = $(this).data("id");
@@ -457,18 +457,19 @@ $('#btn_add').on('click', function (e) {
 
 function add_to_cart(productid, colorid) {
     if (colorid == null) {
-        $.post("/Cart/AddCart", { id: productid }, function (data) {
+        $.post("/Cart/AddCart", { id: productid, quantity: 1 }, function (data) {
             Msg.success("Thêm giỏ hàng thành công", 1500);
             $("#cart_shop").html(data);
         });
     } else {
-        $.post("/Cart/AddCart", { id: productid, color: colorid }, function (data) {
+        $.post("/Cart/AddCart", { id: productid, color: colorid,quantity:1 }, function (data) {
             Msg.success("Thêm giỏ hàng thành công", 1500);
             $("#cart_shop").html(data);
         });
     }
 }
 
+    //Xóa giỏ hàng
 $('body').on('click', '.remove', function () {
     var productId = $(this).data('id');
     var colorId = $(this).data('color');
@@ -481,6 +482,23 @@ $('body').on('click', '.remove', function () {
             $("#cart_shop").html(data);
         });
     }
+});
+
+    //chỉ cho phép nhập số
+$('.number').keypress(function (event) {
+    if (event.which < 46 || event.which >= 58 || event.which == 47) {
+        event.preventDefault();
+    }
+
+    if (event.which == 46 && $(this).val().indexOf('.') != -1) {
+        this.value = '';
+    }
+});
+
+    //Tắt focus vào button khi click
+$(".btn").click(function (event) {
+    // Removes focus of the button.
+    $(this).blur();
 });
 
 })(jQuery);

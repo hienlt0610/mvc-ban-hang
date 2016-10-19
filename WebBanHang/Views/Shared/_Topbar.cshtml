@@ -6,8 +6,8 @@
                 <ul>
                     @if (!User.Identity.IsAuthenticated)
                     {
-                        <li><a href="@Url.Action("Login", "Customer")"><i class="icon fa fa-sign-in"></i>Đăng nhập</a></li>
-                        <li><a href="@Url.Action("Register", "Customer")"><i class="icon fa fa-sign-out"></i>Đăng ký</a></li>
+                        <li><a href="@Url.Action("Login", "Customer")"><i class="icon fa fa-sign-in"></i> Đăng nhập</a></li>
+                        <li><a href="@Url.Action("Register", "Customer")"><i class="icon fa fa-sign-out"></i> Đăng ký</a></li>
                     }
                     else
                     {

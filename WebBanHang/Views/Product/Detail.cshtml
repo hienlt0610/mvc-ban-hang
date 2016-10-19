@@ -98,10 +98,31 @@
                             </div><!-- /.price-container -->
 
                             <div class="quantity-container info-container">
-                                <div class="row">
+                                @if(Model.Colors.Count > 0){
+                                    <!--Color box-->
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            <span class="label">Màu:</span>
+                                        </div>
 
+                                        <div class="col-sm-4">
+                                            <div class="cart-color">
+                                                <div class="color-input">
+                                                    <select name="Color" id="color-choose" class="form-control">
+                                                        @foreach(var color in Model.Colors){
+                                                            <option value="@color.ColorID">@color.ColorName</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.row -->
+                                    <!--/Color box-->
+                                }
+                                <!--Quantity-->
+                                <div class="row">
                                     <div class="col-sm-2">
-                                        <span class="label">S.Lượng :</span>
+                                        <span class="label">S.Lượng:</span>
                                     </div>
 
                                     <div class="col-sm-2">
@@ -111,17 +132,22 @@
                                                     <div class="arrow plus gradient"><span class="ir"><i class="icon fa fa-sort-asc"></i></span></div>
                                                     <div class="arrow minus gradient"><span class="ir"><i class="icon fa fa-sort-desc"></i></span></div>
                                                 </div>
-                                                <input type="text" value="1">
+                                                <input class="number" id="quantity" name="quantity" type="text" value="1">
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="col-sm-7">
-                                        <a href="#" class="btn btn-primary"><i class="fa fa-shopping-cart inner-right-vs"></i> Thêm vào giỏ hàng</a>
+                                </div>
+                                <!--Quantity-->
+                                <div class="row m-t-10">
+                                    <div class="col-sm-9">
+                                        <a data-id="@Model.ProductID" href="#" class="btn btn-labeled btn-info add-cart">
+                                            <span class="btn-label"><i class="fa fa-shopping-cart add-cart"></i></span>Thêm giỏ hàng
+                                        </a>
+                                        <a id="checkout" onclick="check_cart(this,event);" href="@Url.Action("Shipping","Checkout")" class="btn btn-labeled btn-success @(ShoppingCart.Instance.GetCount() == 0 ? "disabled":"")">
+                                            <span class="btn-label"><i class="fa fa-credit-card add-cart"></i></span>Thanh toán
+                                        </a>
                                     </div>
-
-
-                                </div><!-- /.row -->
+                                </div>
                             </div><!-- /.quantity-container -->
 
                             <div class="product-social-link m-t-20 text-right">
@@ -176,8 +202,8 @@
                     <!--Chi tiet san pham-->
                     <section class="section featured-product wow fadeInUp animated animated" style="visibility: visible; margin-top:10px; animation-name: fadeInUp;">
                         <h3 class="section-title">Chi tiết sản phẩm</h3>
-                        <div class="tab-pane active">
-                            ffffffffffffff
+                        <div class="product-description">
+                            @Html.Raw(HttpUtility.HtmlDecode(Model.Detail))
                         </div>
                     </section>
                     <!--/Chi tiet san pham-->
@@ -1011,4 +1037,48 @@
     {
         <li><a href="@Url.Action("Detail", "Category",  new { id = group.GroupID })">@group.GroupName</a></li>
     }
+}
+
+@section masterjs{
+    <script>
+        $('.add-cart').off('click').on('click', function () {
+            var $this = $(this);
+            $this.blur();
+            var product_id = $this.data('id');
+            var color = $('#color-choose').val();
+            if (color === undefined)
+                color = null;
+            var quantity = isNaN(parseInt($('#quantity').val())) ? 1 : parseInt($('#quantity').val());
+            $('#quantity').val(quantity);
+
+            //Xử lý thêm giỏ hàng
+
+            if (quantity == 0) {
+                Msg.error("Bạn phải đặt ít nhất 1 món hàng!!!", 1500);
+                return false;
+            }
+            $.post("/Cart/AddCart", { id: product_id, color: color, quantity: quantity }, function (data) {
+                var item_name = $('.product-info h1.name').text();
+                if (color != null)
+                    item_name += ' <span style="color:#000;">(' + $('#color-choose option:selected').text() + ')</span>';
+                Msg.success("Đã thêm <strong>' " + quantity + " " + item_name + "'</strong> vào giỏ hàng!!!", 1500);
+                $("#cart_shop").html(data);
+                if ($('#checkout').hasClass('disabled'))
+                    $('#checkout').removeClass('disabled');
+            });
+            return false;
+        });
+
+        var check_cart = function(button, e){
+            e.preventDefault();
+            $.getJSON('/AppApi/TotalCart', function (data) {
+                if(data.count > 0){
+                    location.href = $(button).attr('href');
+                } else {
+                    Msg.error('Giỏ hàng của bạn chưa có sản phẩm nào cả ,hãy thêm sản phẩm vào đi!',2500);
+                }
+            });
+        }
+
+    </script>    
 }
