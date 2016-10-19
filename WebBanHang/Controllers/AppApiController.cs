@@ -22,7 +22,7 @@ namespace WebBanHang.Controllers
         public ActionResult Province()
         {
             //Init Result
-            var provices = Repository.Province.FetchAll().ToList();
+            var provices = Repository.Province.FetchAll().OrderBy(i => i.Type + " " + i.ProvinceName).ToList();
             var provinceList = new List<object>();
             dynamic result = new ExpandoObject();
             result.status = "ok";
@@ -74,7 +74,7 @@ namespace WebBanHang.Controllers
                     };
                     result.count = 0;
                     result.districts = districtList;
-                    var districts = province.Districts.ToList();
+                    var districts = province.Districts.OrderBy(i=> i.Type+" "+i.DistrictName ).ToList();
                     foreach (var item in districts)
                     {
                         districtList.Add(new
@@ -130,7 +130,7 @@ namespace WebBanHang.Controllers
                     };
                     result.count = 0;
                     result.wards = wardList;
-                    var wards = dictrict.Wards.ToList();
+                    var wards = dictrict.Wards.OrderBy(i=>i.Type+" "+i.WardName).ToList();
                     foreach (var item in wards)
                     {
                         wardList.Add(new

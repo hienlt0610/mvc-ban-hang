@@ -26,18 +26,19 @@
                     @using (Html.BeginForm("Register", "Customer", FormMethod.Post, new { @class = "form-horizontal outer-top-xs" }))
                     {   
                         @Html.AntiForgeryToken()
+                        
                         <div class="form-group">
                             <label for="txtFullName" class="col-sm-3 control-label">Họ tên:</label>
                             <div class="col-sm-6">
                                 @Html.TextBoxFor(m => m.FullName, new { @class = "form-control unicase-form-control text-input", id = "txtFullName", placeholder = "Họ và tên" })
-                                @Html.ValidationLabel("FullName", "error")
+                                @Html.ValidationMessageFor(m=>m.FullName)
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="txtEmail" class="col-sm-3 control-label">Email:</label>
                             <div class="col-sm-6">
-                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control unicase-form-control text-input", id = "txtEmail", placeholder = "Địa chỉ email" })
-                                @Html.ValidationLabel("Email", "error")
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control unicase-form-control text-input", id = "txtEmail", placeholder = "Địa chỉ email", type="email" })
+                                @Html.ValidationMessageFor(m => m.Email)
 
                             </div>
                         </div>
@@ -45,7 +46,7 @@
                             <label for="txtPassword" class="col-sm-3 control-label">Mật khẩu:</label>
                             <div class="col-sm-6">
                                 @Html.TextBoxFor(m => m.Password, new { @class = "form-control unicase-form-control text-input", id = "txtPassword", placeholder = "Mật khẩu", type = "password" })
-                                @Html.ValidationLabel("Password", "error")
+                                @Html.ValidationMessageFor(m => m.Password)
                             </div>
                         </div>
 
@@ -53,7 +54,7 @@
                             <label for="txtAgainPassword" class="col-sm-3 control-label">Xác nhận mật khẩu:</label>
                             <div class="col-sm-6">
                                 @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control unicase-form-control text-input", id = "txtAgainPassword", placeholder = "Xác nhận lại mật khẩu", type = "password" })
-                                @Html.ValidationLabel("ConfirmPassword", "error")
+                                @Html.ValidationMessageFor(m => m.ConfirmPassword)
                             </div>
                         </div>
 

@@ -47,7 +47,7 @@ namespace WebBanHang.ViewModels
 
         [Required(ErrorMessage="Vui lòng nhập số điện thoại")]
         [Display(Name="Số ĐT")]
-        [RegularExpression("^[0][0-9]{9,}",ErrorMessage="Số điện thoại nhập vào không hợp lệ")]
+        [RegularExpression("^[0][0-9]{9,10}",ErrorMessage="Số điện thoại nhập vào không hợp lệ")]
         public string Phone { get; set; }
     }
 }

@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "Checkout_Success";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="panel panel-default" style="margin-top:20px;">
+        <div class="row text-center">
+            <div class="col-sm-6 col-sm-offset-3">
+                <br><br> <h2 style="color:#0fad00">Đặt hàng thành công</h2>
+                <img src="~/Content/images/check-true.jpg">
+                <h3>Chào, @UserManager.CurrentCustomer.FullName</h3>
+                <p style="font-size:20px;color:#5C5C5C;">
+                    Bạn vừa đặt hàng thành công, hàng sẽ được ship đến bạn thời gian ngắn nhất. Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi
+                </p>
+                <a href="@Url.Action("Index","Home")" class="btn btn-info">Quay về trang chủ</a>
+                <br><br>
+            </div>
+        </div>
+    </div>
+</div>
+

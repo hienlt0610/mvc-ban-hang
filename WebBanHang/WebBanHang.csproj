@@ -356,6 +356,7 @@
     <Compile Include="ViewModels\AdminLoginViewModel.cs" />
     <Compile Include="ViewModels\AdminProductViewModel.cs" />
     <Compile Include="ViewModels\ProfileViewModel.cs" />
+    <Compile Include="ViewModels\ShippingViewModel.cs" />
     <Compile Include="ViewModels\SignInViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\SignUpViewModel.cs" />
@@ -544,6 +545,7 @@
     <Content Include="Content\images\brands\brand6.png" />
     <Content Include="Content\images\bullet-dark.png" />
     <Content Include="Content\images\cart.jpg" />
+    <Content Include="Content\images\check-true.jpg" />
     <Content Include="Content\images\close.png" />
     <Content Include="Content\images\dot.png" />
     <Content Include="Content\images\fashion-products\1.jpg" />
@@ -588,6 +590,9 @@
     <Content Include="Content\images\payments\3.png" />
     <Content Include="Content\images\payments\4.png" />
     <Content Include="Content\images\payments\5.png" />
+    <Content Include="Content\images\payment_atm.png" />
+    <Content Include="Content\images\payment_cod.png" />
+    <Content Include="Content\images\payment_visa.png" />
     <Content Include="Content\images\plus.png" />
     <Content Include="Content\images\prev.png" />
     <Content Include="Content\images\product-compare\01.jpg" />
@@ -881,6 +886,8 @@
     <Content Include="Views\Checkout\Shipping.cshtml" />
     <Content Include="Views\Customer\Profile.cshtml" />
     <Content Include="Views\Widget\LatestProduct.cshtml" />
+    <Content Include="Views\Checkout\Payment.cshtml" />
+    <Content Include="Views\Checkout\Checkout_Success.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

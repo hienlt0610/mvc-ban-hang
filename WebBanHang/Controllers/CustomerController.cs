@@ -82,7 +82,7 @@ namespace WebBanHang.Controllers
             if (ModelState.IsValid)
             {
                 SyncLogin(customer,model.Remember);
-                if (TempData["ReturnUrl"] != null && TempData["ReturnUrl"].ToString().Length > 0);
+                if (TempData["ReturnUrl"] != null && TempData["ReturnUrl"].ToString().Length > 0)
                     return Redirect(TempData["ReturnUrl"].ToString());
                 return RedirectToAction("Index","Home");
             }
@@ -106,6 +106,7 @@ namespace WebBanHang.Controllers
                 ViewData["Wards"] = UserManager.CurrentCustomer.District.Wards.ToList();
             var profile = UserManager.CurrentCustomer;
             var model = Mapper.Map<Customer, ProfileViewModel>(profile);
+            model.Passwrord = null;
             return View(model);
         }
 

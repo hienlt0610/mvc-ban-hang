@@ -31,7 +31,10 @@ namespace WebBanHang.Core
 
         public int GetCount()
         {
-            return Items.Count;
+            int count = 0;
+            foreach (CartItem item in Items)
+                count += item.Quantity;
+            return count;
         }
 
         public long GetTotal()

@@ -5412,3 +5412,107 @@ label.error {
 .btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
     outline: 0;
 }
+
+.ship-address .infomation h6 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
+/** Payment method*/
+#form_payment_method {
+    padding-right: 0;
+    padding-left: 33px;
+}
+#form_payment_method .adr-oms.radio {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+#form_payment_method .adr-oms.radio>input {
+    height: 78px;
+}
+#form_payment_method .adr-oms.radio label {
+    display: block;
+    margin-right: 0;
+    padding-left:5px;
+}
+#form_payment_method .adr-oms.radio label .adr-oms.payment-method {
+    border: 1px solid #ccc;
+    overflow: hidden;
+    border-radius: 4px;
+    background-color: #fff!important;
+}
+#form_payment_method .adr-oms.radio label .adr-oms.payment-method>.thumbnail {
+    float: left;
+    width: 80px;
+    height: 76px;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    margin-bottom: 0;
+}
+#form_payment_method .adr-oms.radio label .adr-oms.payment-method>.description {
+    float: left;
+    padding: 12px 16px 12px 16px;
+    width: 425px;
+    *width: 400px;
+    border-left: 1px solid #ccc;
+}
+#form_payment_method .adr-oms.radio label .adr-oms.payment-method>.description>.title {
+    font-size: 13px!important;
+    font-weight: 400;
+}
+#form_payment_method .adr-oms.radio label .adr-oms.payment-method>.description>.subtitle {
+    font-size: 12px!important;
+    color: #777;
+}
+#form_payment_method .adr-oms.radio:checked+label .adr-oms.payment-method {
+    border-color: #0388cd;
+    background-color: #fff!important
+}
+.adr-oms.form .group {
+    margin-bottom: 16px;
+    min-height: 1px;
+}
+
+.checkout_product{
+    margin-bottom:15px;
+}
+
+.checkout_product .item .price{
+    float: right;
+    margin-bottom: 0;
+}
+
+.checkout_product .item{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #c9c9c9;
+    font-size: 11px;
+    overflow:hidden;
+}
+
+.checkout_product .item .title {
+    color: #000;
+    float: left;
+    width: 250px;
+    margin-bottom: 0;
+}
+
+.checkout_product .item .title a {
+    color: #000;
+}
+
+.cart .total2 {
+    margin-bottom: 0;
+    line-height: 19px;
+    font-weight: 700;
+    font-size: 16px;
+}
+.cart .total2 span{
+    color: #d60c0c!important;
+}
+.text-right {
+    text-align: right;
+}

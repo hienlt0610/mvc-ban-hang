@@ -53,7 +53,7 @@
                         @Html.LabelFor(m => m.FullName, new { @class = "col-md-4 control-label" })
                         <div class="col-md-4">
                             @Html.TextBoxFor(m => m.FullName, new { @class = "form-control input-md" })
-                            @Html.ValidationLabel("FullName","error")
+                            @Html.ValidationMessageFor(m => m.FullName)
                         </div>
                     </div>
 
@@ -61,7 +61,7 @@
                         @Html.LabelFor(m => m.Phone, new { @class = "col-md-4 control-label" })
                         <div class="col-md-4">
                             @Html.TextBoxFor(m => m.Phone, new { @class = "form-control input-md"})
-                            @Html.ValidationLabel("Phone", "error")
+                            @Html.ValidationMessageFor(m => m.Phone)
                         </div>
                     </div>
 
@@ -70,7 +70,7 @@
                         <div class="col-md-4">
                             <small>Vui lòng điền CHÍNH XÁC "tầng, số nhà, đường" để tránh trường hợp đơn hàng bị hủy ngoài ý muốn *</small>
                             @Html.TextBoxFor(m => m.Address, new { @class = "form-control input-md" })
-                            @Html.ValidationLabel("Address", "error")
+                            @Html.ValidationMessageFor(m => m.Address)
                         </div>
                     </div>
 
@@ -80,7 +80,7 @@
                             @Html.DropDownListFor(model => model.ProvinceID,
                             new SelectList(provincesListItem, "Value", "Text"), "Xin vui lòng chọn Tỉnh/Tp",
                         new { @class = "form-control input-md address-choose", id = "drop-province" })
-                            @Html.ValidationLabel("ProvinceID", "error")
+                            @Html.ValidationMessageFor(m => m.ProvinceID)
                         </div>
                     </div>
 
@@ -90,7 +90,7 @@
                             @Html.DropDownListFor(model => model.DistrictID,
                             new SelectList(districts, "Value", "Text"), "Xin vui lòng chọn Quận/Huyện",
                      new { @class = "form-control input-md address-choose", id = "drop-district" })
-                            @Html.ValidationLabel("DistrictID", "error")
+                            @Html.ValidationMessageFor(m => m.DistrictID)
                         </div>
                     </div>
 
@@ -100,19 +100,48 @@
                             @Html.DropDownListFor(model => model.WardID,
                             new SelectList(wards, "Value", "Text"), "Xin vui lòng chọn Phường/Xã",
                             new { @class = "form-control input-md address-choose", id = "drop-ward" })
-                            @Html.ValidationLabel("WardID", "error")
+                            @Html.ValidationMessageFor(m => m.WardID)
                         </div>
                     </div>
                 </div>
                 <div class="tab-pane vertical-pad" id="account">
-                    
+                    <div class="form-group m-t-15">
+                        <label class="col-md-4 control-label">Email: </label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control input-md" disabled value="@UserManager.CurrentCustomer.Email" />
+                        </div>
+                    </div>
+
+                    <div class="form-group m-t-15">
+                        @Html.LabelFor(m => m.Passwrord, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-4">
+                            @Html.PasswordFor(m => m.Passwrord, new { @class = "form-control input-md" })
+                            @Html.ValidationMessageFor(m => m.Passwrord)
+                        </div>
+                    </div>
+
+                    <div class="form-group m-t-15">
+                        @Html.LabelFor(m => m.NewPasswrord, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-4">
+                            @Html.PasswordFor(m => m.NewPasswrord, new { @class = "form-control input-md" })
+                            @Html.ValidationMessageFor(m => m.NewPasswrord)
+                        </div>
+                    </div>
+
+                    <div class="form-group m-t-15">
+                        @Html.LabelFor(m => m.ConfirmPasswrord, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-4">
+                            @Html.PasswordFor(m => m.ConfirmPasswrord, new { @class = "form-control input-md" })
+                            @Html.ValidationMessageFor(m => m.ConfirmPasswrord)
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- Button -->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="singlebutton"></label>
                 <div class="col-md-4">
-                    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Cập nhật</button>
+                    <button type="submit" id="singlebutton" name="singlebutton" class="btn btn-primary">Cập nhật mật khẩu</button>
                 </div>
             </div>
         </fieldset>

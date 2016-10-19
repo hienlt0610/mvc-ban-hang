@@ -1,0 +1,157 @@
+﻿@model ShippingViewModel
+@{
+    ViewBag.Title = "Thanh toán đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <!-- Breadcrumb Start-->
+    <ul class="progressbar">
+        <li class="active">Đăng nhập</li>
+        <li class="active">Địa chỉ giao hàng</li>
+        <li class="active">Thanh toán & đặt mua</li>
+    </ul>
+    <!-- Breadcrumb End-->
+    <div class="row" style="margin-bottom:20px;">
+        <div class="col-sm-8">
+            <div class="row">
+                <div class="col-sm-12">
+                    @{ Html.EnableClientValidation(false); }
+                    @using(Html.BeginForm("Payment","Checkout",FormMethod.Post)){
+                        @Html.HiddenFor(m=>m.CustomerID)
+                        @Html.HiddenFor(m=>m.FullName)
+                        @Html.HiddenFor(m=>m.Address)
+                        @Html.HiddenFor(m=>m.ProvinceID)
+                        @Html.HiddenFor(m=>m.DistrictID)
+                        @Html.HiddenFor(m=>m.WardID)
+                    <div class="panel panel-default ship-address">
+                        @{ Html.EnableClientValidation(true); }
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <i class="fa fa-ticket"></i> Phương thức thanh toán
+                            </h4>
+                        </div>
+                        <div class="panel-body infomation">
+                            <div class="adr-oms horizontal form" id="form_payment_method">
+                                <div class="group">
+                                    <div class="adr-oms radio payment-method-1 select-method">
+                                        <input checked type="radio" id="payment_cod" name="PaymentMethod" value="payment_cod">
+                                        <label for="payment_cod">
+                                            <div class="adr-oms payment-method">
+                                                <div class="thumbnail">
+                                                    <img alt="" src="~/Content/images/payment_cod.png">
+                                                </div>
+                                                <div class="description">
+                                                    <div class="title">Thanh toán khi nhận hàng (COD)</div>
+                                                    <div class="subtitle">Quý khách sẽ thanh toán bằng tiền mặt hoặc thẻ khi chúng tôi giao hàng cho quý khách.</div>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="group">
+                                    <div class="adr-oms radio payment-method-4 select-method">
+                                        <input type="radio" id="payment_atm" name="PaymentMethod" value="payment_atm">
+                                        <label for="payment_atm">
+                                            <div class="adr-oms payment-method">
+                                                <div class="thumbnail">
+                                                    <img alt="" src="~/Content/images/payment_atm.png">
+                                                </div>
+                                                <div class="description">
+                                                    <div class="title">Thanh toán bằng thẻ ATM</div>
+                                                    <div class="subtitle">
+                                                        Thẻ ATM của bạn cần đăng ký sử dụng dịch vụ Internet Banking.
+                                                        <br>
+                                                        <span>Bạn sẽ được chuyển link để thanh toán.</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="group">
+                                    <div class="adr-oms radio payment-method-6 select-method">
+                                        <input type="radio" id="payment_visa" name="PaymentMethod" value="payment_visa">
+                                        <label for="payment_visa">
+                                            <div class="adr-oms payment-method">
+                                                <div class="thumbnail">
+                                                    <img alt="" src="~/Content/images/payment_visa.png">
+                                                </div>
+                                                <div class="description">
+                                                    <div class="title">Thanh toán bằng thẻ thanh toán quốc tế</div>
+                                                    <div class="subtitle">
+                                                        Hỗ trợ Credit và Debit.
+                                                        <br>
+                                                        <span>Bạn sẽ được chuyển tới OnePay để thanh toán.</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pull-right">
+                        <button id="checkout" type="submit" class="btn btn-labeled btn-danger">
+                            <span class="btn-label"><i class="fa fa-credit-card add-cart"></i></span>Thanh toán
+                        </button>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default ship-address">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <i class="fa fa-ticket"></i> Địa chỉ giao hàng
+                            </h4>
+                        </div>
+                        <div class="panel-body infomation">
+                            <h6>@Model.FullName</h6>
+                            <p>
+                                Địa chỉ: @Model.Address, @Model.Ward.Type @Model.Ward.WardName, @Model.District.Type @Model.District.DistrictName, @Model.Province.Type @Model.Province.ProvinceName
+                                <br /> SĐT: @Model.Phone
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-12">
+                    <div class="panel panel-default ship-address">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <i class="fa fa-ticket"></i> Đơn hàng (@ShoppingCart.Instance.GetCount() sản phẩm)
+                            </h4>
+                        </div>
+                        <div class="panel-body cart">
+                            <div class="checkout_product">
+                                @foreach(var item in ShoppingCart.Instance.Items){
+                                    <div class="item">
+                                    <p class="title"><strong>@item.Quantity x </strong><a href="@Url.Action("Detail", "Product", new { id = item.ProductID})" target="_blank">@item.Product.ProductName</a></p>
+                                    <p class="price">
+                                        <span>@Html.FormatCurrency(item.Price) đ</span>
+                                    </p>
+                                </div>
+                                }
+                            </div>
+                            <p class="total2 text-right">
+                                Thành tiền:
+                                <span>@Html.FormatCurrency(@ShoppingCart.Instance.GetTotal()) đ</span>
+                            </p>
+                            <p class="text-right">
+                                <i>(Đã bao gồm VAT)</i>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
