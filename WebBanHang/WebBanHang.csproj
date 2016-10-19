@@ -207,6 +207,7 @@
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AppApiController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\CheckoutController.cs" />
@@ -219,7 +220,10 @@
     <Compile Include="Core\AutoMapperConfig.cs" />
     <Compile Include="Core\BaseController.cs" />
     <Compile Include="Core\MyRazorViewEngine.cs" />
+    <Compile Include="Core\RepositoryModel\DistrictRepository.cs" />
+    <Compile Include="Core\RepositoryModel\ProvinceRepository.cs" />
     <Compile Include="Core\RepositoryModel\UserRepository.cs" />
+    <Compile Include="Core\RepositoryModel\WardRepository.cs" />
     <Compile Include="Core\ShoppingCart.cs" />
     <Compile Include="Core\UserPrincipal.cs" />
     <Compile Include="Core\CustomerPrincipal.cs" />
@@ -335,6 +339,9 @@
     <Compile Include="Models\User.cs">
       <DependentUpon>Ecommerce.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Ward.cs">
+      <DependentUpon>Ecommerce.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\AssetUtil.cs" />
@@ -348,6 +355,7 @@
     <Compile Include="Utils\UrlHelpers.cs" />
     <Compile Include="ViewModels\AdminLoginViewModel.cs" />
     <Compile Include="ViewModels\AdminProductViewModel.cs" />
+    <Compile Include="ViewModels\ProfileViewModel.cs" />
     <Compile Include="ViewModels\SignInViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\SignUpViewModel.cs" />
@@ -870,12 +878,15 @@
     <Content Include="Views\Cart\ShoppingCartView.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
     <Content Include="Views\Cart\CartTotal.cshtml" />
+    <Content Include="Views\Checkout\Shipping.cshtml" />
+    <Content Include="Views\Customer\Profile.cshtml" />
+    <Content Include="Views\Widget\LatestProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\Admin\" />
-    <Folder Include="Views\Checkout\" />
+    <Folder Include="Views\Api\" />
     <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>

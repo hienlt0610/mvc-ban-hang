@@ -1,0 +1,95 @@
+﻿@model IEnumerable<Product>
+@{
+    
+}
+
+<div class="sidebar-widget outer-bottom-xs wow fadeInUp">
+    <h3 class="section-title">Sản phẩm bán chạy</h3>
+    <div class="sidebar-widget-body outer-top-xs">
+        <div class="owl-carousel sidebar-carousel special-offer custom-carousel owl-theme outer-top-xs">
+            @{
+                var num = Model.Count() / 3;
+            }
+            @for (int i = 0; i < num; i++)
+            {
+                <div class="item">
+                    <div class="products special-product">
+                        @foreach (var product in Model.Skip(i * 3).Take(3))
+                        {
+                            <div class="product">
+                                <div class="product-micro">
+                                    <div class="row product-micro-row">
+                                        <div class="col col-xs-5">
+                                            <div class="product-image">
+                                                <div class="image">
+                                                        @{
+                                                            var imgUrl = ImageHelper.DefaultImage();
+                                                            if (product.ImageProducts.Count > 0)
+                                                            {
+                                                                imgUrl = ImageHelper.ImageUrl(product.ImageProducts.FirstOrDefault().ImageName);
+                                                            }
+                                                            var lightBoxImg = imgUrl;
+                                                            imgUrl += "?w=100&h=128";
+                                                        }
+                                                    <a href="@Url.Content(lightBoxImg)" data-lightbox="@product.ProductID" data-title="@product.ProductName">
+                                                        <img src="@Url.Content("~/Content/images/blank.gif")" data-echo="@Url.Content(imgUrl)" alt="">
+                                                        <div class="zoom-overlay"></div>
+                                                    </a>
+                                                    <div class="produt-gallery" style="display:none;">
+                                                        @foreach(var img in product.ImageProducts.Skip(1)){
+                                                            <a href="@Url.Content(ImageHelper.ImageUrl(img.ImageName))" data-lightbox="@product.ProductID" data-title="@product.ProductName">
+                                                                <img src="@Url.Content("~/Content/images/blank.gif")" data-echo="@Url.Content(ImageHelper.ImageUrl(img.ImageName))" alt="">
+                                                                <div class="zoom-overlay"></div>
+                                                            </a>
+                                                        }
+                                                    </div>
+                                                </div><!-- /.image -->
+
+                                                @if (product.SalePrice != 0 && (product.Price - product.SalePrice) > 0)
+                                                {
+                                                    <div class="tag tag-micro sale"><span>-@(((product.Price - product.SalePrice) * 100) / product.Price)%</span></div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="tag tag-micro hot">
+                                                        <span>hot</span>
+                                                    </div>
+                                                }
+
+
+                                            </div><!-- /.product-image -->
+                                        </div><!-- /.col -->
+                                        <div class="col col-xs-7">
+                                            <div class="product-info">
+                                                <h3 class="name"><a href="#">@product.ProductName</a></h3>
+                                                <div class="product-price">
+                                                    <div class="price">
+                                                        @if (product.isSale())
+                                                        {
+                                                            @Html.FormatCurrency(product.SalePrice) <span>đ</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.FormatCurrency(product.Price) <span>đ</span>
+                                                        }
+                                                    </div>
+                                                    @if (product.isSale())
+                                                    {
+                                                        <div class="price-before-discount">@Html.FormatCurrency(product.Price) đ</div>
+                                                    }
+
+                                                </div><!-- /.product-price -->
+                                                <div class="action"><a data-id="@product.ProductID" onclick="addcart(@product.ProductID, event, this); return false;" href="#" class="lnk btn btn-primary">Thêm giỏ hàng</a></div>
+                                            </div>
+                                        </div><!-- /.col -->
+                                    </div><!-- /.product-micro-row -->
+                                </div><!-- /.product-micro -->
+
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div><!-- /.sidebar-widget-body -->
+</div><!-- /.sidebar-widget -->

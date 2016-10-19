@@ -4,7 +4,7 @@
     GroupProduct group = Model.Group;
 }
 <section class="section featured-product wow fadeInUp">
-    <h3 class="section-title">@Html.ActionLink(@group.GroupName, "Detail", "Category", new { id = group.GroupID }, null)</h3>
+    <h3 class="section-title">@Html.ActionLink(@group.GroupName, "Index", "Category", new { id = group.GroupID }, null)</h3>
     <div class="owl-carousel home-owl-carousel custom-carousel owl-theme outer-top-xs">
         @foreach (Product product in ((IEnumerable<Product>)Model.Products).Take(10))
          {

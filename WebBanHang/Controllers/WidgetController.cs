@@ -22,5 +22,14 @@ namespace WebBanHang.Controllers
             var menus = Repository.Create<MenuRepository>().FetchAll().OrderByDescending(item => item.Priority);
             return PartialView(menus);
         }
+
+        public ActionResult BestSellingProduct() {
+            return View();
+        }
+
+        public ActionResult LatestProduct() {
+            var list = Repository.Product.GetNewProduct(9);
+            return PartialView(list);
+        }
 	}
 }
