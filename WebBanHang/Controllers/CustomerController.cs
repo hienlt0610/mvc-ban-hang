@@ -1,4 +1,5 @@
 ﻿using Facebook;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -92,11 +93,48 @@ namespace WebBanHang.Controllers
         }
 
         [Authorize]
-        public ActionResult Test()
-        {
-            var session = Session["b"];
-            return Content("Hello");
+        [HttpGet]
+        public ActionResult Profile(String return_url) {
+            ViewData["Provinces"] = Repository.Province.FetchAll().ToList();
+            TempData["return_url"] = return_url;
+            if(UserManager.CurrentCustomer.ProvinceID != null)
+                ViewData["Districts"] = UserManager.CurrentCustomer.Province.Districts.ToList();
+            if(UserManager.CurrentCustomer.DistrictID != null)
+                ViewData["Wards"] = UserManager.CurrentCustomer.District.Wards.ToList();
+            var profile = UserManager.CurrentCustomer;
+            var model = Mapper.Map<Customer, ProfileViewModel>(profile);
+            return View(model);
         }
+
+        [HttpPost]
+        public ActionResult Profile(ProfileViewModel model, String return_url)
+        {
+            ViewData["Provinces"] = Repository.Province.FetchAll().ToList();
+            if (UserManager.CurrentCustomer.ProvinceID != null)
+                ViewData["Districts"] = UserManager.CurrentCustomer.Province.Districts.ToList();
+            if (UserManager.CurrentCustomer.DistrictID != null)
+                ViewData["Wards"] = UserManager.CurrentCustomer.District.Wards.ToList();
+
+            if(ModelState.IsValid){
+                var customer = Repository.Customer.FindById(UserManager.CurrentCustomer.CustomerID);
+                customer.FullName = model.FullName;
+                customer.Phone = model.Phone;
+                customer.Address = model.Address;
+                customer.ProvinceID = model.ProvinceID;
+                customer.DistrictID = model.DistrictID;
+                customer.WardID = model.WardID;
+                Repository.Customer.Update(customer);
+                Repository.Customer.SaveChanges();
+                if (TempData["return_url"] != null)
+                {
+                    return Redirect(TempData["return_url"].ToString());
+                }
+                return RedirectToAction("Profile","Customer"); 
+            }
+
+            return View(model);
+        }
+
 
         public ActionResult FacebookLogin()
         {

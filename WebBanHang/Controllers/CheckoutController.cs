@@ -14,6 +14,11 @@ namespace WebBanHang.Controllers
         // GET: /Checkout/
         public ActionResult Index()
         {
+            return RedirectToAction("Shipping");
+        }
+
+        public ActionResult Shipping()
+        {
             return View();
         }
 	}

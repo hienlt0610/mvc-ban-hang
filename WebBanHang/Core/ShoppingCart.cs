@@ -80,8 +80,8 @@ namespace WebBanHang.Core
 
         public CartItem Update(Product product, Color color, int quantity)
         {
-            //CartItem oldItem = new CartItem(product, color);
-            CartItem item = Items.Find(x => x.Equals(product, color));
+            CartItem oldItem = new CartItem(product, color);
+            CartItem item = Items.Find(x => x.Equals(oldItem));
             if (item != null)
             {
                 item.Quantity = quantity;

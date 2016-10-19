@@ -18,6 +18,9 @@ namespace WebBanHang.Core
             {
                 cfg.CreateMap<Product, AdminProductViewModel>();
                 cfg.CreateMap<Product, AdminProductViewModel>().ReverseMap();
+
+                cfg.CreateMap<Customer, ProfileViewModel>();
+                cfg.CreateMap<Customer, ProfileViewModel>().ReverseMap();
             });
         }
     }

@@ -108,13 +108,13 @@
           <Property Name="CustomerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FacebookID" Type="varchar" MaxLength="20" />
           <Property Name="GoogleID" Type="varchar" MaxLength="20" />
-          <Property Name="Username" Type="varchar" MaxLength="25" />
           <Property Name="Passwrord" Type="varchar" MaxLength="100" />
           <Property Name="FullName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="80" Nullable="false" />
           <Property Name="Address" Type="nvarchar" MaxLength="100" />
           <Property Name="ProvinceID" Type="int" />
           <Property Name="DistrictID" Type="int" />
+          <Property Name="WardID" Type="int" />
           <Property Name="Phone" Type="varchar" MaxLength="11" />
           <Property Name="Status" Type="bit" Nullable="false" />
           <Property Name="VerificationCode" Type="varchar" MaxLength="64" />
@@ -124,10 +124,10 @@
           <Key>
             <PropertyRef Name="DistrictID" />
           </Key>
-          <Property Name="DistrictID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="DistrictName" Type="nvarchar" MaxLength="50" />
-          <Property Name="ProvinceID" Type="int" />
-          <Property Name="Type" Type="varchar" MaxLength="10" />
+          <Property Name="DistrictID" Type="int" Nullable="false" />
+          <Property Name="DistrictName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProvinceID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ExcludeCoupon">
           <Key>
@@ -253,9 +253,9 @@
           <Key>
             <PropertyRef Name="ProvinceID" />
           </Key>
-          <Property Name="ProvinceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProvinceID" Type="int" Nullable="false" />
           <Property Name="ProvinceName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Type" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Quantity">
           <Key>
@@ -303,6 +303,15 @@
           </Key>
           <Property Name="RoleID" Type="int" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ward">
+          <Key>
+            <PropertyRef Name="WardId" />
+          </Key>
+          <Property Name="WardId" Type="int" Nullable="false" />
+          <Property Name="WardName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DistrictId" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_Cart_Customers">
           <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
@@ -436,8 +445,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Customers_Ward">
+          <End Role="Ward" Type="Self.Ward" Multiplicity="0..1" />
+          <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ward">
+              <PropertyRef Name="WardId" />
+            </Principal>
+            <Dependent Role="Customers">
+              <PropertyRef Name="WardID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Districts_Provinces">
-          <End Role="Provinces" Type="Self.Provinces" Multiplicity="0..1" />
+          <End Role="Provinces" Type="Self.Provinces" Multiplicity="1" />
           <End Role="Districts" Type="Self.Districts" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Provinces">
@@ -676,6 +697,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Ward_Districts">
+          <End Role="Districts" Type="Self.Districts" Multiplicity="1" />
+          <End Role="Ward" Type="Self.Ward" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Districts">
+              <PropertyRef Name="DistrictID" />
+            </Principal>
+            <Dependent Role="Ward">
+              <PropertyRef Name="DistrictId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ecommerceModelStoreContainer">
           <EntitySet Name="Advertise" EntityType="Self.Advertise" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cart" EntityType="Self.Cart" Schema="dbo" store:Type="Tables" />
@@ -705,6 +738,7 @@
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UsersInRoles" EntityType="Self.UsersInRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ward" EntityType="Self.Ward" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Cart_Customers" Association="Self.FK_Cart_Customers">
             <End Role="Customers" EntitySet="Customers" />
             <End Role="Cart" EntitySet="Cart" />
@@ -747,6 +781,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Customers_Provinces" Association="Self.FK_Customers_Provinces">
             <End Role="Provinces" EntitySet="Provinces" />
+            <End Role="Customers" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customers_Ward" Association="Self.FK_Customers_Ward">
+            <End Role="Ward" EntitySet="Ward" />
             <End Role="Customers" EntitySet="Customers" />
           </AssociationSet>
           <AssociationSet Name="FK_Districts_Provinces" Association="Self.FK_Districts_Provinces">
@@ -829,6 +867,10 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="UsersInRoles" EntitySet="UsersInRoles" />
           </AssociationSet>
+          <AssociationSet Name="FK_Ward_Districts" Association="Self.FK_Ward_Districts">
+            <End Role="Districts" EntitySet="Districts" />
+            <End Role="Ward" EntitySet="Ward" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -859,6 +901,9 @@
           <EntitySet Name="Products" EntityType="ecommerceModel.Product" />
           <EntitySet Name="Provinces" EntityType="ecommerceModel.Province" />
           <EntitySet Name="Quantities" EntityType="ecommerceModel.Quantity" />
+          <EntitySet Name="Roles" EntityType="ecommerceModel.Role" />
+          <EntitySet Name="Users" EntityType="ecommerceModel.User" />
+          <EntitySet Name="Wards" EntityType="ecommerceModel.Ward" />
           <AssociationSet Name="FK_Cart_Customers" Association="ecommerceModel.FK_Cart_Customers">
             <End Role="Customer" EntitySet="Customers" />
             <End Role="Cart" EntitySet="Carts" />
@@ -907,6 +952,10 @@
             <End Role="Province" EntitySet="Provinces" />
             <End Role="Customer" EntitySet="Customers" />
           </AssociationSet>
+          <AssociationSet Name="FK_Customers_Ward" Association="ecommerceModel.FK_Customers_Ward">
+            <End Role="Ward" EntitySet="Wards" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
           <AssociationSet Name="FK_Districts_Provinces" Association="ecommerceModel.FK_Districts_Provinces">
             <End Role="Province" EntitySet="Provinces" />
             <End Role="District" EntitySet="Districts" />
@@ -914,6 +963,10 @@
           <AssociationSet Name="FK_Orders_Districts" Association="ecommerceModel.FK_Orders_Districts">
             <End Role="District" EntitySet="Districts" />
             <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ward_Districts" Association="ecommerceModel.FK_Ward_Districts">
+            <End Role="District" EntitySet="Districts" />
+            <End Role="Ward" EntitySet="Wards" />
           </AssociationSet>
           <AssociationSet Name="FK_ExcludeCoupon_GroupProducts" Association="ecommerceModel.FK_ExcludeCoupon_GroupProducts">
             <End Role="GroupProduct" EntitySet="GroupProducts" />
@@ -971,8 +1024,6 @@
             <End Role="Color" EntitySet="Colors" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
-          <EntitySet Name="Roles" EntityType="ecommerceModel.Role" />
-          <EntitySet Name="Users" EntityType="ecommerceModel.User" />
           <AssociationSet Name="UsersInRoles" Association="ecommerceModel.UsersInRoles">
             <End Role="Role" EntitySet="Roles" />
             <End Role="User" EntitySet="Users" />
@@ -1096,13 +1147,13 @@
           <Property Name="CustomerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FacebookID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="GoogleID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Username" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Name="Passwrord" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="FullName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
           <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="ProvinceID" Type="Int32" />
           <Property Name="DistrictID" Type="Int32" />
+          <Property Name="WardID" Type="Int32" />
           <Property Name="Phone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
           <Property Name="Status" Type="Boolean" Nullable="false" />
           <Property Name="VerificationCode" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
@@ -1112,18 +1163,20 @@
           <NavigationProperty Name="Contacts" Relationship="ecommerceModel.FK_Contact_Customers" FromRole="Customer" ToRole="Contact" />
           <NavigationProperty Name="District" Relationship="ecommerceModel.FK_Customers_Districts" FromRole="Customer" ToRole="District" />
           <NavigationProperty Name="Province" Relationship="ecommerceModel.FK_Customers_Provinces" FromRole="Customer" ToRole="Province" />
+          <NavigationProperty Name="Ward" Relationship="ecommerceModel.FK_Customers_Ward" FromRole="Customer" ToRole="Ward" />
         </EntityType>
         <EntityType Name="District">
           <Key>
             <PropertyRef Name="DistrictID" />
           </Key>
-          <Property Name="DistrictID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DistrictName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProvinceID" Type="Int32" />
-          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DistrictID" Type="Int32" Nullable="false" />
+          <Property Name="DistrictName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProvinceID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Customers" Relationship="ecommerceModel.FK_Customers_Districts" FromRole="District" ToRole="Customer" />
           <NavigationProperty Name="Province" Relationship="ecommerceModel.FK_Districts_Provinces" FromRole="District" ToRole="Province" />
           <NavigationProperty Name="Orders" Relationship="ecommerceModel.FK_Orders_Districts" FromRole="District" ToRole="Order" />
+          <NavigationProperty Name="Wards" Relationship="ecommerceModel.FK_Ward_Districts" FromRole="District" ToRole="Ward" />
         </EntityType>
         <EntityType Name="ExcludeCoupon">
           <Key>
@@ -1279,9 +1332,9 @@
           <Key>
             <PropertyRef Name="ProvinceID" />
           </Key>
-          <Property Name="ProvinceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProvinceID" Type="Int32" Nullable="false" />
           <Property Name="ProvinceName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Type" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Customers" Relationship="ecommerceModel.FK_Customers_Provinces" FromRole="Province" ToRole="Customer" />
           <NavigationProperty Name="Districts" Relationship="ecommerceModel.FK_Districts_Provinces" FromRole="Province" ToRole="District" />
           <NavigationProperty Name="Orders" Relationship="ecommerceModel.FK_Orders_Provinces" FromRole="Province" ToRole="Order" />
@@ -1296,6 +1349,39 @@
           <Property Name="Stock" Type="Int32" />
           <NavigationProperty Name="Color" Relationship="ecommerceModel.FK_Quantity_Color" FromRole="Quantity" ToRole="Color" />
           <NavigationProperty Name="Product" Relationship="ecommerceModel.FK_Quantity_Products" FromRole="Quantity" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="ecommerceModel.UsersInRoles" FromRole="Role" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="IP" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="RegistrationDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Roles" Relationship="ecommerceModel.UsersInRoles" FromRole="User" ToRole="Role" />
+        </EntityType>
+        <EntityType Name="Ward">
+          <Key>
+            <PropertyRef Name="WardId" />
+          </Key>
+          <Property Name="WardId" Type="Int32" Nullable="false" />
+          <Property Name="WardName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DistrictId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Customers" Relationship="ecommerceModel.FK_Customers_Ward" FromRole="Ward" ToRole="Customer" />
+          <NavigationProperty Name="District" Relationship="ecommerceModel.FK_Ward_Districts" FromRole="Ward" ToRole="District" />
         </EntityType>
         <Association Name="FK_Cart_Customers">
           <End Type="ecommerceModel.Customer" Role="Customer" Multiplicity="0..1" />
@@ -1441,8 +1527,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Customers_Ward">
+          <End Type="ecommerceModel.Ward" Role="Ward" Multiplicity="0..1" />
+          <End Type="ecommerceModel.Customer" Role="Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ward">
+              <PropertyRef Name="WardId" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="WardID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Districts_Provinces">
-          <End Type="ecommerceModel.Province" Role="Province" Multiplicity="0..1" />
+          <End Type="ecommerceModel.Province" Role="Province" Multiplicity="1" />
           <End Type="ecommerceModel.District" Role="District" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Province">
@@ -1462,6 +1560,18 @@
             </Principal>
             <Dependent Role="Order">
               <PropertyRef Name="DistrictID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ward_Districts">
+          <End Type="ecommerceModel.District" Role="District" Multiplicity="1" />
+          <End Type="ecommerceModel.Ward" Role="Ward" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="District">
+              <PropertyRef Name="DistrictID" />
+            </Principal>
+            <Dependent Role="Ward">
+              <PropertyRef Name="DistrictId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1625,28 +1735,6 @@
           <End Type="ecommerceModel.Color" Role="Color" Multiplicity="*" />
           <End Type="ecommerceModel.Product" Role="Product" Multiplicity="*" />
         </Association>
-        <EntityType Name="Role">
-          <Key>
-            <PropertyRef Name="RoleID" />
-          </Key>
-          <Property Name="RoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Users" Relationship="ecommerceModel.UsersInRoles" FromRole="Role" ToRole="User" />
-        </EntityType>
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="UserID" />
-          </Key>
-          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Username" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="FullName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
-          <Property Name="IP" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="Boolean" Nullable="false" />
-          <Property Name="RegistrationDate" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Roles" Relationship="ecommerceModel.UsersInRoles" FromRole="User" ToRole="Role" />
-        </EntityType>
         <Association Name="UsersInRoles">
           <End Type="ecommerceModel.Role" Role="Role" Multiplicity="*" />
           <End Type="ecommerceModel.User" Role="User" Multiplicity="*" />
@@ -1768,13 +1856,13 @@
                 <ScalarProperty Name="VerificationCode" ColumnName="VerificationCode" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="WardID" ColumnName="WardID" />
                 <ScalarProperty Name="DistrictID" ColumnName="DistrictID" />
                 <ScalarProperty Name="ProvinceID" ColumnName="ProvinceID" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
                 <ScalarProperty Name="Passwrord" ColumnName="Passwrord" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="GoogleID" ColumnName="GoogleID" />
                 <ScalarProperty Name="FacebookID" ColumnName="FacebookID" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
@@ -1784,8 +1872,8 @@
           <EntitySetMapping Name="Districts">
             <EntityTypeMapping TypeName="ecommerceModel.District">
               <MappingFragment StoreEntitySet="Districts">
-                <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="ProvinceID" ColumnName="ProvinceID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="DistrictName" ColumnName="DistrictName" />
                 <ScalarProperty Name="DistrictID" ColumnName="DistrictID" />
               </MappingFragment>
@@ -1937,14 +2025,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="ColorProducts" TypeName="ecommerceModel.ColorProducts" StoreEntitySet="ColorProducts">
-            <EndProperty Name="Product">
-              <ScalarProperty Name="ProductID" ColumnName="ProductID" />
-            </EndProperty>
-            <EndProperty Name="Color">
-              <ScalarProperty Name="ColorID" ColumnName="ColorID" />
-            </EndProperty>
-          </AssociationSetMapping>
           <EntitySetMapping Name="Roles">
             <EntityTypeMapping TypeName="ecommerceModel.Role">
               <MappingFragment StoreEntitySet="Roles">
@@ -1967,6 +2047,24 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Wards">
+            <EntityTypeMapping TypeName="ecommerceModel.Ward">
+              <MappingFragment StoreEntitySet="Ward">
+                <ScalarProperty Name="DistrictId" ColumnName="DistrictId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="WardName" ColumnName="WardName" />
+                <ScalarProperty Name="WardId" ColumnName="WardId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ColorProducts" TypeName="ecommerceModel.ColorProducts" StoreEntitySet="ColorProducts">
+            <EndProperty Name="Product">
+              <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+            </EndProperty>
+            <EndProperty Name="Color">
+              <ScalarProperty Name="ColorID" ColumnName="ColorID" />
+            </EndProperty>
+          </AssociationSetMapping>
           <AssociationSetMapping Name="UsersInRoles" TypeName="ecommerceModel.UsersInRoles" StoreEntitySet="UsersInRoles">
             <EndProperty Name="User">
               <ScalarProperty Name="UserID" ColumnName="UserID" />

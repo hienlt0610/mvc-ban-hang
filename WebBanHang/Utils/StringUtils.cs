@@ -12,5 +12,10 @@ namespace WebBanHang.Utils
                 return def;
             return temp;
         }
+
+        public static String ShortCity(String s)
+        {
+            return s.Replace("Thành Phố","TP. ");
+        }
     }
 }

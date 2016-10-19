@@ -18,15 +18,17 @@ namespace WebBanHang.Models
         {
             this.Customers = new HashSet<Customer>();
             this.Orders = new HashSet<Order>();
+            this.Wards = new HashSet<Ward>();
         }
     
         public int DistrictID { get; set; }
         public string DistrictName { get; set; }
-        public Nullable<int> ProvinceID { get; set; }
         public string Type { get; set; }
+        public int ProvinceID { get; set; }
     
         public virtual ICollection<Customer> Customers { get; set; }
         public virtual Province Province { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Ward> Wards { get; set; }
     }
 }

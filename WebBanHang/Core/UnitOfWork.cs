@@ -20,6 +20,9 @@ namespace WebBanHang.Core
         private MenuRepository menuRepository;
         private ProductRepository productRepository;
         private UserRepository userRepository;
+        private ProvinceRepository provinceRepository;
+        private DistrictRepository districtRepository;
+        private WardRepository wardRepository;
 
         public UnitOfWork(DbContext dbContext)
         {
@@ -105,6 +108,39 @@ namespace WebBanHang.Core
                 if (productRepository == null)
                     productRepository = new ProductRepository(_dbContext);
                 return productRepository;
+            }
+
+        }
+
+        public ProvinceRepository Province
+        {
+            get
+            {
+                if (provinceRepository == null)
+                    provinceRepository = new ProvinceRepository(_dbContext);
+                return provinceRepository;
+            }
+
+        }
+
+        public DistrictRepository District
+        {
+            get
+            {
+                if (districtRepository == null)
+                    districtRepository = new DistrictRepository(_dbContext);
+                return districtRepository;
+            }
+
+        }
+
+        public WardRepository Ward
+        {
+            get
+            {
+                if (wardRepository == null)
+                    wardRepository = new WardRepository(_dbContext);
+                return wardRepository;
             }
 
         }

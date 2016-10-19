@@ -947,36 +947,43 @@ a {
   float: right;
   padding: 6px 0px;
 }
-.top-bar .cnt-account ul {
+.top-bar .cnt-account ul.dropdown-menu:before {
+  position: absolute;
+  top: -7px;
+  left: 9px;
+  display: inline-block;
+  border-right: 7px solid transparent;
+  border-bottom: 7px solid #ccc;
+  border-left: 7px solid transparent;
+  border-bottom-color: rgba(0, 0, 0, 0.2);
+  content: '';
+}
+
+.top-bar .cnt-account ul.dropdown-menu:after {
+  position: absolute;
+  top: -6px;
+  left: 10px;
+  display: inline-block;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #ffffff;
+  border-left: 6px solid transparent;
+  content: '';
+}
+.top-bar .cnt-account ul > li a:hover,
+.top-bar .cnt-account ul > li a:focus {
+  text-decoration: none;
+}
+.top-bar .cnt-account > ul {
   margin: 0px;
 }
-.top-bar .cnt-account ul > li {
+.top-bar .cnt-account > ul > li {
   display: inline-block;
   line-height: 12px;
   padding: 3px 12px;
   border-left: 1px solid #e2e2e2;
 }
-.top-bar .cnt-account ul > li:last-child {
-  border-right: 1px solid #e2e2e2;
-}
-.top-bar .cnt-account ul > li a {
-  color: #888888;
-  padding: 0px;
-  font-weight: 400;
-  -webkit-transition: all 0.2s linear 0s;
-  -moz-transition: all 0.2s linear 0s;
-  -o-transition: all 0.2s linear 0s;
-  transition: all 0.2s linear 0s;
-}
-.top-bar .cnt-account ul > li a .icon {
-  display: block;
-  float: left;
-  padding-right: 6px;
-  font-size: 11px;
-}
-.top-bar .cnt-account ul > li a:hover,
-.top-bar .cnt-account ul > li a:focus {
-  text-decoration: none;
+.top-bar .cnt-account ul li ul.dropdown-menu {
+  top:30px;
 }
 .top-bar .cnt-block {
   float: right;
@@ -2617,6 +2624,7 @@ a {
   font-size: 11px;
   line-height: 29px;
   top: 5.5%;
+  right:5%;
 }
 .cnt-home .product-micro .product-info .name {
   font-size: 15px;
@@ -5333,3 +5341,59 @@ label.error {
     margin:auto 0 auto auto;
     background-color:yellow;
 }
+
+.progressbar {
+      counter-reset: step;
+      margin:20px 0px;
+      display: flex;
+        justify-content: center;
+  }
+  .progressbar li {
+      list-style-type: none;
+      width: 25%;
+      float: left;
+      font-size: 15px;
+      position: relative;
+      text-align: center;
+      text-transform: uppercase;
+      color: #7d7d7d;
+  }
+  .progressbar li:before {
+      width: 30px;
+      height: 30px;
+      content: counter(step);
+      counter-increment: step;
+      line-height: 28px;
+      border: 2px solid #7d7d7d;
+      display: block;
+      text-align: center;
+      margin: 0 auto 10px auto;
+      border-radius: 50%;
+      background-color: white;
+  }
+  .progressbar li:after {
+      width: 100%;
+      height: 2px;
+      content: '';
+      position: absolute;
+      background-color: #7d7d7d;
+      top: 15px;
+      left: -50%;
+      z-index: -1;
+  }
+  .progressbar li:first-child:after {
+      content: none;
+  }
+  .progressbar li.active {
+      color: green;
+  }
+  .progressbar li.active:before {
+      border-color: #55b776;
+      background:#55b776;
+      color:#fff;
+      font-weight:bold;
+  }
+  .progressbar li.active + li:after {
+      background-color: #55b776;
+  }
+ 

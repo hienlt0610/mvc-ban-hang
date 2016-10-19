@@ -51,5 +51,6 @@ namespace WebBanHang.Models
         public virtual DbSet<Quantity> Quantities { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Ward> Wards { get; set; }
     }
 }

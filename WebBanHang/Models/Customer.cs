@@ -24,13 +24,13 @@ namespace WebBanHang.Models
         public int CustomerID { get; set; }
         public string FacebookID { get; set; }
         public string GoogleID { get; set; }
-        public string Username { get; set; }
         public string Passwrord { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
         public Nullable<int> ProvinceID { get; set; }
         public Nullable<int> DistrictID { get; set; }
+        public Nullable<int> WardID { get; set; }
         public string Phone { get; set; }
         public bool Status { get; set; }
         public string VerificationCode { get; set; }
@@ -41,5 +41,6 @@ namespace WebBanHang.Models
         public virtual ICollection<Contact> Contacts { get; set; }
         public virtual District District { get; set; }
         public virtual Province Province { get; set; }
+        public virtual Ward Ward { get; set; }
     }
 }

@@ -1,0 +1,151 @@
+﻿@model ProfileViewModel
+@{
+    ViewBag.Title = "Quản lý thông tin cá nhân";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var provinces = (List<Province>)ViewData["Provinces"];
+    var provincesListItem = provinces.Select(s => new SelectListItem{
+        Value = s.ProvinceID.ToString(),
+        Text = StringUtils.ShortCity(s.Type) + " " + s.ProvinceName
+    });
+    var districts = new List<SelectListItem>();
+    var wards = new List<SelectListItem>();
+    if (ViewData["Districts"] != null) {
+        districts.AddRange((ViewData["Districts"] as List<District>).OrderBy(i=>i.DistrictName).Select(i => new SelectListItem { 
+            Value = i.DistrictID.ToString(),
+            Text = i.Type + " " + i.DistrictName
+        }));
+    }
+    if (ViewData["Wards"] != null)
+    {
+        wards.AddRange((ViewData["Wards"] as IEnumerable<Ward>).OrderBy(i => i.WardName).Select(i => new SelectListItem
+        {
+            Value = i.WardId.ToString(),
+            Text = i.Type+" "+i.WardName
+        }));
+    }
+}
+<div class="breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-inner">
+            <ul class="list-inline list-unstyled">
+                <li><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+                <li class='active'>@ViewBag.Title</li>
+            </ul>
+        </div><!-- /.breadcrumb-inner -->
+    </div><!-- /.container -->
+</div><!-- /.breadcrumb -->
+<div class="body-content outer-top-bd">
+    <div class="container">
+        @using (Html.BeginForm("Profile", "Customer", FormMethod.Post, new { @class = "form-horizontal" }))
+        {   
+        <fieldset>    
+            <!-- Form Name -->
+            <legend>Thông tin cá nhân</legend>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="active"><a href="#general" role="tab" data-toggle="tab">Thông tin chung</a></li>
+                <li><a href="#account" role="tab" data-toggle="tab">Tài khoản</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane active vertical-pad" id="general">
+                    <div class="form-group m-t-15">
+                        @Html.LabelFor(m => m.FullName, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(m => m.FullName, new { @class = "form-control input-md" })
+                            @Html.ValidationLabel("FullName","error")
+                        </div>
+                    </div>
+
+                    <div class="form-group m-t-15">
+                        @Html.LabelFor(m => m.Phone, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control input-md"})
+                            @Html.ValidationLabel("Phone", "error")
+                        </div>
+                    </div>
+
+                    <div class="form-group m-t-15">
+                        @Html.LabelFor(m => m.Address, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-4">
+                            <small>Vui lòng điền CHÍNH XÁC "tầng, số nhà, đường" để tránh trường hợp đơn hàng bị hủy ngoài ý muốn *</small>
+                            @Html.TextBoxFor(m => m.Address, new { @class = "form-control input-md" })
+                            @Html.ValidationLabel("Address", "error")
+                        </div>
+                    </div>
+
+                    <div class="form-group m-t-15">
+                        @Html.LabelFor(m => m.ProvinceID, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-4">
+                            @Html.DropDownListFor(model => model.ProvinceID,
+                            new SelectList(provincesListItem, "Value", "Text"), "Xin vui lòng chọn Tỉnh/Tp",
+                        new { @class = "form-control input-md address-choose", id = "drop-province" })
+                            @Html.ValidationLabel("ProvinceID", "error")
+                        </div>
+                    </div>
+
+                    <div class="form-group m-t-15">
+                        @Html.LabelFor(m => m.DistrictID, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-4">
+                            @Html.DropDownListFor(model => model.DistrictID,
+                            new SelectList(districts, "Value", "Text"), "Xin vui lòng chọn Quận/Huyện",
+                     new { @class = "form-control input-md address-choose", id = "drop-district" })
+                            @Html.ValidationLabel("DistrictID", "error")
+                        </div>
+                    </div>
+
+                    <div class="form-group m-t-15">
+                        @Html.LabelFor(m => m.WardID, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-4">
+                            @Html.DropDownListFor(model => model.WardID,
+                            new SelectList(wards, "Value", "Text"), "Xin vui lòng chọn Phường/Xã",
+                            new { @class = "form-control input-md address-choose", id = "drop-ward" })
+                            @Html.ValidationLabel("WardID", "error")
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane vertical-pad" id="account">
+                    
+                </div>
+            </div>
+            <!-- Button -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="singlebutton"></label>
+                <div class="col-md-4">
+                    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Cập nhật</button>
+                </div>
+            </div>
+        </fieldset>
+        }
+    </div>  <!--/container-->
+</div>
+
+
+@section masterjs{
+    <script>
+        $('.address-choose').change(function () {
+            var id = this.id;
+            var value = $(this).val();
+            if (id == 'drop-province') {
+                $('#drop-district').html('<option value="">Xin vui lòng chọn Quận/Huyện</option>');
+                $('#drop-ward').html('<option value="">Xin vui lòng chọn Phường/Xã</option>');
+                $.getJSON("/AppApi/District_In_Province", { id: value }, function (data) {
+                    if (data.status == 'ok') {
+                        $.each(data.districts, function (i, item) {
+                            $('#drop-district').append('<option value="' + item.district_id + '">' + item.district_type + ' ' + item.district_name + '</option>');
+                        });
+                    }
+                });
+            } else if (id == 'drop-district') {
+                $('#drop-ward').html('<option value="">Xin vui lòng chọn Phường/Xã</option>');
+                $.getJSON("/AppApi/Ward_In_District", { id: value }, function (data) {
+                    if (data.status == 'ok') {
+                        $.each(data.wards, function (i, item) {
+                            $('#drop-ward').append('<option value="' + item.ward_id + '">' + item.ward_type + ' ' + item.ward_name + '</option>');
+                        });
+                    }
+                });
+            }
+        });
+    </script>    
+}
