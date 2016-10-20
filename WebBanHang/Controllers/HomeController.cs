@@ -16,8 +16,8 @@ namespace WebBanHang.Controllers
     {
         public ActionResult Index()
         {
-            var productRes = Repository.Create<ProductRepository>();
-            var groupRes = Repository.Create<GroupProductRepository>(); 
+            var productRes = Repository.Bind<ProductRepository>();
+            var groupRes = Repository.Bind<GroupProductRepository>(); 
             dynamic model = new ExpandoObject();
             model.NewProduct = productRes.GetNewProduct(5);
             model.GroupProducts = groupRes.GetTopGroupProducts();
@@ -26,7 +26,7 @@ namespace WebBanHang.Controllers
 
         public ActionResult SideBarMenu()
         {
-            var groupProduct = Repository.Create<GroupProductRepository>()
+            var groupProduct = Repository.Bind<GroupProductRepository>()
                             .FetchAll()
                             .Where(item => item.ParentGroupID == null)
                             .OrderByDescending(item => item.Priority)
@@ -36,7 +36,7 @@ namespace WebBanHang.Controllers
 
         public ActionResult ShowGroupItem(int id)
         {
-            var groupRes = Repository.Create<GroupProductRepository>();
+            var groupRes = Repository.Bind<GroupProductRepository>();
             dynamic model = new ExpandoObject();
             List<Product> products = groupRes.GetProductInGroups(id);
             model.Products = products;

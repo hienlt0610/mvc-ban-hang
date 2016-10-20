@@ -19,7 +19,7 @@ namespace WebBanHang.Controllers
 
         public ActionResult Navbar()
         {
-            var menus = Repository.Create<MenuRepository>().FetchAll().OrderByDescending(item => item.Priority);
+            var menus = Repository.Bind<MenuRepository>().FetchAll().OrderByDescending(item => item.Priority);
             return PartialView(menus);
         }
 

@@ -17,7 +17,7 @@ namespace WebBanHang.Controllers
         GroupProductRepository groupRepository;
         public CategoryController()
         {
-            groupRepository = Repository.Create<GroupProductRepository>();
+            groupRepository = Repository.Bind<GroupProductRepository>();
         }
         //
         // GET: /Category/
@@ -46,7 +46,7 @@ namespace WebBanHang.Controllers
 
         public ActionResult ShowProductInCategory(int id, int? page)
         {
-            var config = Repository.Create<ConfigRepository>().FindById("product_per_page");
+            var config = Repository.Bind<ConfigRepository>().FindById("product_per_page");
             var pageSize = config.Value.ToIntWithDef(1);
             if (pageSize < 1) pageSize = 1;
             int pageNumber = (page ?? 1);

@@ -21,24 +21,25 @@ namespace WebBanHang.Models
     
         public int OrderID { get; set; }
         public int CustomerID { get; set; }
-        public Nullable<int> PaymentID { get; set; }
-        public Nullable<System.DateTime> OrderDate { get; set; }
+        public int PaymentID { get; set; }
+        public System.DateTime OrderDate { get; set; }
         public string FullName { get; set; }
-        public string Email { get; set; }
         public string Address { get; set; }
-        public Nullable<int> ProvinceID { get; set; }
-        public Nullable<int> DistrictID { get; set; }
+        public int ProvinceID { get; set; }
+        public int DistrictID { get; set; }
+        public int WardID { get; set; }
         public string Phone { get; set; }
-        public Nullable<long> TotalPrice { get; set; }
-        public Nullable<long> Discount { get; set; }
-        public System.DateTime PaymentDate { get; set; }
-        public Nullable<bool> Paid { get; set; }
+        public long TotalPrice { get; set; }
+        public long Discount { get; set; }
+        public Nullable<System.DateTime> PaymentDate { get; set; }
+        public bool Paid { get; set; }
         public string CouponCode { get; set; }
-        public string Status { get; set; }
+        public string Comment { get; set; }
     
         public virtual District District { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual Payment Payment { get; set; }
         public virtual Province Province { get; set; }
+        public virtual Ward Ward { get; set; }
     }
 }

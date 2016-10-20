@@ -1031,7 +1031,7 @@
     }
     if (group.GroupID == currGroupID)
     {
-        <li class="active">@group.GroupName</li>
+        <li class="active"><a href="@Url.Action("Detail", "Category",  new { id = group.GroupID })">@group.GroupName</a></li>
     }
     else
     {

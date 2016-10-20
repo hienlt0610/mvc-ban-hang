@@ -35,7 +35,7 @@ namespace WebBanHang.Core
            
             //  set viewbag data
             dynamic viewBagData = new ExpandoObject();
-            viewBagData.Config = Repository.Create<ConfigRepository>()
+            viewBagData.Config = Repository.Bind<ConfigRepository>()
                                         .FetchAll()
                                         .ToDictionary(item => item.ConfigName, item => item.Value)
                                         .WithDefaultValue("none");

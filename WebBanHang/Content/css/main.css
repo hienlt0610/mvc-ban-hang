@@ -5516,3 +5516,5 @@ label.error {
 .dialog-confirm .modal-dialog.modal-sm{
     width:480px;
 }
+
+.field-validation-error{ color: red; font-weight: bold; }

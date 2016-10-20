@@ -2,6 +2,9 @@
 @{
     ViewBag.Title = "Thanh toán đơn hàng";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var pCod = (Payment)ViewData["pCod"];
+    var pAtm = (Payment)ViewData["pAtm"];
+    var pOnline = (Payment)ViewData["pOnline"];
 }
 
 <div class="container">
@@ -14,18 +17,18 @@
     <!-- Breadcrumb End-->
     <div class="row" style="margin-bottom:20px;">
         <div class="col-sm-8">
+            @using (Html.BeginForm("Payment", "Checkout", FormMethod.Post, new { id = "paymentForm" }))
+            {
             <div class="row">
                 <div class="col-sm-12">
-                    @{ Html.EnableClientValidation(false); }
-                    @using(Html.BeginForm("Payment","Checkout",FormMethod.Post)){
-                        @Html.HiddenFor(m=>m.CustomerID)
-                        @Html.HiddenFor(m=>m.FullName)
-                        @Html.HiddenFor(m=>m.Address)
-                        @Html.HiddenFor(m=>m.ProvinceID)
-                        @Html.HiddenFor(m=>m.DistrictID)
-                        @Html.HiddenFor(m=>m.WardID)
+                        @Html.HiddenFor(m => m.CustomerID)
+                        @Html.HiddenFor(m => m.FullName)
+                        @Html.HiddenFor(m => m.Phone)
+                        @Html.HiddenFor(m => m.Address)
+                        @Html.HiddenFor(m => m.ProvinceID)
+                        @Html.HiddenFor(m => m.DistrictID)
+                        @Html.HiddenFor(m => m.WardID)
                     <div class="panel panel-default ship-address">
-                        @{ Html.EnableClientValidation(true); }
                         <div class="panel-heading">
                             <h4 class="panel-title">
                                 <i class="fa fa-ticket"></i> Phương thức thanh toán
@@ -33,9 +36,13 @@
                         </div>
                         <div class="panel-body infomation">
                             <div class="adr-oms horizontal form" id="form_payment_method">
+                                @Html.ValidationMessageFor(m => m.PaymentMethod, null, new { @class = "error" })
+                                @if (pCod != null && pCod.Active)
+                                {
+                                <!--COD-->
                                 <div class="group">
                                     <div class="adr-oms radio payment-method-1 select-method">
-                                        <input checked type="radio" id="payment_cod" name="PaymentMethod" value="payment_cod">
+                                        @Html.RadioButtonFor(m => m.PaymentMethod, @pCod.PaymentID, new { id = "payment_cod" })
                                         <label for="payment_cod">
                                             <div class="adr-oms payment-method">
                                                 <div class="thumbnail">
@@ -49,16 +56,20 @@
                                         </label>
                                     </div>
                                 </div>
+                                }
+                                @if (pAtm != null && pAtm.Active)
+                                { 
+                                <!--ATM-->
                                 <div class="group">
                                     <div class="adr-oms radio payment-method-4 select-method">
-                                        <input type="radio" id="payment_atm" name="PaymentMethod" value="payment_atm">
+                                        @Html.RadioButtonFor(m => m.PaymentMethod, @pAtm.PaymentID, new { id = "payment_atm" })
                                         <label for="payment_atm">
                                             <div class="adr-oms payment-method">
                                                 <div class="thumbnail">
                                                     <img alt="" src="~/Content/images/payment_atm.png">
                                                 </div>
                                                 <div class="description">
-                                                    <div class="title">Thanh toán bằng thẻ ATM</div>
+                                                    <div class="title">Thanh toán bằng thẻ ATM / Chuyển khoản</div>
                                                     <div class="subtitle">
                                                         Thẻ ATM của bạn cần đăng ký sử dụng dịch vụ Internet Banking.
                                                         <br>
@@ -69,18 +80,22 @@
                                         </label>
                                     </div>
                                 </div>
+                                }
+                                @if (pAtm != null && pOnline.Active)
+                                {
+                                <!--ONLINE PAYMENT-->
                                 <div class="group">
                                     <div class="adr-oms radio payment-method-6 select-method">
-                                        <input type="radio" id="payment_visa" name="PaymentMethod" value="payment_visa">
+                                        @Html.RadioButtonFor(m => m.PaymentMethod, @pOnline.PaymentID, new { id = "payment_visa" })
                                         <label for="payment_visa">
                                             <div class="adr-oms payment-method">
                                                 <div class="thumbnail">
                                                     <img alt="" src="~/Content/images/payment_visa.png">
                                                 </div>
                                                 <div class="description">
-                                                    <div class="title">Thanh toán bằng thẻ thanh toán quốc tế</div>
+                                                    <div class="title">Thanh toán trực tuyến bằng thẻ quốc tế / nội địa</div>
                                                     <div class="subtitle">
-                                                        Hỗ trợ Credit và Debit.
+                                                        Hỗ trợ Credit, Debit, thẻ nội địa.
                                                         <br>
                                                         <span>Bạn sẽ được chuyển tới OnePay để thanh toán.</span>
                                                     </div>
@@ -88,6 +103,25 @@
                                             </div>
                                         </label>
                                     </div>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="panel panel-default order-comment">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <i class="fa fa-ticket"></i> Thông tin thêm
+                            </h4>
+                        </div>
+                        <div class="panel-body more-info">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Comment, new { @class = "col-md-2 control-label" })
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(m => m.Comment, new { @class = "form-control", rows = "5" })
+                                    @Html.ValidationMessageFor(m => m.Comment)
                                 </div>
                             </div>
                         </div>
@@ -97,9 +131,9 @@
                             <span class="btn-label"><i class="fa fa-credit-card add-cart"></i></span>Thanh toán
                         </button>
                     </div>
-                    }
                 </div>
             </div>
+            }
         </div>
         <div class="col-sm-4">
             <div class="row">
@@ -154,4 +188,3 @@
         </div>
     </div>
 </div>
-

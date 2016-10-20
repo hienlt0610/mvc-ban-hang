@@ -23,6 +23,8 @@ namespace WebBanHang.Core
         private ProvinceRepository provinceRepository;
         private DistrictRepository districtRepository;
         private WardRepository wardRepository;
+        private OrderRepository orderRepository;
+        private PaymentRepository paymentRepository;
 
         public UnitOfWork(DbContext dbContext)
         {
@@ -155,7 +157,27 @@ namespace WebBanHang.Core
             }
         }
 
-        public T Create<T>() where T : class
+        public PaymentRepository Payment
+        {
+            get
+            {
+                if (paymentRepository == null)
+                    paymentRepository = new PaymentRepository(_dbContext);
+                return paymentRepository;
+            }
+        }
+
+        public OrderRepository Order
+        {
+            get
+            {
+                if (orderRepository == null)
+                    orderRepository = new OrderRepository(_dbContext);
+                return orderRepository;
+            }
+        }
+
+        public T Bind<T>() where T : class
         {
             if (dict.ContainsKey(typeof(T))) return (T)dict[typeof(T)];
             var result = (T) Activator.CreateInstance(typeof(T), _dbContext);
@@ -165,6 +187,11 @@ namespace WebBanHang.Core
                 return result;
             }
             return null;
+        }
+
+        public RepositoryModel<T> Create<T>() where T : class
+        {
+            return new RepositoryModel<T>(_dbContext);
         }
 
         private bool IsSubclassOfRawGeneric(Type generic, Type toCheck)

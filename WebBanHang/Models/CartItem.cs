@@ -9,7 +9,7 @@ namespace WebBanHang.Models
     public class CartItem : IEquatable<CartItem>
     {
         public int ProductID { get; set; }
-        public int ColorID { get; set; }
+        public int? ColorID { get; set; }
         public Color Color { get; set; }
         public long Price
         {

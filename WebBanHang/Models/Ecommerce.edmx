@@ -191,10 +191,10 @@
           </Key>
           <Property Name="OrderID" Type="int" Nullable="false" />
           <Property Name="ProductID" Type="int" Nullable="false" />
-          <Property Name="Price" Type="bigint" />
-          <Property Name="Quantity" Type="tinyint" />
+          <Property Name="Price" Type="bigint" Nullable="false" />
+          <Property Name="Quantity" Type="tinyint" Nullable="false" />
           <Property Name="ColorID" Type="int" />
-          <Property Name="Total" Type="bigint" />
+          <Property Name="Total" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="Orders">
           <Key>
@@ -202,27 +202,28 @@
           </Key>
           <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerID" Type="int" Nullable="false" />
-          <Property Name="PaymentID" Type="int" />
-          <Property Name="OrderDate" Type="smalldatetime" />
-          <Property Name="FullName" Type="nvarchar" MaxLength="50" />
-          <Property Name="Email" Type="varchar" MaxLength="80" />
-          <Property Name="Address" Type="nvarchar" MaxLength="100" />
-          <Property Name="ProvinceID" Type="int" />
-          <Property Name="DistrictID" Type="int" />
-          <Property Name="Phone" Type="varchar" MaxLength="11" />
-          <Property Name="TotalPrice" Type="bigint" />
-          <Property Name="Discount" Type="bigint" />
-          <Property Name="PaymentDate" Type="smalldatetime" Nullable="false" />
-          <Property Name="Paid" Type="bit" />
+          <Property Name="PaymentID" Type="int" Nullable="false" />
+          <Property Name="OrderDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ProvinceID" Type="int" Nullable="false" />
+          <Property Name="DistrictID" Type="int" Nullable="false" />
+          <Property Name="WardID" Type="int" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="11" Nullable="false" />
+          <Property Name="TotalPrice" Type="bigint" Nullable="false" />
+          <Property Name="Discount" Type="bigint" Nullable="false" />
+          <Property Name="PaymentDate" Type="smalldatetime" />
+          <Property Name="Paid" Type="bit" Nullable="false" />
           <Property Name="CouponCode" Type="varchar" MaxLength="10" />
-          <Property Name="Status" Type="varchar" MaxLength="10" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="400" />
         </EntityType>
         <EntityType Name="Payments">
           <Key>
             <PropertyRef Name="PaymentID" />
           </Key>
           <Property Name="PaymentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="PaymentType" Type="varchar" MaxLength="10" />
+          <Property Name="PaymentType" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductOptions">
           <Key>
@@ -554,7 +555,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_OrderDetails_Orders">
-          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Orders">
@@ -566,7 +569,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_OrderDetails_Products">
-          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Products">
@@ -578,7 +583,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Orders_Districts">
-          <End Role="Districts" Type="Self.Districts" Multiplicity="0..1" />
+          <End Role="Districts" Type="Self.Districts" Multiplicity="1" />
           <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Districts">
@@ -590,7 +595,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Orders_Payments">
-          <End Role="Payments" Type="Self.Payments" Multiplicity="0..1" />
+          <End Role="Payments" Type="Self.Payments" Multiplicity="1" />
           <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Payments">
@@ -602,7 +607,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Orders_Provinces">
-          <End Role="Provinces" Type="Self.Provinces" Multiplicity="0..1" />
+          <End Role="Provinces" Type="Self.Provinces" Multiplicity="1" />
           <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Provinces">
@@ -610,6 +615,18 @@
             </Principal>
             <Dependent Role="Orders">
               <PropertyRef Name="ProvinceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_Ward">
+          <End Role="Ward" Type="Self.Ward" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ward">
+              <PropertyRef Name="WardId" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="WardID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -839,6 +856,10 @@
             <End Role="Provinces" EntitySet="Provinces" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
+          <AssociationSet Name="FK_Orders_Ward" Association="Self.FK_Orders_Ward">
+            <End Role="Ward" EntitySet="Ward" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
           <AssociationSet Name="FK_ProductOptions_Options" Association="Self.FK_ProductOptions_Options">
             <End Role="Options" EntitySet="Options" />
             <End Role="ProductOptions" EntitySet="ProductOptions" />
@@ -1010,6 +1031,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Orders_Provinces" Association="ecommerceModel.FK_Orders_Provinces">
             <End Role="Province" EntitySet="Provinces" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Ward" Association="ecommerceModel.FK_Orders_Ward">
+            <End Role="Ward" EntitySet="Wards" />
             <End Role="Order" EntitySet="Orders" />
           </AssociationSet>
           <AssociationSet Name="FK_ProductOptions_Products" Association="ecommerceModel.FK_ProductOptions_Products">
@@ -1252,10 +1277,10 @@
           </Key>
           <Property Name="OrderID" Type="Int32" Nullable="false" />
           <Property Name="ProductID" Type="Int32" Nullable="false" />
-          <Property Name="Price" Type="Int64" />
-          <Property Name="Quantity" Type="Byte" />
+          <Property Name="Price" Type="Int64" Nullable="false" />
+          <Property Name="Quantity" Type="Byte" Nullable="false" />
           <Property Name="ColorID" Type="Int32" />
-          <Property Name="Total" Type="Int64" />
+          <Property Name="Total" Type="Int64" Nullable="false" />
           <NavigationProperty Name="Color" Relationship="ecommerceModel.FK_OrderDetails_Color" FromRole="OrderDetail" ToRole="Color" />
           <NavigationProperty Name="Order" Relationship="ecommerceModel.FK_OrderDetails_Orders" FromRole="OrderDetail" ToRole="Order" />
           <NavigationProperty Name="Product" Relationship="ecommerceModel.FK_OrderDetails_Products" FromRole="OrderDetail" ToRole="Product" />
@@ -1266,31 +1291,33 @@
           </Key>
           <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
-          <Property Name="PaymentID" Type="Int32" />
-          <Property Name="OrderDate" Type="DateTime" Precision="0" />
-          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
-          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="ProvinceID" Type="Int32" />
-          <Property Name="DistrictID" Type="Int32" />
-          <Property Name="Phone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
-          <Property Name="TotalPrice" Type="Int64" />
-          <Property Name="Discount" Type="Int64" />
-          <Property Name="PaymentDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Paid" Type="Boolean" />
+          <Property Name="PaymentID" Type="Int32" Nullable="false" />
+          <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ProvinceID" Type="Int32" Nullable="false" />
+          <Property Name="DistrictID" Type="Int32" Nullable="false" />
+          <Property Name="WardID" Type="Int32" Nullable="false" />
+          <Property Name="Phone" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="TotalPrice" Type="Int64" Nullable="false" />
+          <Property Name="Discount" Type="Int64" Nullable="false" />
+          <Property Name="PaymentDate" Type="DateTime" Precision="0" />
+          <Property Name="Paid" Type="Boolean" Nullable="false" />
           <Property Name="CouponCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Comment" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="District" Relationship="ecommerceModel.FK_Orders_Districts" FromRole="Order" ToRole="District" />
           <NavigationProperty Name="OrderDetails" Relationship="ecommerceModel.FK_OrderDetails_Orders" FromRole="Order" ToRole="OrderDetail" />
           <NavigationProperty Name="Payment" Relationship="ecommerceModel.FK_Orders_Payments" FromRole="Order" ToRole="Payment" />
           <NavigationProperty Name="Province" Relationship="ecommerceModel.FK_Orders_Provinces" FromRole="Order" ToRole="Province" />
+          <NavigationProperty Name="Ward" Relationship="ecommerceModel.FK_Orders_Ward" FromRole="Order" ToRole="Ward" />
         </EntityType>
         <EntityType Name="Payment">
           <Key>
             <PropertyRef Name="PaymentID" />
           </Key>
           <Property Name="PaymentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PaymentType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentType" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Orders" Relationship="ecommerceModel.FK_Orders_Payments" FromRole="Payment" ToRole="Order" />
         </EntityType>
         <EntityType Name="ProductOption">
@@ -1382,6 +1409,7 @@
           <Property Name="DistrictId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Customers" Relationship="ecommerceModel.FK_Customers_Ward" FromRole="Ward" ToRole="Customer" />
           <NavigationProperty Name="District" Relationship="ecommerceModel.FK_Ward_Districts" FromRole="Ward" ToRole="District" />
+          <NavigationProperty Name="Orders" Relationship="ecommerceModel.FK_Orders_Ward" FromRole="Ward" ToRole="Order" />
         </EntityType>
         <Association Name="FK_Cart_Customers">
           <End Type="ecommerceModel.Customer" Role="Customer" Multiplicity="0..1" />
@@ -1552,7 +1580,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Orders_Districts">
-          <End Type="ecommerceModel.District" Role="District" Multiplicity="0..1" />
+          <End Type="ecommerceModel.District" Role="District" Multiplicity="1" />
           <End Type="ecommerceModel.Order" Role="Order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="District">
@@ -1660,7 +1688,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_OrderDetails_Orders">
-          <End Type="ecommerceModel.Order" Role="Order" Multiplicity="1" />
+          <End Type="ecommerceModel.Order" Role="Order" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="ecommerceModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Order">
@@ -1672,7 +1702,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_OrderDetails_Products">
-          <End Type="ecommerceModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="ecommerceModel.Product" Role="Product" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="ecommerceModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Product">
@@ -1684,7 +1716,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Orders_Payments">
-          <End Type="ecommerceModel.Payment" Role="Payment" Multiplicity="0..1" />
+          <End Type="ecommerceModel.Payment" Role="Payment" Multiplicity="1" />
           <End Type="ecommerceModel.Order" Role="Order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Payment">
@@ -1696,7 +1728,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Orders_Provinces">
-          <End Type="ecommerceModel.Province" Role="Province" Multiplicity="0..1" />
+          <End Type="ecommerceModel.Province" Role="Province" Multiplicity="1" />
           <End Type="ecommerceModel.Order" Role="Order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Province">
@@ -1704,6 +1736,18 @@
             </Principal>
             <Dependent Role="Order">
               <PropertyRef Name="ProvinceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_Ward">
+          <End Type="ecommerceModel.Ward" Role="Ward" Multiplicity="1" />
+          <End Type="ecommerceModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ward">
+              <PropertyRef Name="WardId" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="WardID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1954,17 +1998,17 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="ecommerceModel.Order">
               <MappingFragment StoreEntitySet="Orders">
-                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="CouponCode" ColumnName="CouponCode" />
                 <ScalarProperty Name="Paid" ColumnName="Paid" />
                 <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
                 <ScalarProperty Name="Discount" ColumnName="Discount" />
                 <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="WardID" ColumnName="WardID" />
                 <ScalarProperty Name="DistrictID" ColumnName="DistrictID" />
                 <ScalarProperty Name="ProvinceID" ColumnName="ProvinceID" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
                 <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
                 <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
@@ -1976,6 +2020,7 @@
           <EntitySetMapping Name="Payments">
             <EntityTypeMapping TypeName="ecommerceModel.Payment">
               <MappingFragment StoreEntitySet="Payments">
+                <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
                 <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
               </MappingFragment>

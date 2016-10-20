@@ -17,6 +17,7 @@ namespace WebBanHang.Models
         public Ward()
         {
             this.Customers = new HashSet<Customer>();
+            this.Orders = new HashSet<Order>();
         }
     
         public int WardId { get; set; }
@@ -26,5 +27,6 @@ namespace WebBanHang.Models
     
         public virtual ICollection<Customer> Customers { get; set; }
         public virtual District District { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

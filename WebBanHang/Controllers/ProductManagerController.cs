@@ -23,7 +23,7 @@ namespace WebBanHang.Controllers
         [HttpGet]
         public ActionResult Add()
         {
-            var groupRepo = Repository.Create<GroupProductRepository>();
+            var groupRepo = Repository.Bind<GroupProductRepository>();
             ViewBag.GroupProducts = groupRepo.FetchAll();
             return View();
         }
@@ -33,7 +33,7 @@ namespace WebBanHang.Controllers
         {
             if(!ModelState.IsValid)
             {
-                var groupRepo = Repository.Create<GroupProductRepository>();
+                var groupRepo = Repository.Bind<GroupProductRepository>();
                 ViewBag.GroupProducts = groupRepo.FetchAll();
                 return View(viewModel);
             }
@@ -48,7 +48,7 @@ namespace WebBanHang.Controllers
                 Active = viewModel.Active,
                 CreateDate = DateTime.Now
             };
-            var productRepo = Repository.Create<ProductRepository>();
+            var productRepo = Repository.Bind<ProductRepository>();
             Product insert = productRepo.Insert(product);
             productRepo.SaveChanges();
 

@@ -21,6 +21,7 @@ namespace WebBanHang.Models
     
         public int PaymentID { get; set; }
         public string PaymentType { get; set; }
+        public bool Active { get; set; }
     
         public virtual ICollection<Order> Orders { get; set; }
     }

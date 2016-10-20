@@ -221,6 +221,8 @@
     <Compile Include="Core\BaseController.cs" />
     <Compile Include="Core\MyRazorViewEngine.cs" />
     <Compile Include="Core\RepositoryModel\DistrictRepository.cs" />
+    <Compile Include="Core\RepositoryModel\OrderRepository.cs" />
+    <Compile Include="Core\RepositoryModel\PaymentRepository.cs" />
     <Compile Include="Core\RepositoryModel\ProvinceRepository.cs" />
     <Compile Include="Core\RepositoryModel\UserRepository.cs" />
     <Compile Include="Core\RepositoryModel\WardRepository.cs" />
@@ -647,6 +649,7 @@
     <Content Include="Content\images\star-big-on.png" />
     <Content Include="Content\images\star-off.png" />
     <Content Include="Content\images\star-on.png" />
+    <Content Include="Content\js\bootbox.min.js" />
     <Content Include="Content\js\bootstrap-hover-dropdown.min.js" />
     <Content Include="Content\js\bootstrap-msg.min.js" />
     <Content Include="Content\js\bootstrap-select.min.js" />
