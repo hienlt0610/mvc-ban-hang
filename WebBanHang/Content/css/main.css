@@ -89,9 +89,6 @@ img[src="assets/images/blank.gif"] {
   text-transform: uppercase;
 }
 .btn-default {
-  background: #cbc9c9;
-  color: #fff;
-  font-weight: 700;
   /*line-height:30px;*/
   -webkit-transition: all 0.2s linear 0s;
   -moz-transition: all 0.2s linear 0s;
@@ -5515,4 +5512,7 @@ label.error {
 }
 .text-right {
     text-align: right;
+}
+.dialog-confirm .modal-dialog.modal-sm{
+    width:480px;
 }

@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Quản lý giỏ hàng";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var cart = ShoppingCart.Instance;
 }
@@ -10,8 +10,8 @@
     <div class="container">
         <div class="breadcrumb-inner">
             <ul class="list-inline list-unstyled">
-                <li><a href="#">Home</a></li>
-                <li class='active'>Shopping Cart</li>
+                <li><a href="@Url.Action("Index","Home")">Home</a></li>
+                <li class='active'>@ViewBag.Title</li>
             </ul>
         </div><!-- /.breadcrumb-inner -->
     </div><!-- /.container -->
@@ -94,20 +94,44 @@
     <script>
         $(".item-remove").on('click', function () {
             var item = $(this);
-            var productId = $(this).data('id');
-            var colorId = $(this).data('color');
-            if (colorId == 0) {
-                $.post("/Cart/RemoveCart", { id: productId }, function (data) {
-                    item.parents("tr").remove();
-                    $("#cart_shop").html(data);
-                    updateCart();
-                });
-            } else {
-                $.post("/Cart/RemoveCart", { id: productId, color: colorId }, function (data) {
-                    item.parents("tr").remove();
-                    $("#cart_shop").html(data);
-                });
-            }
+            
+            bootbox.confirm({
+                size: 'small',
+                className: 'dialog-confirm',
+                title: 'Xóa sản phẩm khỏi giỏ',
+                buttons: {
+                    confirm: {
+                        label: 'Đồng ý',
+                        className: 'btn-success' 
+                    },
+                    cancel: {
+                        label: 'Hủy',
+                        className: 'btn-default'
+                    }
+                },
+                message: "Bạn có muốn xóa <br><b>'" + item.parents().eq(3).find('td:eq(1) a').text() + "'</b> khỏi giỏ chứ?",
+                callback: function (result) {
+                    if (result) {
+                        var productId = item.data('id');
+                        var colorId = item.data('color');
+                        if (colorId == 0) {
+                            $.post("/Cart/RemoveCart", { id: productId }, function (data) {
+                                item.parents("tr").remove();
+                                $("#cart_shop").html(data);
+                                Msg.success('Xóa sản phẩm khỏi giỏ thành công!!!',1500);
+                                updateCart();
+                            });
+                        } else {
+                            $.post("/Cart/RemoveCart", { id: productId, color: colorId }, function (data) {
+                                item.parents("tr").remove();
+                                $("#cart_shop").html(data);
+                                Msg.success('Xóa sản phẩm khỏi giỏ thành công!!!', 1500);
+                                updateCart();
+                            });
+                        }
+                    }
+                }
+            });
         });
 
         $('.item-update').on('click', function (e) {
