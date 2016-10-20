@@ -58,7 +58,7 @@
                                     </td>
                                     <td class="text-left">
                                         <div class="input-group btn-block quantity">
-                                            <input type="number" name="quantity" value="@item.Quantity" size="1" min="1" max="5" class="form-control">
+                                            <input type="number" name="quantity" value="@item.Quantity" size="1" min="1" max="5" class="form-control quantity-item">
                                             <span class="input-group-btn">
                                                 <button type="button" data-toggle="tooltip" title="" class="btn btn-primary item-update" data-original-title="Update" data-id="@item.ProductID" data-color="@item.ColorID"><i class="fa fa-refresh"></i></button>
                                                 <button type="button" data-toggle="tooltip" title="" class="btn btn-danger item-remove" onclick="" data-original-title="Remove" data-id="@item.ProductID" data-color="@item.ColorID"><i class="fa fa-times-circle"></i></button>
@@ -115,11 +115,17 @@
             var btnUpdate = $(this);
             var product_id = $(this).data('id');
             var color_id = $(this).data('color');
-            var currQuatity = $('.quantity input').val();
-            if (currQuatity.length == 0 || parseInt(currQuatity) <= 0) {
-                $('.quantity input').val(1);
+            var txtQuantity = $(this).parents().eq(2).find('input.quantity-item');
+            var currQuatity = isNaN(parseInt($(txtQuantity).val())) ? 1 : parseInt($(txtQuantity).val());
+            if (currQuatity == 0) {
+                Msg.error("Vui lòng chọn ít nhất 1 sản phẩm", 1500);
                 currQuatity = 1;
             }
+            if (currQuatity > 5) {
+                Msg.error("Bạn không được đặt nhiều quá 5 sản phẩm", 1500);
+                currQuatity = 5;
+            }
+            txtQuantity.val(currQuatity);
             $.post('Cart/UpdateCart', { id: product_id, color: color_id, quantity: currQuatity }, function (data) {
                 //$('.shopping-cart-table tbody tr td:nth-child(5)').text(data);
                 btnUpdate.parents().eq(3).find('td:nth-child(5)').text(data);
