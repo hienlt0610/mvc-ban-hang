@@ -87,7 +87,8 @@ namespace WebBanHang.Controllers
 
             result.status = "OK";
             result.count = product.Colors.Count;
-            foreach(var color in product.Colors){
+            foreach (var color in product.Colors)
+            {
                 colors.Add(new
                 {
                     color_id = color.ColorID,

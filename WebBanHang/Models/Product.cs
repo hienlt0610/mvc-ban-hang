@@ -20,7 +20,7 @@ namespace WebBanHang.Models
             this.Comments = new HashSet<Comment>();
             this.ImageProducts = new HashSet<ImageProduct>();
             this.OrderDetails = new HashSet<OrderDetail>();
-            this.ProductOptions = new HashSet<ProductOption>();
+            this.ProductAttributes = new HashSet<ProductAttribute>();
             this.Quantities = new HashSet<Quantity>();
             this.Colors = new HashSet<Color>();
         }
@@ -41,7 +41,7 @@ namespace WebBanHang.Models
         public virtual GroupProduct GroupProduct { get; set; }
         public virtual ICollection<ImageProduct> ImageProducts { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
-        public virtual ICollection<ProductOption> ProductOptions { get; set; }
+        public virtual ICollection<ProductAttribute> ProductAttributes { get; set; }
         public virtual ICollection<Quantity> Quantities { get; set; }
         public virtual ICollection<Color> Colors { get; set; }
     }

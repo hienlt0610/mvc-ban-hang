@@ -1,101 +1,650 @@
-﻿@model WebBanHang.Models.Product
+﻿@model AdminProductViewModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Thêm sản phẩm";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutPage.cshtml";
+    var groups = (IEnumerable<GroupProduct>)ViewBag.GroupProducts;
+    var colors = (IEnumerable<Color>)ViewBag.Colors;
+    var attrGroup = (IEnumerable<AttributeGroup>)ViewBag.AttrGroup;
+    var drDowAttrGroup = attrGroup.Select(g => new SelectListItem() { Text = g.AttrGroupName, Value=g.AttrGroupID.ToString() });
 }
 
-<h2>Create</h2>
+<div class="container">
+    @using (Html.BeginForm("Create", "Product", FormMethod.Post, new { @class = "form-horizontal", id="myForm" }))
+    {
+        @Html.AntiForgeryToken()
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="btn-group pull-right m-t-15">
+                <button type="submit" name="save" class="btn btn-primary waves-effect waves-light">
+                    <span class="btn-label">
+                        <i class="zmdi zmdi-assignment"></i>
+                    </span>Lưu
+                </button>
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Product</h4>
-        <hr />
-        @Html.ValidationSummary(true)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ProductName, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ProductName)
-                @Html.ValidationMessageFor(model => model.ProductName)
+                <button type="submit" name="save-continue" class="btn btn-primary waves-effect waves-light m-l-5">
+                    <span class="btn-label">
+                        <i class="zmdi zmdi-assignment"></i>
+                    </span>Lưu & Sửa
+                </button>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Detail, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Detail)
-                @Html.ValidationMessageFor(model => model.Detail)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Price, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Price)
-                @Html.ValidationMessageFor(model => model.Price)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.SalePrice, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SalePrice)
-                @Html.ValidationMessageFor(model => model.SalePrice)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Stock, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Stock)
-                @Html.ValidationMessageFor(model => model.Stock)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.GroupID, "GroupID", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("GroupID", String.Empty)
-                @Html.ValidationMessageFor(model => model.GroupID)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UseMultiColor, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UseMultiColor)
-                @Html.ValidationMessageFor(model => model.UseMultiColor)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreateDate, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreateDate)
-                @Html.ValidationMessageFor(model => model.CreateDate)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Active, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Active)
-                @Html.ValidationMessageFor(model => model.Active)
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
         </div>
     </div>
+
+    <!--Form-->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="nav-tabs-custom"></div>
+            <div class="card-box">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs m-b-15" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#info" role="tab">Thông tin SP</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#attr" role="tab">Thuộc tính</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#color" role="tab">Màu sắc</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#picture" role="tab">Hình ảnh</a>
+                    </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane active" id="info" role="tabpanel">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card card-block">
+                                    <h5 class="card-title">Thông tin chung</h5>
+                                    <div class="form-group m-t-15 row">
+                                        <div class="col-sm-2 align-right">
+                                            @Html.LabelFor(m => m.ProductName, new { @class = "control-label m-t-5" })
+                                        </div>
+                                        <div class="col-md-7">
+                                            @Html.TextBoxFor(m => m.ProductName, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.ProductName)
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group m-t-15 row">
+                                        <div class="col-sm-2 align-right">
+                                            @Html.LabelFor(m => m.GroupID, new { @class = "control-label m-t-5" })
+                                        </div>
+                                        <div class="col-md-7 dropdown-submit-input">
+                                            @Html.HiddenFor(item => item.GroupID, new { Value = (groups.Count() > 0 ? groups.FirstOrDefault().GroupID.ToString() : "") })
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                @(groups.Count() > 0 ? groups.FirstOrDefault().GroupName : "")
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu multi-level" id="list-group" role="menu" aria-labelledby="dropdownMenu">
+                                                @DropdownTree(groups.Where(item => item.ParentGroupID == null))
+                                            </ul>
+                                            @Html.ValidationMessageFor(model => model.GroupID)
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group m-t-15 row">
+                                        <div class="col-sm-2 align-right">
+                                            @Html.LabelFor(m => m.Detail, new { @class = "control-label m-t-5" })
+                                        </div>
+                                        <div class="col-md-7">
+                                            @Html.TextAreaFor(m => m.Detail, new { @class = "form-control", id = "product-detail" })
+                                            @Html.ValidationMessageFor(model => model.Detail)
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group m-t-15 row">
+                                        <div class="col-sm-2 align-right">
+                                            @Html.LabelFor(m => m.Price, new { @class = "control-label m-t-5" })
+                                        </div>
+                                        <div class="col-md-3">
+                                            @Html.TextBoxFor(m => m.Price, new { @class = "form-control autonumber", id = "txtPrice", data_a_sign = " VNĐ", data_v_max = "100000000" })
+                                            @Html.ValidationMessageFor(model => model.Price)
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group m-t-15 row">
+                                        <div class="col-sm-2 align-right">
+                                            @Html.LabelFor(m => m.SalePrice, new { @class = "control-label m-t-5" })
+                                        </div>
+                                        <div class="col-md-3">
+                                            @Html.TextBoxFor(m => m.SalePrice, new { @class = "form-control autonumber", id = "txtSalePrice", data_a_sign = " VNĐ", data_v_max = "100000000" })
+                                            @Html.ValidationMessageFor(model => model.SalePrice)
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group m-t-15 row">
+                                        <div class="col-sm-2 align-right">
+                                            @Html.LabelFor(m => m.Stock, new { @class = "control-label m-t-5" })
+                                        </div>
+                                        <div class="col-md-3">
+                                            @Html.TextBoxFor(m => m.Stock, new { @class = "form-control autonumber", data_v_max = "10000" })
+                                            @Html.ValidationMessageFor(model => model.Stock)
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group m-t-15 row">
+                                        <div class="col-sm-2 align-right">
+                                            
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="checkbox checkbox-custom">
+                                                @Html.CheckBoxFor(m => m.Active, new { id = "chkActive" }, false)
+                                                <label for="chkActive">
+                                                    Kích hoạt
+                                                </label>
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.Active)
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="attr" role="tabpanel">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card card-block">
+                                    <h5 class="card-title">Thêm thuộc tính</h5>
+
+                                    <table class="table table-hover" id="table-attr">
+                                        <thead>
+                                            <tr>
+                                                <th width="500px">Nhóm thuộc tính / Thuộc tính</th>
+                                                <th>Giá trị</th>
+                                                <th width="50"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-index="-1" style="background:#f1f1f1;">
+                                                <td>
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <select id="attr_group" name="attr_group_box" class="form-control">
+                                                                <option value="0">Chọn nhóm</option>
+                                                                @foreach(var op in attrGroup){
+                                                                    <option value="@op.AttrGroupID">@op.AttrGroupName</option>
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <select id="attr_box" name="colorbox" class="form-control">
+                                                                <option value="0">Chọn thuộc tính</option>
+                                                            </select>
+                                                            <div>
+                                                                <span id="attr_error" class="field-validation-error" data-valmsg-for="colorbox" data-valmsg-replace="true"></span>
+                                                            </div>  
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input id="attr_value" type="text" name="stockbox" class="form-control">
+                                                    <div>
+                                                        <span id="attr_value_error" class="field-validation-error" data-valmsg-for="attr_value" data-valmsg-replace="true"></span>
+                                                    </div>
+                                                </td>
+                                                <td data-tabullet-type="save">
+                                                    <button type="button" class="btn btn-info btn-save">Thêm</button>
+                                                </td>
+                                            </tr>
+                                            <!-- Available color
+                                            <tr data-index="0">
+                                                <td>0</td>
+                                                <td>Aditya Purwa</td>
+                                                <td>Admin</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-default btn-edit">Edit</button>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger btn-delete">Delete</button>
+                                                </td>
+                                            </tr>-->
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="color" role="tabpanel">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card card-block">
+                                    <h5 class="card-title">Chọn màu sắc</h5>
+
+                                    <table class="table table-hover" id="table-color">
+                                        <thead>
+                                            <tr>
+                                                <th width="50px">
+                                                    ID
+                                                </th>
+                                                <th width="300px">Màu sắc</th>
+                                                <th data-tabullet-map="level">Số lượng</th>
+                                                <th width="50"></th>
+                                                <th width="50"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-index="-1" style="background:#f1f1f1;">
+                                            <td></td>
+                                            <td>
+                                                <select id="colorbox" name="colorbox" class="form-control">
+                                                    @foreach (var color in colors)
+                                                    {
+                                                        <option value="@color.ColorID">@color.ColorName</option>
+                                                    }
+                                                </select>
+                                                <div>
+                                                    <span id="colorerror" class="field-validation-error" data-valmsg-for="colorbox" data-valmsg-replace="true"></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <input id="stockbox" type="text" name="stockbox" class="form-control number">
+                                                <div>
+                                                    <span id="stockerror" class="field-validation-error" data-valmsg-for="stockbox" data-valmsg-replace="true"></span>
+                                                </div>
+                                            </td>
+                                            <td data-tabullet-type="save">
+                                                <button type="button" class="btn btn-info btn-save">Thêm</button></td>
+                                            <td></td>
+                                        </tr>
+                                        <!-- Available color
+                                        <tr data-index="0">
+                                            <td>0</td>
+                                            <td>Aditya Purwa</td>
+                                            <td>Admin</td>
+                                            <td>
+                                                <button type="button" class="btn btn-default btn-edit">Edit</button>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-delete">Delete</button>
+                                            </td>
+                                        </tr>-->
+                                    </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="picture" role="tabpanel">3123123</div>
+                </div>
+            </div>
+        </div><!-- end col -->
+    </div>
+    <!-- end row -->
+    }
+</div>
+
+
+@helper DropdownTree(IEnumerable<GroupProduct> list)
+{
+    foreach (GroupProduct group in list)
+    {
+        if (group.GroupProducts1.Count == 0)
+        {
+            <li><a class="dropdown-item" href="#" data-value="@group.GroupID">@group.GroupName</a></li>
+        }
+        else
+        {
+            <li class="dropdown-submenu">
+                <a href="#" data-value="@group.GroupID" class="dropdown-item">@group.GroupName</a>
+                <ul class="dropdown-menu">
+                    @DropdownTree(group.GroupProducts1)
+                </ul>
+            </li>
+        }
+    }
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+@section scripts{
+    <script>
+        $.validator.setDefaults({
+            ignore: ''
+        });
+
+        $.validator.unobtrusive.parse($('form'));
+        $('input.autonumber').each(function(){
+            $(this).rules('remove','number');
+        });
+
+        
+        //Validate lỗi
+        $("form").bind("invalid-form.validate", function (e,validator) {
+            if(validator.errorList.length){
+                //$('.nav-tabs a[href="#samosas"]').tab('show');
+                var id = $(validator.errorList[0].element).closest(".tab-pane").attr('id');
+                $("a[href='#"+id+"']").tab('show');
+            }
+        });
+        var color_arr = @Html.Raw(Json.Encode(colors.Select(c => new { color_id = c.ColorID, color_name = c.ColorName })))
+        $('.btn-save').on('click', function (e) {
+            if ($(this).parents().eq(3).attr('id') == 'table-color') {
+                var last_id = $('#table-color tbody tr:last').data('index');
+                if (last_id == -1 || last_id == null)
+                    last_id = 0;
+                else
+                    last_id++;
+                if (color_validate()) {
+                    $.each($('#table-color tbody button.btn-edit[data-mode=save]'), function (i, item) {
+                        close_editnable($(item).parent().parent());
+                    });
+                    var color_box = $('#table-color #colorbox option:selected');
+                    var row = $('<tr>');
+                    row.append($('<td>').html(color_box.val()))
+                        .append($('<td>').html("<span class=\"color-text\">" + color_box.text() + "</span>" + "<input type='hidden' value='" + color_box.val() + "' name='Quantity[" + last_id + "].ColorID'>"))
+                        .append($('<td>').html("<span class=\"stock-value\">" + $('input#stockbox:text').val() + "</span><input type='hidden' value='" + $('input#stockbox:text').val() + "' name='Quantity[" + last_id + "].Stock'>"))
+                        .append($('<td>').html("<button type=\"button\" class=\"btn btn-default btn-edit\" data-mode=\"edit\">Sửa</button>"))
+                        .append($('<td>').html("<button type=\"button\" class=\"btn btn-danger btn-delete\" data-mode=\"delete\">Xóa</button>"));
+                    row.attr('data-index', last_id + '');
+                    $('#table-color tbody').append(row);
+                    $('#table-color input#stockbox:text').val("");
+                }
+            } else if ($(this).parents().eq(3).attr('id') == 'table-attr') {
+                var last_id = $('#table-attr tbody tr:last').data('index');
+                if (last_id == -1 || last_id == null)
+                    last_id = 0;
+                else
+                    last_id++;
+                if (attr_validate()) {
+                    var attr_box = $('#table-attr #attr_box option:selected');
+                    
+                    var row = $('<tr>');
+                    var group_box = $('<select class="group_select form-control">');
+                    var attr_box = $('<select name="ProductAttribute[' + last_id + '].AttrID" class="attr_select form-control">');
+                    $('#table-attr #attr_group option').each(function (i, e) {
+                        if ($(e).is(':selected')) {
+                            group_box.append('<option selected="selected" value="' + $(e).val() + '">' + $(e).text() + '</option>');
+                        }
+                        else
+                            group_box.append('<option value="' + $(e).val() + '">' + $(e).text() + '</option>');
+                    });
+
+                    $('#table-attr #attr_box option').each(function (i, e) {
+                        if ($(e).is(':selected')) {
+                            attr_box.append('<option selected="selected" value="' + $(e).val() + '">' + $(e).text() + '</option>');
+                        }
+                        else
+                            attr_box.append('<option value="' + $(e).val() + '">' + $(e).text() + '</option>');
+                    });
+                    var divRow = $($('<div class="row">')
+                        .append($('<div class="col-sm-6">').html(group_box))
+                        .append($('<div class="col-sm-6">').html(attr_box)));
+                    row.append($('<td>').html(divRow))
+                        .append($('<td>').html('<input class="form-control" name="ProductAttribute[' + last_id + '].Value" value="' + $('#attr_value').val() + '">'))
+                        .append($('<td>').html("<button type=\"button\" class=\"btn btn-danger btn-delete\" data-mode=\"delete\">Xóa</button>"));
+                    row.attr('data-index', last_id + '');
+                    $('#table-attr tbody').append(row);
+                    $('#table-attr input#attr_value:text').val("");
+                    $('#table-attr #attr_box').val($("#table-attr #attr_box option:first").val());
+                }
+            }
+        });
+
+        $('table tbody').on('click', '.btn-delete', function () {
+            var self = $(this);
+            self.parent().parent().remove();
+            color_validate();
+        });
+
+        $('#table-color tbody').on('click', '.btn-edit', function () {
+            var self = $(this);
+            var tr = self.parent().parent();
+            //Edit mode
+            if (self.attr('data-mode') == 'edit') {
+                allow_editnable(tr);
+            } else if (self.attr('data-mode') == 'save') {
+                var changed_color_id = tr.find('td:eq(1) select option:selected').val();
+                if (!check_exist_color_exclude(changed_color_id,tr.attr('data-index'))) {
+                    save_row(tr);
+                } else {
+                    Msg.error('Màu này đã tồn tại, vui lòng chọn màu khác',1500);
+                }
+            }
+            return true;
+        });
+
+        $('#attr_group').change(function () {
+            $.get('/Admin/Product/GetListAttr', { id: $('#attr_group option:selected').val() }, function (data) {
+                $('#attr_box').html(data);
+            });
+        });
+
+        $('#table-attr tbody').on('change', '.group_select', function () {
+            var current_attr = $(this).find('option:selected').val();
+            var self = $(this);
+            $.get('/Admin/Product/GetListAttr', { id: current_attr }, function (data) {
+                self.parent().parent().find('select:eq(1)').html(data);
+            });
+        });
+
+        function check_exist_color(color_id) {
+            var inputs = $('#table-color tbody tr').not(':first').find('td:eq(1) input');
+            for (i = 0; i < inputs.length;i++){
+                var input = inputs[i];
+                console.log(input);
+                if(input.value == color_id){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function check_exist_attr() {
+            var values = [];
+            var selects = $('#table-attr .attr_select');
+            for (i = 0; i < selects.length;i++){
+                var select = selects[i];
+                if (values.indexOf(select.value) > -1) {
+                    return true;
+                } else
+                    values.push(select.value);
+            }
+            return false;
+        }
+
+        function check_exist_color_exclude(color_id, index) {
+            var inputs = $('#table-color tbody tr').not(':first').not('[data-index='+index+']').find('td:eq(1) input');
+            for (i = 0; i < inputs.length; i++) {
+                var input = inputs[i];
+                console.log(input);
+                if (input.value == color_id) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function save_row(tr) {
+            var td = tr.find('td');
+            var color_box = td.eq(1).find('select option:selected');
+            var data = { color_id: color_box.val(), color_name: color_box.text(), stock: td.eq(2).find('input[type=number]').val() };
+            save_row_with_data(tr, data);
+        }
+        function save_row_with_data(tr, data) {
+            var td = tr.find('td');
+            var current_index = tr.data('index');
+            td.eq(0).html(data.color_id);
+
+            //Edit row 1
+            var td1 = td.eq(1);
+            td1.find('input[type=hidden]').val(data.color_id);
+            td1.prepend($('<span class="color-text">').text(data.color_name));
+            td1.find('select').remove();
+            //Edit row 2
+            //td.eq(2).html("<span class=\"stock-value\">"+data.stock+"</span>" + "<input type='hidden' value='" + data.stock + "' name='Quantity[" + current_index + "].Stock'>");
+            var td2 = td.eq(2);
+            td2.find('input[type=hidden]').val(data.stock);
+            td2.append('<span class=\"stock-value\">' + data.stock + '</span>');
+            td2.find('input[type=number]').remove()
+            //Edit row 3
+            var btn_save = td.eq(3).find('button');
+            btn_save.attr('data-mode', 'edit');
+            btn_save.addClass('btn-default').removeClass('btn-success');
+            btn_save.text('Sửa');
+        }
+
+        function allow_editnable(tr) {
+            var td = tr.find('td');
+            var current_index = tr.data('index');
+            //Create new selectbox
+            var selectbox = $('<select class="form-control">');
+            $.each(color_arr, function (i, item) {
+                selectbox.append($('<option>').attr('value', item.color_id).text(item.color_name));
+            });
+            selectbox.val(td.eq(1).find('input[type=hidden]').val());
+            //change display color to selecbox color 
+            td.eq(1).find('span.color-text').remove();
+            td.eq(1).prepend(selectbox);
+            //Change display stock to textbox stock
+            //td.eq(2).html('<input type="number" value="' + td.eq(2).find('input[type=hidden]').val() + '" name="Quantity[' + current_index + ']" class="form-control"><div><span class="field-validation-error" data-valmsg-for="Quantity[' + current_index + ']" data-valmsg-replace="true"></span></div>');
+            td.eq(2).find('span.stock-value').remove();
+            td.eq(2).append('<input type="number" value="' + td.eq(2).find('input[type=hidden]').val() + '" name="Quantity[' + current_index + ']" class="form-control">');
+            //Change edit button to save button
+            var btn_edit = td.eq(3).find('button');
+            btn_edit.attr('data-mode', 'save');
+            btn_edit.addClass('btn-success').removeClass('btn-default');
+            btn_edit.text('Lưu');
+        }
+
+        function close_editnable(tr) {
+            var td = tr.find('td');
+            var color_id = td.eq(1).find('input[type=hidden]').val();
+            var stock = td.eq(2).find('input[type=hidden]').val();
+            var color = arrayLookup(color_arr, 'color_id', parseInt(color_id));
+            var data = { color_id: color_id, color_name: color.color_name, stock: stock };
+            save_row_with_data(tr, data);
+        }
+
+        function color_validate() {
+            var isValid = true;
+            var stock_value = $('input#stockbox:text').val().trim();
+            var color_box = $('#colorbox option:selected');
+            if ($('#colorbox option').length == 0) {
+                $('#colorerror').html("Vui lòng chọn màu");
+                isValid = false;
+            } else {
+                if (check_exist_color(color_box.val())) {
+                    $('#colorerror').html('Màu này đã tồn tại');
+                    isValid = false;
+                }
+            }
+            if (stock_value.length == 0) {
+                $('#stockerror').html("Vui lòng nhập số lượng");
+                isValid = false;
+            } else {
+                if (!$.isNumeric(stock_value)) {
+                    $('#stockerror').html("Số lượng phải là con số");
+                    isValid = false;
+                }
+            }
+            
+            if (isValid) {
+                $('#stockerror').html("");
+                $('#colorerror').html('');
+            }
+            return isValid;
+        }
+
+        function attr_validate() {
+            var isValid = true;
+            var error_attr_box = "";
+            var error_attr_value = "";
+            var attr_id = $('#attr_box option:selected').val();
+            var attr_value = $('#attr_value').val().trim();
+            if (attr_id == '0') {
+                error_attr_box = "Vui lòng chọn thuộc tính";
+                isValid = false;
+            }
+
+            if (attr_value.length == 0) {
+                error_attr_value = "Vui lòng nhập giá trị";
+                isValid = false;
+            }
+
+            $('#attr_error').html(error_attr_box);
+            $('#attr_value_error').html(error_attr_value);
+            return isValid;
+        }
+
+        $('#colorbox, #stockbox').focusout(function () {
+            color_validate();
+        });
+
+        $('#stockbox').keyup(function () {
+            color_validate();
+        });
+        
+        tinymce.init({
+            selector: '#product-detail',
+            theme: 'modern',
+            height: 250, plugins: [
+              'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+              'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+              'save table contextmenu directionality emoticons template paste textcolor'
+            ],
+            setup: function (ed) {
+                ed.on('keyup', function (e) {
+                    tinyMceChange(ed);
+                });
+                ed.on('change', function (e) {
+                    tinyMceChange(ed);
+                });
+            }
+        });
+
+        function tinyMceChange(ed) {
+            tinyMCE.triggerSave();
+            $("#" + ed.id).valid();
+        }
+
+        $('#myForm').submit(function (e) {
+            var form = $(this);
+            if (form.valid()) {
+                form.find('input.autonumber').each(function () {
+                    var self = $(this);
+                    var v = self.autoNumeric('get');
+                    self.val(v);
+                });
+            }
+        });
+
+        //Xử lý chọn nhóm sản phẩm
+        $('ul#list-group.dropdown-menu a').click(function (e) {
+            e.preventDefault();
+            $submitInput = $(this).closest('.dropdown-submit-input');
+            $submitInput.find('input').val($(this).data('value'));
+            $submitInput.find('button').html($(this).text() + ' <span class="caret"></span>');
+        });
+        $('.autonumber').autoNumeric('init', { pSign: 's', mDec: '0' });
+
+        //Tìm mảng
+        function arrayLookup(array, prop, val) {
+            for (var i = 0, len = array.length; i < len; i++) {
+                if (array[i].hasOwnProperty(prop) && array[i][prop] === val) {
+                    return array[i];
+                }
+            }
+            return null;
+        }
+
+        function addRule(id){
+            var item = $("select[name='Quantity["+id+"].ColorID']");
+            item.rules("add", {
+                color: true
+            });
+            var item1 = $("input[name='Quantity["+id+"].Stock']");
+            item.rules("add", {
+                required: true
+            });
+            item.valid();
+        }
+    </script>    
+}

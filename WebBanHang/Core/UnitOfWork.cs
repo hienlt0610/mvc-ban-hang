@@ -207,5 +207,18 @@ namespace WebBanHang.Core
             }
             return false;
         }
+
+        public int SaveChanges()
+        {
+            return _dbContext.SaveChanges();
+        }
+
+        public DbContext DbContext
+        {
+            get
+            {
+                return _dbContext;
+            }
+        }
     }
 }

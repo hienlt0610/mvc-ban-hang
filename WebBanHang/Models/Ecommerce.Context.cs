@@ -27,6 +27,8 @@ namespace WebBanHang.Models
     
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Advertise> Advertises { get; set; }
+        public virtual DbSet<Attribute> Attributes { get; set; }
+        public virtual DbSet<AttributeGroup> AttributeGroups { get; set; }
         public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<CartDetail> CartDetails { get; set; }
         public virtual DbSet<Color> Colors { get; set; }
@@ -40,12 +42,10 @@ namespace WebBanHang.Models
         public virtual DbSet<GroupProduct> GroupProducts { get; set; }
         public virtual DbSet<ImageProduct> ImageProducts { get; set; }
         public virtual DbSet<Menu> Menus { get; set; }
-        public virtual DbSet<OptionGroup> OptionGroups { get; set; }
-        public virtual DbSet<Option> Options { get; set; }
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<Payment> Payments { get; set; }
-        public virtual DbSet<ProductOption> ProductOptions { get; set; }
+        public virtual DbSet<ProductAttribute> ProductAttributes { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Province> Provinces { get; set; }
         public virtual DbSet<Quantity> Quantities { get; set; }

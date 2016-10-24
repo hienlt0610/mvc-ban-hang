@@ -171,7 +171,7 @@
                 </div><!-- /.row -->
 
                 <div class="product-tabs inner-bottom-xs  wow fadeInUp animated" style="visibility: visible; animation-name: fadeInUp;">
-                    @if(Model.ProductOptions.Count >= 0){
+                    @if(Model.ProductAttributes.Count >= 0){
                     <!--Thong so ky thuat-->
                     <section class="section featured-product wow fadeInUp animated animated" style="visibility: visible; animation-name: fadeInUp;">
                         <h3 class="section-title">Thông số kỹ thuật</h3>
@@ -185,9 +185,9 @@
                                     <tr class="active">
                                         <td colspan="2"><strong>Thông tin chung</strong></td>
                                     </tr>
-                                    @foreach(ProductOption option in Model.ProductOptions){
+                                    @foreach(ProductAttribute option in Model.ProductAttributes){
                                     <tr>
-                                        <td>@option.Option.OptionName</td>
+                                        <td>@option.Attribute.AttrName</td>
                                         <td class="last">
                                             @option.Value
                                         </td>

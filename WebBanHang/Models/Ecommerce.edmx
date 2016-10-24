@@ -19,6 +19,21 @@
           <Property Name="Position" Type="varchar" MaxLength="10" />
           <Property Name="Active" Type="bit" />
         </EntityType>
+        <EntityType Name="Attribute">
+          <Key>
+            <PropertyRef Name="AttrID" />
+          </Key>
+          <Property Name="AttrID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AttrName" Type="nvarchar" MaxLength="50" />
+          <Property Name="AttriGroupID" Type="int" />
+        </EntityType>
+        <EntityType Name="AttributeGroups">
+          <Key>
+            <PropertyRef Name="AttrGroupID" />
+          </Key>
+          <Property Name="AttrGroupID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AttrGroupName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="Cart">
           <Key>
             <PropertyRef Name="CartID" />
@@ -46,14 +61,6 @@
           <Property Name="ColorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ColorName" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="HexCode" Type="char" MaxLength="6" />
-        </EntityType>
-        <EntityType Name="ColorProducts">
-          <Key>
-            <PropertyRef Name="ProductID" />
-            <PropertyRef Name="ColorID" />
-          </Key>
-          <Property Name="ProductID" Type="int" Nullable="false" />
-          <Property Name="ColorID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Comment">
           <Key>
@@ -169,21 +176,6 @@
           <Property Name="Label" Type="nvarchar" MaxLength="20" />
           <Property Name="Hot" Type="bit" />
         </EntityType>
-        <EntityType Name="OptionGroups">
-          <Key>
-            <PropertyRef Name="OptionGroupID" />
-          </Key>
-          <Property Name="OptionGroupID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="OptionGroupName" Type="nvarchar" MaxLength="50" />
-        </EntityType>
-        <EntityType Name="Options">
-          <Key>
-            <PropertyRef Name="OptionID" />
-          </Key>
-          <Property Name="OptionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="OptionName" Type="nvarchar" MaxLength="50" />
-          <Property Name="OptionGroupID" Type="int" />
-        </EntityType>
         <EntityType Name="OrderDetails">
           <Key>
             <PropertyRef Name="OrderID" />
@@ -225,15 +217,23 @@
           <Property Name="PaymentType" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="ProductOptions">
+        <EntityType Name="ProductAttribute">
           <Key>
             <PropertyRef Name="ProductID" />
-            <PropertyRef Name="OptionID" />
+            <PropertyRef Name="AttrID" />
           </Key>
           <Property Name="ProductID" Type="int" Nullable="false" />
-          <Property Name="OptionID" Type="int" Nullable="false" />
+          <Property Name="AttrID" Type="int" Nullable="false" />
           <Property Name="Value" Type="nvarchar" MaxLength="50" />
           <Property Name="Priority" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="ProductColors">
+          <Key>
+            <PropertyRef Name="ProductID" />
+            <PropertyRef Name="ColorID" />
+          </Key>
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="ColorID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Products">
           <Key>
@@ -362,30 +362,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ColorProducts_Color">
-          <End Role="Color" Type="Self.Color" Multiplicity="1" />
-          <End Role="ColorProducts" Type="Self.ColorProducts" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Color">
-              <PropertyRef Name="ColorID" />
-            </Principal>
-            <Dependent Role="ColorProducts">
-              <PropertyRef Name="ColorID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ColorProducts_Products1">
-          <End Role="Products" Type="Self.Products" Multiplicity="1" />
-          <End Role="ColorProducts" Type="Self.ColorProducts" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Products">
-              <PropertyRef Name="ProductID" />
-            </Principal>
-            <Dependent Role="ColorProducts">
-              <PropertyRef Name="ProductID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Comment_Customers">
           <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
           <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
@@ -507,7 +483,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ImageProducts_Products">
-          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ImageProducts" Type="Self.ImageProducts" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Products">
@@ -531,14 +509,14 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Options_OptionGroups">
-          <End Role="OptionGroups" Type="Self.OptionGroups" Multiplicity="0..1" />
-          <End Role="Options" Type="Self.Options" Multiplicity="*" />
+          <End Role="AttributeGroups" Type="Self.AttributeGroups" Multiplicity="0..1" />
+          <End Role="Attribute" Type="Self.Attribute" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="OptionGroups">
-              <PropertyRef Name="OptionGroupID" />
+            <Principal Role="AttributeGroups">
+              <PropertyRef Name="AttrGroupID" />
             </Principal>
-            <Dependent Role="Options">
-              <PropertyRef Name="OptionGroupID" />
+            <Dependent Role="Attribute">
+              <PropertyRef Name="AttriGroupID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -630,32 +608,60 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ProductOptions_Options">
-          <End Role="Options" Type="Self.Options" Multiplicity="1" />
-          <End Role="ProductOptions" Type="Self.ProductOptions" Multiplicity="*" />
+        <Association Name="FK_ProductColors_Color1">
+          <End Role="Color" Type="Self.Color" Multiplicity="1" />
+          <End Role="ProductColors" Type="Self.ProductColors" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Options">
-              <PropertyRef Name="OptionID" />
+            <Principal Role="Color">
+              <PropertyRef Name="ColorID" />
             </Principal>
-            <Dependent Role="ProductOptions">
-              <PropertyRef Name="OptionID" />
+            <Dependent Role="ProductColors">
+              <PropertyRef Name="ColorID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ProductOptions_Products">
+        <Association Name="FK_ProductColors_Products1">
           <End Role="Products" Type="Self.Products" Multiplicity="1" />
-          <End Role="ProductOptions" Type="Self.ProductOptions" Multiplicity="*" />
+          <End Role="ProductColors" Type="Self.ProductColors" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Products">
               <PropertyRef Name="ProductID" />
             </Principal>
-            <Dependent Role="ProductOptions">
+            <Dependent Role="ProductColors">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductOptions_Options">
+          <End Role="Attribute" Type="Self.Attribute" Multiplicity="1" />
+          <End Role="ProductAttribute" Type="Self.ProductAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Attribute">
+              <PropertyRef Name="AttrID" />
+            </Principal>
+            <Dependent Role="ProductAttribute">
+              <PropertyRef Name="AttrID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductOptions_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ProductAttribute" Type="Self.ProductAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="ProductAttribute">
               <PropertyRef Name="ProductID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Products_GroupProducts">
-          <End Role="GroupProducts" Type="Self.GroupProducts" Multiplicity="1" />
+          <End Role="GroupProducts" Type="Self.GroupProducts" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Products" Type="Self.Products" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="GroupProducts">
@@ -679,7 +685,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Quantity_Products">
-          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Quantity" Type="Self.Quantity" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Products">
@@ -728,10 +736,11 @@
         </Association>
         <EntityContainer Name="ecommerceModelStoreContainer">
           <EntitySet Name="Advertise" EntityType="Self.Advertise" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Attribute" EntityType="Self.Attribute" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AttributeGroups" EntityType="Self.AttributeGroups" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cart" EntityType="Self.Cart" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CartDetails" EntityType="Self.CartDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Color" EntityType="Self.Color" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ColorProducts" EntityType="Self.ColorProducts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Configurations" EntityType="Self.Configurations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Contact" EntityType="Self.Contact" Schema="dbo" store:Type="Tables" />
@@ -742,12 +751,11 @@
           <EntitySet Name="GroupProducts" EntityType="Self.GroupProducts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ImageProducts" EntityType="Self.ImageProducts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Menus" EntityType="Self.Menus" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="OptionGroups" EntityType="Self.OptionGroups" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Options" EntityType="Self.Options" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderDetails" EntityType="Self.OrderDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Payments" EntityType="Self.Payments" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ProductOptions" EntityType="Self.ProductOptions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductAttribute" EntityType="Self.ProductAttribute" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductColors" EntityType="Self.ProductColors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Provinces" EntityType="Self.Provinces" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Quantity" EntityType="Self.Quantity" Schema="dbo" store:Type="Tables" />
@@ -771,14 +779,6 @@
           <AssociationSet Name="FK_CartDetails_Products" Association="Self.FK_CartDetails_Products">
             <End Role="Products" EntitySet="Products" />
             <End Role="CartDetails" EntitySet="CartDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ColorProducts_Color" Association="Self.FK_ColorProducts_Color">
-            <End Role="Color" EntitySet="Color" />
-            <End Role="ColorProducts" EntitySet="ColorProducts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ColorProducts_Products1" Association="Self.FK_ColorProducts_Products1">
-            <End Role="Products" EntitySet="Products" />
-            <End Role="ColorProducts" EntitySet="ColorProducts" />
           </AssociationSet>
           <AssociationSet Name="FK_Comment_Customers" Association="Self.FK_Comment_Customers">
             <End Role="Customers" EntitySet="Customers" />
@@ -829,8 +829,8 @@
             <End Role="Menus1" EntitySet="Menus" />
           </AssociationSet>
           <AssociationSet Name="FK_Options_OptionGroups" Association="Self.FK_Options_OptionGroups">
-            <End Role="OptionGroups" EntitySet="OptionGroups" />
-            <End Role="Options" EntitySet="Options" />
+            <End Role="AttributeGroups" EntitySet="AttributeGroups" />
+            <End Role="Attribute" EntitySet="Attribute" />
           </AssociationSet>
           <AssociationSet Name="FK_OrderDetails_Color" Association="Self.FK_OrderDetails_Color">
             <End Role="Color" EntitySet="Color" />
@@ -860,13 +860,21 @@
             <End Role="Ward" EntitySet="Ward" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
+          <AssociationSet Name="FK_ProductColors_Color1" Association="Self.FK_ProductColors_Color1">
+            <End Role="Color" EntitySet="Color" />
+            <End Role="ProductColors" EntitySet="ProductColors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductColors_Products1" Association="Self.FK_ProductColors_Products1">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductColors" EntitySet="ProductColors" />
+          </AssociationSet>
           <AssociationSet Name="FK_ProductOptions_Options" Association="Self.FK_ProductOptions_Options">
-            <End Role="Options" EntitySet="Options" />
-            <End Role="ProductOptions" EntitySet="ProductOptions" />
+            <End Role="Attribute" EntitySet="Attribute" />
+            <End Role="ProductAttribute" EntitySet="ProductAttribute" />
           </AssociationSet>
           <AssociationSet Name="FK_ProductOptions_Products" Association="Self.FK_ProductOptions_Products">
             <End Role="Products" EntitySet="Products" />
-            <End Role="ProductOptions" EntitySet="ProductOptions" />
+            <End Role="ProductAttribute" EntitySet="ProductAttribute" />
           </AssociationSet>
           <AssociationSet Name="FK_Products_GroupProducts" Association="Self.FK_Products_GroupProducts">
             <End Role="GroupProducts" EntitySet="GroupProducts" />
@@ -900,6 +908,8 @@
         <EntityContainer Name="ecommerceEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="sysdiagrams" EntityType="ecommerceModel.sysdiagram" />
           <EntitySet Name="Advertises" EntityType="ecommerceModel.Advertise" />
+          <EntitySet Name="Attributes" EntityType="ecommerceModel.Attribute" />
+          <EntitySet Name="AttributeGroups" EntityType="ecommerceModel.AttributeGroup" />
           <EntitySet Name="Carts" EntityType="ecommerceModel.Cart" />
           <EntitySet Name="CartDetails" EntityType="ecommerceModel.CartDetail" />
           <EntitySet Name="Colors" EntityType="ecommerceModel.Color" />
@@ -913,18 +923,24 @@
           <EntitySet Name="GroupProducts" EntityType="ecommerceModel.GroupProduct" />
           <EntitySet Name="ImageProducts" EntityType="ecommerceModel.ImageProduct" />
           <EntitySet Name="Menus" EntityType="ecommerceModel.Menu" />
-          <EntitySet Name="OptionGroups" EntityType="ecommerceModel.OptionGroup" />
-          <EntitySet Name="Options" EntityType="ecommerceModel.Option" />
           <EntitySet Name="OrderDetails" EntityType="ecommerceModel.OrderDetail" />
           <EntitySet Name="Orders" EntityType="ecommerceModel.Order" />
           <EntitySet Name="Payments" EntityType="ecommerceModel.Payment" />
-          <EntitySet Name="ProductOptions" EntityType="ecommerceModel.ProductOption" />
+          <EntitySet Name="ProductAttributes" EntityType="ecommerceModel.ProductAttribute" />
           <EntitySet Name="Products" EntityType="ecommerceModel.Product" />
           <EntitySet Name="Provinces" EntityType="ecommerceModel.Province" />
           <EntitySet Name="Quantities" EntityType="ecommerceModel.Quantity" />
           <EntitySet Name="Roles" EntityType="ecommerceModel.Role" />
           <EntitySet Name="Users" EntityType="ecommerceModel.User" />
           <EntitySet Name="Wards" EntityType="ecommerceModel.Ward" />
+          <AssociationSet Name="FK_Options_OptionGroups" Association="ecommerceModel.FK_Options_OptionGroups">
+            <End Role="AttributeGroup" EntitySet="AttributeGroups" />
+            <End Role="Attribute" EntitySet="Attributes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductOptions_Options" Association="ecommerceModel.FK_ProductOptions_Options">
+            <End Role="Attribute" EntitySet="Attributes" />
+            <End Role="ProductAttribute" EntitySet="ProductAttributes" />
+          </AssociationSet>
           <AssociationSet Name="FK_Cart_Customers" Association="ecommerceModel.FK_Cart_Customers">
             <End Role="Customer" EntitySet="Customers" />
             <End Role="Cart" EntitySet="Carts" />
@@ -1009,14 +1025,6 @@
             <End Role="Menu" EntitySet="Menus" />
             <End Role="Menu1" EntitySet="Menus" />
           </AssociationSet>
-          <AssociationSet Name="FK_Options_OptionGroups" Association="ecommerceModel.FK_Options_OptionGroups">
-            <End Role="OptionGroup" EntitySet="OptionGroups" />
-            <End Role="Option" EntitySet="Options" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ProductOptions_Options" Association="ecommerceModel.FK_ProductOptions_Options">
-            <End Role="Option" EntitySet="Options" />
-            <End Role="ProductOption" EntitySet="ProductOptions" />
-          </AssociationSet>
           <AssociationSet Name="FK_OrderDetails_Orders" Association="ecommerceModel.FK_OrderDetails_Orders">
             <End Role="Order" EntitySet="Orders" />
             <End Role="OrderDetail" EntitySet="OrderDetails" />
@@ -1039,13 +1047,13 @@
           </AssociationSet>
           <AssociationSet Name="FK_ProductOptions_Products" Association="ecommerceModel.FK_ProductOptions_Products">
             <End Role="Product" EntitySet="Products" />
-            <End Role="ProductOption" EntitySet="ProductOptions" />
+            <End Role="ProductAttribute" EntitySet="ProductAttributes" />
           </AssociationSet>
           <AssociationSet Name="FK_Quantity_Products" Association="ecommerceModel.FK_Quantity_Products">
             <End Role="Product" EntitySet="Products" />
             <End Role="Quantity" EntitySet="Quantities" />
           </AssociationSet>
-          <AssociationSet Name="ColorProducts" Association="ecommerceModel.ColorProducts">
+          <AssociationSet Name="ProductColors" Association="ecommerceModel.ProductColors">
             <End Role="Color" EntitySet="Colors" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
@@ -1077,6 +1085,24 @@
           <Property Name="Height" Type="Int32" />
           <Property Name="Position" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Active" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Attribute">
+          <Key>
+            <PropertyRef Name="AttrID" />
+          </Key>
+          <Property Name="AttrID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AttrName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AttriGroupID" Type="Int32" />
+          <NavigationProperty Name="AttributeGroup" Relationship="ecommerceModel.FK_Options_OptionGroups" FromRole="Attribute" ToRole="AttributeGroup" />
+          <NavigationProperty Name="ProductAttributes" Relationship="ecommerceModel.FK_ProductOptions_Options" FromRole="Attribute" ToRole="ProductAttribute" />
+        </EntityType>
+        <EntityType Name="AttributeGroup">
+          <Key>
+            <PropertyRef Name="AttrGroupID" />
+          </Key>
+          <Property Name="AttrGroupID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AttrGroupName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Attributes" Relationship="ecommerceModel.FK_Options_OptionGroups" FromRole="AttributeGroup" ToRole="Attribute" />
         </EntityType>
         <EntityType Name="Cart">
           <Key>
@@ -1113,7 +1139,7 @@
           <NavigationProperty Name="CartDetails" Relationship="ecommerceModel.FK_CartDetails_Color" FromRole="Color" ToRole="CartDetail" />
           <NavigationProperty Name="OrderDetails" Relationship="ecommerceModel.FK_OrderDetails_Color" FromRole="Color" ToRole="OrderDetail" />
           <NavigationProperty Name="Quantities" Relationship="ecommerceModel.FK_Quantity_Color" FromRole="Color" ToRole="Quantity" />
-          <NavigationProperty Name="Products" Relationship="ecommerceModel.ColorProducts" FromRole="Color" ToRole="Product" />
+          <NavigationProperty Name="Products" Relationship="ecommerceModel.ProductColors" FromRole="Color" ToRole="Product" />
         </EntityType>
         <EntityType Name="Comment">
           <Key>
@@ -1252,24 +1278,6 @@
           <NavigationProperty Name="Menus1" Relationship="ecommerceModel.FK_Menus_Menus" FromRole="Menu" ToRole="Menu1" />
           <NavigationProperty Name="Menu1" Relationship="ecommerceModel.FK_Menus_Menus" FromRole="Menu1" ToRole="Menu" />
         </EntityType>
-        <EntityType Name="OptionGroup">
-          <Key>
-            <PropertyRef Name="OptionGroupID" />
-          </Key>
-          <Property Name="OptionGroupID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OptionGroupName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Options" Relationship="ecommerceModel.FK_Options_OptionGroups" FromRole="OptionGroup" ToRole="Option" />
-        </EntityType>
-        <EntityType Name="Option">
-          <Key>
-            <PropertyRef Name="OptionID" />
-          </Key>
-          <Property Name="OptionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OptionName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="OptionGroupID" Type="Int32" />
-          <NavigationProperty Name="OptionGroup" Relationship="ecommerceModel.FK_Options_OptionGroups" FromRole="Option" ToRole="OptionGroup" />
-          <NavigationProperty Name="ProductOptions" Relationship="ecommerceModel.FK_ProductOptions_Options" FromRole="Option" ToRole="ProductOption" />
-        </EntityType>
         <EntityType Name="OrderDetail">
           <Key>
             <PropertyRef Name="OrderID" />
@@ -1320,17 +1328,17 @@
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Orders" Relationship="ecommerceModel.FK_Orders_Payments" FromRole="Payment" ToRole="Order" />
         </EntityType>
-        <EntityType Name="ProductOption">
+        <EntityType Name="ProductAttribute">
           <Key>
             <PropertyRef Name="ProductID" />
-            <PropertyRef Name="OptionID" />
+            <PropertyRef Name="AttrID" />
           </Key>
           <Property Name="ProductID" Type="Int32" Nullable="false" />
-          <Property Name="OptionID" Type="Int32" Nullable="false" />
+          <Property Name="AttrID" Type="Int32" Nullable="false" />
           <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Priority" Type="Byte" />
-          <NavigationProperty Name="Option" Relationship="ecommerceModel.FK_ProductOptions_Options" FromRole="ProductOption" ToRole="Option" />
-          <NavigationProperty Name="Product" Relationship="ecommerceModel.FK_ProductOptions_Products" FromRole="ProductOption" ToRole="Product" />
+          <NavigationProperty Name="Attribute" Relationship="ecommerceModel.FK_ProductOptions_Options" FromRole="ProductAttribute" ToRole="Attribute" />
+          <NavigationProperty Name="Product" Relationship="ecommerceModel.FK_ProductOptions_Products" FromRole="ProductAttribute" ToRole="Product" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -1351,9 +1359,9 @@
           <NavigationProperty Name="GroupProduct" Relationship="ecommerceModel.FK_Products_GroupProducts" FromRole="Product" ToRole="GroupProduct" />
           <NavigationProperty Name="ImageProducts" Relationship="ecommerceModel.FK_ImageProducts_Products" FromRole="Product" ToRole="ImageProduct" />
           <NavigationProperty Name="OrderDetails" Relationship="ecommerceModel.FK_OrderDetails_Products" FromRole="Product" ToRole="OrderDetail" />
-          <NavigationProperty Name="ProductOptions" Relationship="ecommerceModel.FK_ProductOptions_Products" FromRole="Product" ToRole="ProductOption" />
+          <NavigationProperty Name="ProductAttributes" Relationship="ecommerceModel.FK_ProductOptions_Products" FromRole="Product" ToRole="ProductAttribute" />
           <NavigationProperty Name="Quantities" Relationship="ecommerceModel.FK_Quantity_Products" FromRole="Product" ToRole="Quantity" />
-          <NavigationProperty Name="Colors" Relationship="ecommerceModel.ColorProducts" FromRole="Product" ToRole="Color" />
+          <NavigationProperty Name="Colors" Relationship="ecommerceModel.ProductColors" FromRole="Product" ToRole="Color" />
         </EntityType>
         <EntityType Name="Province">
           <Key>
@@ -1411,6 +1419,30 @@
           <NavigationProperty Name="District" Relationship="ecommerceModel.FK_Ward_Districts" FromRole="Ward" ToRole="District" />
           <NavigationProperty Name="Orders" Relationship="ecommerceModel.FK_Orders_Ward" FromRole="Ward" ToRole="Order" />
         </EntityType>
+        <Association Name="FK_Options_OptionGroups">
+          <End Type="ecommerceModel.AttributeGroup" Role="AttributeGroup" Multiplicity="0..1" />
+          <End Type="ecommerceModel.Attribute" Role="Attribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AttributeGroup">
+              <PropertyRef Name="AttrGroupID" />
+            </Principal>
+            <Dependent Role="Attribute">
+              <PropertyRef Name="AttriGroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductOptions_Options">
+          <End Type="ecommerceModel.Attribute" Role="Attribute" Multiplicity="1" />
+          <End Type="ecommerceModel.ProductAttribute" Role="ProductAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Attribute">
+              <PropertyRef Name="AttrID" />
+            </Principal>
+            <Dependent Role="ProductAttribute">
+              <PropertyRef Name="AttrID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Cart_Customers">
           <End Type="ecommerceModel.Customer" Role="Customer" Multiplicity="0..1" />
           <End Type="ecommerceModel.Cart" Role="Cart" Multiplicity="*" />
@@ -1628,7 +1660,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Products_GroupProducts">
-          <End Type="ecommerceModel.GroupProduct" Role="GroupProduct" Multiplicity="1" />
+          <End Type="ecommerceModel.GroupProduct" Role="GroupProduct" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="ecommerceModel.Product" Role="Product" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="GroupProduct">
@@ -1640,7 +1674,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ImageProducts_Products">
-          <End Type="ecommerceModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="ecommerceModel.Product" Role="Product" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="ecommerceModel.ImageProduct" Role="ImageProduct" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Product">
@@ -1660,30 +1696,6 @@
             </Principal>
             <Dependent Role="Menu1">
               <PropertyRef Name="ParentMenuID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Options_OptionGroups">
-          <End Type="ecommerceModel.OptionGroup" Role="OptionGroup" Multiplicity="0..1" />
-          <End Type="ecommerceModel.Option" Role="Option" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="OptionGroup">
-              <PropertyRef Name="OptionGroupID" />
-            </Principal>
-            <Dependent Role="Option">
-              <PropertyRef Name="OptionGroupID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ProductOptions_Options">
-          <End Type="ecommerceModel.Option" Role="Option" Multiplicity="1" />
-          <End Type="ecommerceModel.ProductOption" Role="ProductOption" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Option">
-              <PropertyRef Name="OptionID" />
-            </Principal>
-            <Dependent Role="ProductOption">
-              <PropertyRef Name="OptionID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1752,19 +1764,23 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ProductOptions_Products">
-          <End Type="ecommerceModel.Product" Role="Product" Multiplicity="1" />
-          <End Type="ecommerceModel.ProductOption" Role="ProductOption" Multiplicity="*" />
+          <End Type="ecommerceModel.Product" Role="Product" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ecommerceModel.ProductAttribute" Role="ProductAttribute" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Product">
               <PropertyRef Name="ProductID" />
             </Principal>
-            <Dependent Role="ProductOption">
+            <Dependent Role="ProductAttribute">
               <PropertyRef Name="ProductID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Quantity_Products">
-          <End Type="ecommerceModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="ecommerceModel.Product" Role="Product" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="ecommerceModel.Quantity" Role="Quantity" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Product">
@@ -1775,7 +1791,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="ColorProducts">
+        <Association Name="ProductColors">
           <End Type="ecommerceModel.Color" Role="Color" Multiplicity="*" />
           <End Type="ecommerceModel.Product" Role="Product" Multiplicity="*" />
         </Association>
@@ -1812,6 +1828,23 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="AdvertiseName" ColumnName="AdvertiseName" />
                 <ScalarProperty Name="AdvertiseID" ColumnName="AdvertiseID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Attributes">
+            <EntityTypeMapping TypeName="ecommerceModel.Attribute">
+              <MappingFragment StoreEntitySet="Attribute">
+                <ScalarProperty Name="AttriGroupID" ColumnName="AttriGroupID" />
+                <ScalarProperty Name="AttrName" ColumnName="AttrName" />
+                <ScalarProperty Name="AttrID" ColumnName="AttrID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AttributeGroups">
+            <EntityTypeMapping TypeName="ecommerceModel.AttributeGroup">
+              <MappingFragment StoreEntitySet="AttributeGroups">
+                <ScalarProperty Name="AttrGroupName" ColumnName="AttrGroupName" />
+                <ScalarProperty Name="AttrGroupID" ColumnName="AttrGroupID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1966,23 +1999,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="OptionGroups">
-            <EntityTypeMapping TypeName="ecommerceModel.OptionGroup">
-              <MappingFragment StoreEntitySet="OptionGroups">
-                <ScalarProperty Name="OptionGroupName" ColumnName="OptionGroupName" />
-                <ScalarProperty Name="OptionGroupID" ColumnName="OptionGroupID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Options">
-            <EntityTypeMapping TypeName="ecommerceModel.Option">
-              <MappingFragment StoreEntitySet="Options">
-                <ScalarProperty Name="OptionGroupID" ColumnName="OptionGroupID" />
-                <ScalarProperty Name="OptionName" ColumnName="OptionName" />
-                <ScalarProperty Name="OptionID" ColumnName="OptionID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="OrderDetails">
             <EntityTypeMapping TypeName="ecommerceModel.OrderDetail">
               <MappingFragment StoreEntitySet="OrderDetails">
@@ -2026,12 +2042,12 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ProductOptions">
-            <EntityTypeMapping TypeName="ecommerceModel.ProductOption">
-              <MappingFragment StoreEntitySet="ProductOptions">
+          <EntitySetMapping Name="ProductAttributes">
+            <EntityTypeMapping TypeName="ecommerceModel.ProductAttribute">
+              <MappingFragment StoreEntitySet="ProductAttribute">
                 <ScalarProperty Name="Priority" ColumnName="Priority" />
                 <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="OptionID" ColumnName="OptionID" />
+                <ScalarProperty Name="AttrID" ColumnName="AttrID" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2102,7 +2118,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="ColorProducts" TypeName="ecommerceModel.ColorProducts" StoreEntitySet="ColorProducts">
+          <AssociationSetMapping Name="ProductColors" TypeName="ecommerceModel.ProductColors" StoreEntitySet="ProductColors">
             <EndProperty Name="Product">
               <ScalarProperty Name="ProductID" ColumnName="ProductID" />
             </EndProperty>

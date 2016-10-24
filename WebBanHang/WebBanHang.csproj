@@ -249,6 +249,12 @@
     <Compile Include="Models\Advertise.cs">
       <DependentUpon>Ecommerce.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Attribute.cs">
+      <DependentUpon>Ecommerce.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AttributeGroup.cs">
+      <DependentUpon>Ecommerce.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Cart.cs">
       <DependentUpon>Ecommerce.tt</DependentUpon>
     </Compile>
@@ -305,12 +311,6 @@
     <Compile Include="Models\Menu.cs">
       <DependentUpon>Ecommerce.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Option.cs">
-      <DependentUpon>Ecommerce.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\OptionGroup.cs">
-      <DependentUpon>Ecommerce.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Order.cs">
       <DependentUpon>Ecommerce.tt</DependentUpon>
     </Compile>
@@ -323,7 +323,7 @@
     <Compile Include="Models\Product.cs">
       <DependentUpon>Ecommerce.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ProductOption.cs">
+    <Compile Include="Models\ProductAttribute.cs">
       <DependentUpon>Ecommerce.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Province.cs">
@@ -396,6 +396,7 @@
     <Content Include="Content\admin\images\users\avatar-9.jpg" />
     <Content Include="Content\admin\js\bootstrap.js" />
     <Content Include="Content\admin\js\bootstrap.min.js" />
+    <Content Include="Content\admin\js\custom.js" />
     <Content Include="Content\admin\js\detect.js" />
     <Content Include="Content\admin\js\jquery.app.js" />
     <Content Include="Content\admin\js\jquery.core.js" />
@@ -425,6 +426,10 @@
     <Content Include="Content\admin\pages\jquery.wizard-init.js" />
     <Content Include="Content\admin\pages\jquery.xeditable.js" />
     <Content Include="Content\admin\plugins\autoNumeric\autoNumeric.js" />
+    <Content Include="Content\admin\plugins\bootstrap-sweetalert\sweet-alert.css" />
+    <Content Include="Content\admin\plugins\bootstrap-sweetalert\sweet-alert.js" />
+    <Content Include="Content\admin\plugins\bootstrap-sweetalert\sweet-alert.min.js" />
+    <Content Include="Content\admin\plugins\bootstrap-sweetalert\thumbs-up.jpg" />
     <Content Include="Content\admin\plugins\datatables\buttons.bootstrap4.min.css" />
     <Content Include="Content\admin\plugins\datatables\buttons.bootstrap4.min.js" />
     <Content Include="Content\admin\plugins\datatables\buttons.colVis.min.js" />
@@ -442,6 +447,84 @@
     <Content Include="Content\admin\plugins\datatables\vfs_fonts.js" />
     <Content Include="Content\admin\plugins\switchery\switchery.min.css" />
     <Content Include="Content\admin\plugins\switchery\switchery.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\jquery.tinymce.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\advlist\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\anchor\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\autolink\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\autoresize\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\autosave\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\bbcode\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\charmap\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\codesample\css\prism.css" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\codesample\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\code\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\colorpicker\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\contextmenu\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\directionality\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\emoticons\img\smiley-cool.gif" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\emoticons\img\smiley-cry.gif" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\emoticons\img\smiley-embarassed.gif" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\emoticons\img\smiley-foot-in-mouth.gif" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\emoticons\img\smiley-frown.gif" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\emoticons\img\smiley-innocent.gif" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\emoticons\img\smiley-kiss.gif" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\emoticons\img\smiley-laughing.gif" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\emoticons\img\smiley-money-mouth.gif" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\emoticons\img\smiley-sealed.gif" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\emoticons\img\smiley-smile.gif" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\emoticons\img\smiley-surprised.gif" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\emoticons\img\smiley-tongue-out.gif" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\emoticons\img\smiley-undecided.gif" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\emoticons\img\smiley-wink.gif" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\emoticons\img\smiley-yell.gif" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\emoticons\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\example\dialog.html" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\example\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\example_dependency\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\fullpage\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\fullscreen\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\hr\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\imagetools\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\image\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\importcss\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\insertdatetime\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\layer\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\legacyoutput\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\link\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\lists\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\media\moxieplayer.swf" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\media\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\nonbreaking\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\noneditable\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\pagebreak\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\paste\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\preview\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\print\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\save\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\searchreplace\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\spellchecker\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\tabfocus\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\table\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\template\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\textcolor\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\textpattern\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\visualblocks\css\visualblocks.css" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\visualblocks\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\visualchars\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\plugins\wordcount\plugin.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\skins\lightgray\content.inline.min.css" />
+    <Content Include="Content\admin\plugins\tinymce\skins\lightgray\content.min.css" />
+    <Content Include="Content\admin\plugins\tinymce\skins\lightgray\fonts\tinymce-small.svg" />
+    <Content Include="Content\admin\plugins\tinymce\skins\lightgray\fonts\tinymce.svg" />
+    <Content Include="Content\admin\plugins\tinymce\skins\lightgray\img\anchor.gif" />
+    <Content Include="Content\admin\plugins\tinymce\skins\lightgray\img\loader.gif" />
+    <Content Include="Content\admin\plugins\tinymce\skins\lightgray\img\object.gif" />
+    <Content Include="Content\admin\plugins\tinymce\skins\lightgray\img\trans.gif" />
+    <Content Include="Content\admin\plugins\tinymce\skins\lightgray\skin.ie7.min.css" />
+    <Content Include="Content\admin\plugins\tinymce\skins\lightgray\skin.min.css" />
+    <Content Include="Content\admin\plugins\tinymce\themes\inlite\theme.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\themes\modern\theme.min.js" />
+    <Content Include="Content\admin\plugins\tinymce\tinymce.min.js" />
     <Content Include="Content\css\animate.min.css" />
     <Content Include="Content\css\blue.css" />
     <Content Include="Content\css\bootstrap-msg.min.css" />
@@ -465,6 +548,7 @@
     <Content Include="Content\css\rateit.css" />
     <Content Include="Content\css\red.css" />
     <Content Include="Content\css\rmodal.css" />
+    <Content Include="Content\css\spaces-utils.css" />
     <Content Include="Content\favicon.ico" />
     <Content Include="Content\fonts\bebas\bebasneuebold.svg" />
     <Content Include="Content\fonts\bebas\bebasneueregular.svg" />
@@ -825,6 +909,13 @@
     <Content Include="Areas\Admin\Views\Product\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Product\Index.cshtml" />
     <Content Include="Content\admin\plugins\datatables\json\scroller-demo.json" />
+    <Content Include="Content\admin\plugins\tinymce\langs\readme.md" />
+    <Content Include="Content\admin\plugins\tinymce\skins\lightgray\fonts\tinymce-small.eot" />
+    <Content Include="Content\admin\plugins\tinymce\skins\lightgray\fonts\tinymce-small.ttf" />
+    <Content Include="Content\admin\plugins\tinymce\skins\lightgray\fonts\tinymce-small.woff" />
+    <Content Include="Content\admin\plugins\tinymce\skins\lightgray\fonts\tinymce.eot" />
+    <Content Include="Content\admin\plugins\tinymce\skins\lightgray\fonts\tinymce.ttf" />
+    <Content Include="Content\admin\plugins\tinymce\skins\lightgray\fonts\tinymce.woff" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

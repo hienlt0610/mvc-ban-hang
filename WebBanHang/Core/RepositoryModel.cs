@@ -22,7 +22,7 @@ namespace WebBanHang.Core
 
         public RepositoryModel()
         {
-            this.dbContext = new DbContext("metadata=res://*/Models.Ecommerce.csdl|res://*/Models.Ecommerce.ssdl|res://*/Models.Ecommerce.msl;provider=System.Data.SqlClient;provider connection string='data source=DESKTOP-EO3JKGC\\HIENLT0610;initial catalog=ecommerce;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework'");
+            this.dbContext = new ecommerceEntities();
             this.dbSet = this.dbContext.Set<T>();
         }
 
@@ -44,9 +44,9 @@ namespace WebBanHang.Core
             return dbSet.Add(entity);
         }
 
-        public bool Delete(object key)
+        public bool Delete(params object[] keyValues)
         {
-            var item = dbSet.Find(key);
+            var item = dbSet.Find(keyValues);
             if (item == null)
                 return false;
             dbSet.Remove(item);
@@ -65,14 +65,14 @@ namespace WebBanHang.Core
             return dbSet;
         }
 
-        public T FindById(object key)
+        public T FindById(params object[] key)
         {
             return dbSet.Find(key);
         }
 
-        public void SaveChanges()
+        public int SaveChanges()
         {
-            dbContext.SaveChanges();
+            return dbContext.SaveChanges();
         }
 
     }
