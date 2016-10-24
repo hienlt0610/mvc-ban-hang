@@ -4,7 +4,6 @@
     ViewBag.Title = "Thêm sản phẩm";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutPage.cshtml";
     var groups = (IEnumerable<GroupProduct>)ViewBag.GroupProducts;
-    var colors = (IEnumerable<Color>)ViewBag.Colors;
     var attrGroup = (IEnumerable<AttributeGroup>)ViewBag.AttrGroup;
     var drDowAttrGroup = attrGroup.Select(g => new SelectListItem() { Text = g.AttrGroupName, Value = g.AttrGroupID.ToString() });
 }
@@ -13,6 +12,7 @@
     @using (Html.BeginForm("Edit", "Product", FormMethod.Post, new { @class = "form-horizontal", id = "myForm" }))
     {
         @Html.AntiForgeryToken()
+        @Html.HiddenFor(m=>m.ProductID)
     <!-- Page-Title -->
         <div class="row">
             <div class="col-sm-12">
@@ -155,7 +155,7 @@
                                         <h5 class="card-title">Quản lý thuộc tính</h5>
                                         <br />
                                         <button type="button" class="btn btn-success" onclick="add_attr()"><i class="glyphicon glyphicon-plus"></i> Thêm thuộc tính</button>
-                                        <button type="button" class="btn btn-default" onclick="reload_table()"><i class="glyphicon glyphicon-refresh"></i> Tải lại</button>
+                                        <button type="button" class="btn btn-default" onclick="reload_table('attr')"><i class="glyphicon glyphicon-refresh"></i> Tải lại</button>
                                         <br />
                                         <br />
                                         <table id="table-attr" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -177,61 +177,23 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="card card-block">
-                                        <h5 class="card-title">Chọn màu sắc</h5>
-
-                                        <table class="table table-hover" id="table-color">
+                                        <h5 class="card-title">Quản lý Màu sắc</h5>
+                                        <br />
+                                        <button type="button" class="btn btn-success" onclick="add_color();"><i class="fa fa-plus-circle"></i> Thêm màu sắc</button>
+                                        <button type="button" class="btn btn-default" onclick="reload_table('color')"><i class="fa fa-refresh"></i> Tải lại</button>
+                                        <br />
+                                        <br />
+                                        <table id="table-color" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                             <thead>
                                                 <tr>
-                                                    <th width="50px">
-                                                        ID
-                                                    </th>
-                                                    <th width="300px">Màu sắc</th>
-                                                    <th data-tabullet-map="level">Số lượng</th>
-                                                    <th width="50"></th>
-                                                    <th width="50"></th>
+                                                    <th>Màu sắc</th>
+                                                    <th>Số lượng</th>
+                                                    <th style="width:125px;">Action</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <tr data-index="-1" style="background:#f1f1f1;">
-                                                    <td></td>
-                                                    <td>
-                                                        <select id="colorbox" name="colorbox" class="form-control">
-                                                            @foreach (var color in colors)
-                                                            {
-                                                                <option value="@color.ColorID">@color.ColorName</option>
-                                                            }
-                                                        </select>
-                                                        <div>
-                                                            <span id="colorerror" class="field-validation-error" data-valmsg-for="colorbox" data-valmsg-replace="true"></span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <input id="stockbox" type="text" name="stockbox" class="form-control number">
-                                                        <div>
-                                                            <span id="stockerror" class="field-validation-error" data-valmsg-for="stockbox" data-valmsg-replace="true"></span>
-                                                        </div>
-                                                    </td>
-                                                    <td data-tabullet-type="save">
-                                                        <button type="button" class="btn btn-info btn-save">Thêm</button>
-                                                    </td>
-                                                    <td></td>
-                                                </tr>
-                                                @{int i = 0;}
-                                                @foreach(var color in Model.Quantity){
-                                                    <!--Available color-->
-                                                    <tr data-index="1">
-                                                        <td>@color.ColorID</td>
-                                                        <td><span class="color-text">@color.ColorID</span><input type="hidden" value="@color.ColorID" name="Quantity[@i].ColorID"></td>
-                                                        <td><span class="stock-value">@color.Stock</span><input type="hidden" value="@color.Stock" name="Quantity[@i].Stock"></td>
-                                                        <td><button type="button" class="btn btn-default btn-edit" data-mode="edit">Sửa</button></td>
-                                                        <td><button type="button" class="btn btn-danger btn-delete" data-mode="delete">Xóa</button></td>
-                                                    </tr>
-                                                    i++;
-                                                }
-                                                
-                                            </tbody>
-                                        </table>
+                                            <tbody></tbody>
 
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -245,8 +207,8 @@
     }
 </div>
 
-<!-- Bootstrap modal -->
-<div class="modal fade" id="modal_form" role="dialog">
+<!-- Bootstrap modal Attr -->
+<div class="modal fade" id="modal_form_attr" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <form action="#" id="form-attr" class="form-horizontal">
@@ -257,7 +219,7 @@
                 <div class="modal-body form">
                     <input type="hidden" value="" name="id" />
                     <div class="form-body">
-                        <input type="hidden" value="@Model.ProductID" name="ProductID" />
+                        @Html.HiddenFor(m=>m.ProductID)
                         <div class="form-group">
                             <label class="control-label col-md-3">Nhóm thuộc tính</label>
                             <div class="col-md-9">
@@ -297,6 +259,46 @@
 </div><!-- /.modal -->
 <!-- End Bootstrap modal -->
 
+<!-- Bootstrap modal Color -->
+<div class="modal fade" id="modal_form_color" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="#" id="form-color" class="form-horizontal">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 class="modal-title">Thêm mới màu</h3>
+                </div>
+                <div class="modal-body form">
+                    <input type="hidden" value="" name="id" />
+                    <div class="form-body">
+                        <input type="hidden" value="@Model.ProductID" name="ProductID" />
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Màu sản phẩm</label>
+                            <div class="col-md-9">
+                                <select id="color_id" data-rule-required="true" data-msg-required="Vui lòng chọn màu" name="color_id" class="form-control">
+                                    <option value="">Chọn màu</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Số lượng</label>
+                            <div class="col-md-9">
+                                <input data-rule-required="true" data-msg-required="Vui lòng nhập số lượng" data-rule-number="true" name="stock" placeholder="Giá trị" class="form-control" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btnSave" class="btn btn-primary">Lưu</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- End Bootstrap modal -->
+
 
 @helper DropdownTree(IEnumerable<GroupProduct> list)
 {
@@ -319,16 +321,51 @@
 }
 
 @section scripts{
+    <script src="https://cdn.datatables.net/rowreorder/1.1.2/js/dataTables.rowReorder.min.js"></script>
     <script>
+        $.validator.setDefaults({
+            ignore: ''
+        });
+        $.validator.unobtrusive.parse($('#myForm'));
+        $('input.autonumber').each(function () {
+            $(this).rules('remove', 'number');
+        });
+        tinymce.init({
+            selector: '#product-detail',
+            theme: 'modern',
+            height: 250, plugins: [
+              'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+              'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+              'save table contextmenu directionality emoticons template paste textcolor'
+            ],
+            setup: function (ed) {
+                ed.on('keyup', function (e) {
+                    tinyMceChange(ed);
+                });
+                ed.on('change', function (e) {
+                    tinyMceChange(ed);
+                });
+            }
+        });
+        $('.autonumber').autoNumeric('init', { pSign: 's', mDec: '0' });
 
-    table = $("#table-attr").DataTable({
+        function tinyMceChange(ed) {
+            tinyMCE.triggerSave();
+            $("#" + ed.id).valid();
+        }
+
+    table_attr = $("#table-attr").DataTable({
         "processing": true, //Feature control the processing indicator.
         "serverSide": true, //Feature control DataTables' server-side processing mode
         // Load data for the table's content from an Ajax source
+        "autoWidth": false,
         "ajax": {
             "url": "/Admin/Product/LoadAttr",
             "type": "GET",
             "data": { id: "@Model.ProductID" }
+        },
+        rowReorder: {
+            selector: 'td:not(:last-child)'
         },
         "bPaginate": false,
         bFilter: false,
@@ -339,36 +376,89 @@
                 "searchable": false,
                 "targets": [2],
                 "data": null,
-                "render": function(data, type, full, meta){
-                    if(type === 'display'){
-                        data = '<div style="min-width:70px" class="btn-group" role="group"><button type="button" onclick="edit_attr('+full[2]+','+@Model.ProductID+')" class="edit btn btn-info btn-sm"><span class="glyphicon glyphicon-edit" aria-hidden="true">Sửa</span></button><button type="button" onclick="delete_attr('+full[2]+','+@Model.ProductID+')" class="delete btn btn-danger btn-sm m-l-5"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>Xóa</button></div>';
-                        }
-
-                        return data;
+                "render": function (data, type, full, meta) {
+                    if (type === 'display') {
+                        data = '<div style="min-width:70px" class="btn-group" role="group"><button type="button" onclick="edit_attr(' + full[2] + ',' +@Model.ProductID +')" class="edit btn btn-info btn-sm"><span class="glyphicon glyphicon-edit" aria-hidden="true">Sửa</span></button><button type="button" onclick="delete_attr(' + full[2] + ',' +@Model.ProductID +')" class="delete btn btn-danger btn-sm m-l-5"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>Xóa</button></div>';
                     }
+
+                    return data;
                 }
-            ]
+            }
+        ]
+    });
+
+    table_color = $("#table-color").DataTable({
+        "processing": true, //Feature control the processing indicator.
+        "serverSide": true, //Feature control DataTables' server-side processing mode
+        // Load data for the table's content from an Ajax source
+        "autoWidth": false,
+        "ajax": {
+            "url": "/Admin/Product/LoadColor",
+            "type": "GET",
+            "data": { id: "@Model.ProductID" }
+        },
+        rowReorder: {
+            selector: 'td:not(:last-child)'
+        },
+        "bPaginate": false,
+        bFilter: false,
+        bInfo: false,
+        "columnDefs": [
+            {
+                "orderable": false,
+                "searchable": false,
+                "targets": [2],
+                "data": null,
+                "render": function (data, type, full, meta) {
+                    if (type === 'display') {
+                        data = '<div style="min-width:70px" class="btn-group" role="group"><button type="button" onclick="edit_color(' + full[2] + ',' +@Model.ProductID +')" class="edit btn btn-info btn-sm"><span class="glyphicon glyphicon-edit" aria-hidden="true">Sửa</span></button><button type="button" onclick="delete_color(' + full[2] + ',' +@Model.ProductID +')" class="delete btn btn-danger btn-sm m-l-5"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>Xóa</button></div>';
+                    }
+
+                    return data;
+                }
+            }
+        ]
+    });
+
+    table_attr.on('row-reorder', function (e, diff, edit) {
+        alert(JSON.stringify(diff));
+    });
+
+    var save_method;
+
+    function reload_table(type) {
+        if (type == 'attr') {
+            table_attr.ajax.reload(null, false); //reload datatable ajax
+        } else {
+            table_color.ajax.reload(null, false); //reload datatable ajax
+        }
+    }
+
+
+    function add_attr() {
+        save_method = 'add';
+        $('#form-attr [name="attr_group"]').parent().parent().show();
+        $('#form-attr [name="attr_id"]').parent().parent().show();
+        $('#form-attr')[0].reset(); // reset form on modals
+        $('#modal_form_attr').modal('show'); // show bootstrap modal
+        $('#form-attr .modal-title').text('Thêm mới'); // Set Title to Bootstrap modal title
+    }
+
+    function add_color() {
+        save_method = 'add';
+        $('#form-color [name="color_id"]').parent().parent().show();
+        $('#form-color')[0].reset(); // reset form on modals
+        $.get('/Admin/Product/GetListColor', { id: '@Model.ProductID' }, function (data) {
+            $('#color_id').html(data);
         });
-
-        var save_method;
-
-        function reload_table() {
-            table.ajax.reload(null, false); //reload datatable ajax
-        }
-
-        function add_attr() {
-            save_method = 'add';
-            $('[name="attr_group"]').attr('disabled', false);
-            $('[name="attr_id"]').attr('disabled', false);
-            $('#form-attr')[0].reset(); // reset form on modals
-            $('#modal_form').modal('show'); // show bootstrap modal
-            $('.modal-title').text('Thêm mới'); // Set Title to Bootstrap modal title
-        }
+        $('#modal_form_color').modal('show'); // show bootstrap modal
+        $('#form-color .modal-title').text('Thêm mới'); // Set Title to Bootstrap modal title
+    }
 
         function edit_attr(attr_id, product_id) {
             save_method = 'edit';
-            $('[name="attr_group"]').attr('disabled', true);
-            $('[name="attr_id"]').attr('disabled', true);
+            $('#form-attr [name="attr_group"]').parent().parent().hide();
+            $('#form-attr [name="attr_id"]').parent().parent().hide();
             $('#form-attr')[0].reset(); // reset form on modals
             $.ajax({
                 url: '/Admin/Product/GetProductAttr',
@@ -376,15 +466,11 @@
                 data : {product_id: product_id,attr_id:attr_id},
                 dataType: "JSON",
                 success: function (data) {
-                    $.get('/Admin/Product/GetListAttr', { id: data.data.attr_group }, function (listop) {
-                        $('#attr_id').html(listop);
-                        $('[name="attr_group"]').val(data.data.attr_group);
-                        $('[name="attr_value"]').val(data.data.attr_value);
-                        $('[name="attr_id"]').val(data.data.attr_id);
-                        $('#modal_form').modal('show');
-                        $('.modal-title').text('Chỉnh sửa'); // Set Title to Bootstrap modal title
-                    });
-
+                    $('#form-attr [name="attr_group"]').val(data.data.attr_group);
+                    $('#form-attr [name="attr_value"]').val(data.data.attr_value);
+                    $('#form-attr [name="attr_id"]').val(data.data.attr_id);
+                    $('#modal_form_attr').modal('show');
+                    $('#form-attr .modal-title').text('Chỉnh sửa: ' + data.data.attr_text); // Set Title to Bootstrap modal title
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     alert('Error get data from ajax');
@@ -392,7 +478,27 @@
             });
         }
 
-        function save() {
+        function edit_color(color_id, product_id) {
+            save_method = 'edit';
+            $('#form-attr')[0].reset(); // reset form on modals
+            $.ajax({
+                url: '/Admin/Product/GetProductColor',
+                type: 'GET',
+                data: { product_id: product_id, color_id: color_id},
+                dataType: "JSON",
+                success: function (data) {
+                    $('#form-color [name="color_id"]').parent().parent().hide();
+                    $('#form-color [name="stock"]').val(data.data.stock);
+                    $('#modal_form_color').modal('show');
+                    $('#form-color .modal-title').html('Chỉnh sửa: <b>Màu ' + data.data.color_name + '</b>'); // Set Title to Bootstrap modal title
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('Error get data from ajax');
+                }
+            });
+        }
+
+        function save_attr() {
             var url;
             if(save_method == 'add'){
                 url = '/Admin/Product/InsertAttr';
@@ -405,89 +511,196 @@
                 method: 'POST',
                 data: {
                     ProductID: '@Model.ProductID',
-                    AttrID: $('select[name=attr_id] option:selected').val(),
-                    Value: $('input[name=attr_value]').val(),
-                },
-                dataType: "JSON",
-                success: function (data) {
-                    if (data.status) {
-                        var title = '';
-                        var text = '';
-                        if (save_method == 'add') {
-                            title = 'Đã thêm';
-                            text = 'Bạn vừa thêm 1 thuộc tính mới.';
-                        } else {
-                            title = 'Đã sửa';
-                            text = 'Bạn vừa sửa đổi thuộc tính này.';
-                        }
-                        swal({
-                            title: title,
-                            text: text,
-                            type: "success",
-                            timer: 1000
-                        });
-                        $('#modal_form').modal('hide');
-                        reload_table();
-                    } else {
-                        swal("Lỗi!", data.message, "error");
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    alert('Error adding / update data');
-                }
-
-            });
-        }
-
-        function load_attr(item) {
-            $.get('/Admin/Product/GetListAttr', { id: item.value }, function (data) {
-                $('#attr_id').html(data);
-            });
-        }
-
-        function delete_attr(attr_id, product_id) {
-            swal({
-                title: "Bạn chắc chắn xóa?",
-                text: "Khi đã xóa bạn không thể khôi phục lại!!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonClass: "btn-danger",
-                confirmButtonText: "Đồng ý!",
-                cancelButtonText: "Hủy",
-                closeOnConfirm: false
+                AttrID: $('select[name=attr_id] option:selected').val(),
+                Value: $('input[name=attr_value]').val(),
             },
-            function (isConfirm) {
-                if (isConfirm) {
-                    $.ajax({
-                        url: "/Admin/Product/DeleteAttr",
-                        type: "POST",
-                        data: { id: product_id, attr_id: attr_id },
-                        success: function (data) {
-                            if (data == "success") {
-                                //if success reload ajax table
-                                $('#modal_form').modal('hide');
-                                swal("Đã xóa!", "Thuộc tính này đã được xóa thành công!!!", "success");
-                                reload_table();
-                            } else {
-                                swal("Thất bại!", "Có lỗi xảy ra, vui lòng thử lại", "error");
-                            }
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
+            dataType: "JSON",
+            success: function (data) {
+                if (data.status) {
+                    var title = '';
+                    var text = '';
+                    if (save_method == 'add') {
+                        title = 'Đã thêm';
+                        text = 'Bạn vừa thêm 1 thuộc tính mới.';
+                    } else {
+                        title = 'Đã sửa';
+                        text = 'Bạn vừa sửa đổi thuộc tính này.';
+                    }
+                    swal({
+                        title: title,
+                        text: text,
+                        type: "success",
+                        timer: 1000
+                    });
+                    $('#modal_form_attr').modal('hide');
+                    reload_table('attr');
+                } else {
+                    swal("Lỗi!", data.message, "error");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert('Error adding / update data');
+            }
+
+        });
+    }
+
+    function save_color() {
+        var url;
+        if (save_method == 'add') {
+            url = '/Admin/Product/InsertColor';
+        } else {
+            url = '/Admin/Product/UpdateColor';
+        }
+
+        $.ajax({
+            url: url,
+            method: 'POST',
+            data: {
+                ProductID: '@Model.ProductID',
+                ColorID: $('#form-color select[name=color_id] option:selected').val(),
+                Stock: $('#form-color input[name=stock]').val(),
+            },
+            dataType: "JSON",
+            success: function (data) {
+                if (data.status) {
+                    var title = '';
+                    var text = '';
+                    if (save_method == 'add') {
+                        title = 'Đã thêm';
+                        text = 'Bạn vừa thêm 1 màu mới vào sản phẩm.';
+                    } else {
+                        title = 'Đã sửa';
+                        text = 'Bạn vừa sửa đổi màu.';
+                    }
+                    swal({
+                        title: title,
+                        text: text,
+                        type: "success",
+                        timer: 1000
+                    });
+                    $('#modal_form_color').modal('hide');
+                    reload_table('color');
+                } else {
+                    swal("Lỗi!", data.message, "error");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert('Error adding / update data');
+            }
+
+        });
+    }
+
+    function load_attr(item) {
+        $.get('/Admin/Product/GetListAttr', { id: item.value, product_id: '@Model.ProductID' }, function (data) {
+            $('#attr_id').html(data);
+        });
+    }
+
+    function delete_attr(attr_id, product_id) {
+        swal({
+            title: "Bạn chắc chắn xóa?",
+            text: "Khi đã xóa bạn không thể khôi phục lại!!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Đồng ý!",
+            cancelButtonText: "Hủy",
+            closeOnConfirm: false
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: "/Admin/Product/DeleteAttr",
+                    type: "POST",
+                    data: { id: product_id, attr_id: attr_id },
+                    success: function (data) {
+                        if (data == "success") {
+                            //if success reload ajax table
+                            $('#modal_form_attr').modal('hide');
+                            swal({
+                                title: 'Đã xóa!',
+                                text: 'Thuộc tính này đã được xóa thành công!!!',
+                                type: "success",
+                                timer: 800
+                            });
+                            reload_table('attr');
+                        } else {
                             swal("Thất bại!", "Có lỗi xảy ra, vui lòng thử lại", "error");
                         }
-                    });
-                }
-            });
-        }
-
-        $('#form-attr').validate({
-            errorPlacement: function(error, element) {
-                error.appendTo(element.parent());
-            },
-            submitHandler: function () {
-                save();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        swal("Thất bại!", "Có lỗi xảy ra, vui lòng thử lại", "error");
+                    }
+                });
             }
         });
+    }
+
+    function delete_color(color_id, product_id) {
+        swal({
+            title: "Bạn chắc chắn xóa?",
+            text: "Khi đã xóa bạn không thể khôi phục lại!!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Đồng ý!",
+            cancelButtonText: "Hủy",
+            closeOnConfirm: false
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: "/Admin/Product/DeleteColor",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { ProductID: product_id, ColorID: color_id },
+                    success: function (data) {
+                        if (data.status) {
+                            $('#modal_form_color').modal('hide');
+                            swal("Đã xóa!", "Màu này đã được xóa khỏi sản phẩm thành công!!!", "success");
+                            reload_table('color');
+                        } else {
+                            swal("Thất bại!", data.message, "error");
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        swal("Thất bại!", "Có lỗi xảy ra, vui lòng thử lại", "error");
+                    }
+                });
+            }
+        });
+    }
+
+    $('#form-attr').validate({
+        errorPlacement: function (error, element) {
+            error.appendTo(element.parent());
+        },
+        submitHandler: function () {
+            save_attr();
+        }
+    });
+
+    $('#form-color').validate({
+        errorPlacement: function (error, element) {
+            error.appendTo(element.parent());
+        },
+        submitHandler: function () {
+            save_color();
+        }
+    });
+
+    $('#myForm').submit(function (e) {
+        var form = $(this);
+        if (form.valid()) {
+            form.find('input.autonumber').each(function () {
+                var self = $(this);
+                var v = self.autoNumeric('get');
+                self.val(v);
+            });
+        }
+    });
     </script>
 }
 

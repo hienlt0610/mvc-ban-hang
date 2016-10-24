@@ -234,6 +234,7 @@
           </Key>
           <Property Name="ProductID" Type="int" Nullable="false" />
           <Property Name="ColorID" Type="int" Nullable="false" />
+          <Property Name="Stock" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Products">
           <Key>
@@ -927,6 +928,7 @@
           <EntitySet Name="Orders" EntityType="ecommerceModel.Order" />
           <EntitySet Name="Payments" EntityType="ecommerceModel.Payment" />
           <EntitySet Name="ProductAttributes" EntityType="ecommerceModel.ProductAttribute" />
+          <EntitySet Name="ProductColors" EntityType="ecommerceModel.ProductColor" />
           <EntitySet Name="Products" EntityType="ecommerceModel.Product" />
           <EntitySet Name="Provinces" EntityType="ecommerceModel.Province" />
           <EntitySet Name="Quantities" EntityType="ecommerceModel.Quantity" />
@@ -960,6 +962,10 @@
           <AssociationSet Name="FK_OrderDetails_Color" Association="ecommerceModel.FK_OrderDetails_Color">
             <End Role="Color" EntitySet="Colors" />
             <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductColors_Color1" Association="ecommerceModel.FK_ProductColors_Color1">
+            <End Role="Color" EntitySet="Colors" />
+            <End Role="ProductColor" EntitySet="ProductColors" />
           </AssociationSet>
           <AssociationSet Name="FK_Quantity_Color" Association="ecommerceModel.FK_Quantity_Color">
             <End Role="Color" EntitySet="Colors" />
@@ -1049,13 +1055,13 @@
             <End Role="Product" EntitySet="Products" />
             <End Role="ProductAttribute" EntitySet="ProductAttributes" />
           </AssociationSet>
+          <AssociationSet Name="FK_ProductColors_Products1" Association="ecommerceModel.FK_ProductColors_Products1">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ProductColor" EntitySet="ProductColors" />
+          </AssociationSet>
           <AssociationSet Name="FK_Quantity_Products" Association="ecommerceModel.FK_Quantity_Products">
             <End Role="Product" EntitySet="Products" />
             <End Role="Quantity" EntitySet="Quantities" />
-          </AssociationSet>
-          <AssociationSet Name="ProductColors" Association="ecommerceModel.ProductColors">
-            <End Role="Color" EntitySet="Colors" />
-            <End Role="Product" EntitySet="Products" />
           </AssociationSet>
           <AssociationSet Name="UsersInRoles" Association="ecommerceModel.UsersInRoles">
             <End Role="Role" EntitySet="Roles" />
@@ -1138,8 +1144,8 @@
           <Property Name="HexCode" Type="String" MaxLength="6" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="CartDetails" Relationship="ecommerceModel.FK_CartDetails_Color" FromRole="Color" ToRole="CartDetail" />
           <NavigationProperty Name="OrderDetails" Relationship="ecommerceModel.FK_OrderDetails_Color" FromRole="Color" ToRole="OrderDetail" />
+          <NavigationProperty Name="ProductColors" Relationship="ecommerceModel.FK_ProductColors_Color1" FromRole="Color" ToRole="ProductColor" />
           <NavigationProperty Name="Quantities" Relationship="ecommerceModel.FK_Quantity_Color" FromRole="Color" ToRole="Quantity" />
-          <NavigationProperty Name="Products" Relationship="ecommerceModel.ProductColors" FromRole="Color" ToRole="Product" />
         </EntityType>
         <EntityType Name="Comment">
           <Key>
@@ -1340,6 +1346,17 @@
           <NavigationProperty Name="Attribute" Relationship="ecommerceModel.FK_ProductOptions_Options" FromRole="ProductAttribute" ToRole="Attribute" />
           <NavigationProperty Name="Product" Relationship="ecommerceModel.FK_ProductOptions_Products" FromRole="ProductAttribute" ToRole="Product" />
         </EntityType>
+        <EntityType Name="ProductColor">
+          <Key>
+            <PropertyRef Name="ProductID" />
+            <PropertyRef Name="ColorID" />
+          </Key>
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="ColorID" Type="Int32" Nullable="false" />
+          <Property Name="Stock" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Color" Relationship="ecommerceModel.FK_ProductColors_Color1" FromRole="ProductColor" ToRole="Color" />
+          <NavigationProperty Name="Product" Relationship="ecommerceModel.FK_ProductColors_Products1" FromRole="ProductColor" ToRole="Product" />
+        </EntityType>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="ProductID" />
@@ -1360,8 +1377,8 @@
           <NavigationProperty Name="ImageProducts" Relationship="ecommerceModel.FK_ImageProducts_Products" FromRole="Product" ToRole="ImageProduct" />
           <NavigationProperty Name="OrderDetails" Relationship="ecommerceModel.FK_OrderDetails_Products" FromRole="Product" ToRole="OrderDetail" />
           <NavigationProperty Name="ProductAttributes" Relationship="ecommerceModel.FK_ProductOptions_Products" FromRole="Product" ToRole="ProductAttribute" />
+          <NavigationProperty Name="ProductColors" Relationship="ecommerceModel.FK_ProductColors_Products1" FromRole="Product" ToRole="ProductColor" />
           <NavigationProperty Name="Quantities" Relationship="ecommerceModel.FK_Quantity_Products" FromRole="Product" ToRole="Quantity" />
-          <NavigationProperty Name="Colors" Relationship="ecommerceModel.ProductColors" FromRole="Product" ToRole="Color" />
         </EntityType>
         <EntityType Name="Province">
           <Key>
@@ -1499,6 +1516,18 @@
               <PropertyRef Name="ColorID" />
             </Principal>
             <Dependent Role="OrderDetail">
+              <PropertyRef Name="ColorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductColors_Color1">
+          <End Type="ecommerceModel.Color" Role="Color" Multiplicity="1" />
+          <End Type="ecommerceModel.ProductColor" Role="ProductColor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Color">
+              <PropertyRef Name="ColorID" />
+            </Principal>
+            <Dependent Role="ProductColor">
               <PropertyRef Name="ColorID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1777,6 +1806,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ProductColors_Products1">
+          <End Type="ecommerceModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="ecommerceModel.ProductColor" Role="ProductColor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="ProductColor">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Quantity_Products">
           <End Type="ecommerceModel.Product" Role="Product" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1790,10 +1831,6 @@
               <PropertyRef Name="ProductID" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>
-        <Association Name="ProductColors">
-          <End Type="ecommerceModel.Color" Role="Color" Multiplicity="*" />
-          <End Type="ecommerceModel.Product" Role="Product" Multiplicity="*" />
         </Association>
         <Association Name="UsersInRoles">
           <End Type="ecommerceModel.Role" Role="Role" Multiplicity="*" />
@@ -2052,6 +2089,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ProductColors">
+            <EntityTypeMapping TypeName="ecommerceModel.ProductColor">
+              <MappingFragment StoreEntitySet="ProductColors">
+                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="ColorID" ColumnName="ColorID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="ecommerceModel.Product">
               <MappingFragment StoreEntitySet="Products">
@@ -2118,14 +2164,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="ProductColors" TypeName="ecommerceModel.ProductColors" StoreEntitySet="ProductColors">
-            <EndProperty Name="Product">
-              <ScalarProperty Name="ProductID" ColumnName="ProductID" />
-            </EndProperty>
-            <EndProperty Name="Color">
-              <ScalarProperty Name="ColorID" ColumnName="ColorID" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="UsersInRoles" TypeName="ecommerceModel.UsersInRoles" StoreEntitySet="UsersInRoles">
             <EndProperty Name="User">
               <ScalarProperty Name="UserID" ColumnName="UserID" />

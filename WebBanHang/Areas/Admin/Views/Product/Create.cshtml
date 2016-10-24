@@ -339,8 +339,8 @@
                     var color_box = $('#table-color #colorbox option:selected');
                     var row = $('<tr>');
                     row.append($('<td>').html(color_box.val()))
-                        .append($('<td>').html("<span class=\"color-text\">" + color_box.text() + "</span>" + "<input type='hidden' value='" + color_box.val() + "' name='Quantity[" + last_id + "].ColorID'>"))
-                        .append($('<td>').html("<span class=\"stock-value\">" + $('input#stockbox:text').val() + "</span><input type='hidden' value='" + $('input#stockbox:text').val() + "' name='Quantity[" + last_id + "].Stock'>"))
+                        .append($('<td>').html("<span class=\"color-text\">" + color_box.text() + "</span>" + "<input type='hidden' value='" + color_box.val() + "' name='ProductColor[" + last_id + "].ColorID'>"))
+                        .append($('<td>').html("<span class=\"stock-value\">" + $('input#stockbox:text').val() + "</span><input type='hidden' value='" + $('input#stockbox:text').val() + "' name='ProductColor[" + last_id + "].Stock'>"))
                         .append($('<td>').html("<button type=\"button\" class=\"btn btn-default btn-edit\" data-mode=\"edit\">Sửa</button>"))
                         .append($('<td>').html("<button type=\"button\" class=\"btn btn-danger btn-delete\" data-mode=\"delete\">Xóa</button>"));
                     row.attr('data-index', last_id + '');
@@ -479,7 +479,7 @@
             td1.prepend($('<span class="color-text">').text(data.color_name));
             td1.find('select').remove();
             //Edit row 2
-            //td.eq(2).html("<span class=\"stock-value\">"+data.stock+"</span>" + "<input type='hidden' value='" + data.stock + "' name='Quantity[" + current_index + "].Stock'>");
+            //td.eq(2).html("<span class=\"stock-value\">"+data.stock+"</span>" + "<input type='hidden' value='" + data.stock + "' name='ProductColor[" + current_index + "].Stock'>");
             var td2 = td.eq(2);
             td2.find('input[type=hidden]').val(data.stock);
             td2.append('<span class=\"stock-value\">' + data.stock + '</span>');
@@ -504,9 +504,9 @@
             td.eq(1).find('span.color-text').remove();
             td.eq(1).prepend(selectbox);
             //Change display stock to textbox stock
-            //td.eq(2).html('<input type="number" value="' + td.eq(2).find('input[type=hidden]').val() + '" name="Quantity[' + current_index + ']" class="form-control"><div><span class="field-validation-error" data-valmsg-for="Quantity[' + current_index + ']" data-valmsg-replace="true"></span></div>');
+            //td.eq(2).html('<input type="number" value="' + td.eq(2).find('input[type=hidden]').val() + '" name="ProductColor[' + current_index + ']" class="form-control"><div><span class="field-validation-error" data-valmsg-for="ProductColor[' + current_index + ']" data-valmsg-replace="true"></span></div>');
             td.eq(2).find('span.stock-value').remove();
-            td.eq(2).append('<input type="number" value="' + td.eq(2).find('input[type=hidden]').val() + '" name="Quantity[' + current_index + ']" class="form-control">');
+            td.eq(2).append('<input type="number" value="' + td.eq(2).find('input[type=hidden]').val() + '" name="ProductColor[' + current_index + ']" class="form-control">');
             //Change edit button to save button
             var btn_edit = td.eq(3).find('button');
             btn_edit.attr('data-mode', 'save');
@@ -636,11 +636,11 @@
         }
 
         function addRule(id){
-            var item = $("select[name='Quantity["+id+"].ColorID']");
+            var item = $("select[name='ProductColor["+id+"].ColorID']");
             item.rules("add", {
                 color: true
             });
-            var item1 = $("input[name='Quantity["+id+"].Stock']");
+            var item1 = $("input[name='ProductColor["+id+"].Stock']");
             item.rules("add", {
                 required: true
             });

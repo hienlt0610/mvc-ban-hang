@@ -98,7 +98,7 @@
                             </div><!-- /.price-container -->
                             
                             <div class="quantity-container info-container">
-                                @if(Model.Colors.Count > 0){
+                                @if(Model.ProductColors.Count > 0){
                                     <!--Color box-->
                                     <div class="row">
                                         <div class="col-sm-2">
@@ -109,8 +109,8 @@
                                             <div class="cart-color">
                                                 <div class="color-input">
                                                     <select name="Color" id="color-choose" class="form-control">
-                                                        @foreach(var color in Model.Colors){
-                                                            <option value="@color.ColorID">@color.ColorName</option>
+                                                        @foreach(var color in Model.ProductColors){
+                                                            <option value="@color.ColorID">@color.Color.ColorName</option>
                                                         }
                                                     </select>
                                                 </div>

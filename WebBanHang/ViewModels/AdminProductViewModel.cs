@@ -34,12 +34,12 @@ namespace WebBanHang.ViewModels
         public bool UseMultiColor { get; set; }
 
         public bool Active { get; set; }
-        public List<Quantity> Quantity { get; set; }
+        public List<ProductColor> ProductColor { get; set; }
         public List<ProductAttribute> ProductAttribute { get; set; }
 
         public AdminProductViewModel()
         {
-            Quantity = new List<Quantity>();
+            ProductColor = new List<ProductColor>();
             ProductAttribute = new List<ProductAttribute>();
         }
     }

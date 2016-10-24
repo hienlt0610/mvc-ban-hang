@@ -326,6 +326,9 @@
     <Compile Include="Models\ProductAttribute.cs">
       <DependentUpon>Ecommerce.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ProductColor.cs">
+      <DependentUpon>Ecommerce.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Province.cs">
       <DependentUpon>Ecommerce.tt</DependentUpon>
     </Compile>
@@ -445,6 +448,8 @@
     <Content Include="Content\admin\plugins\datatables\responsive.bootstrap4.min.css" />
     <Content Include="Content\admin\plugins\datatables\responsive.bootstrap4.min.js" />
     <Content Include="Content\admin\plugins\datatables\vfs_fonts.js" />
+    <Content Include="Content\admin\plugins\rowReoder\dataTables.rowReorder.min.js" />
+    <Content Include="Content\admin\plugins\rowReoder\rowReorder.dataTables.min.css" />
     <Content Include="Content\admin\plugins\switchery\switchery.min.css" />
     <Content Include="Content\admin\plugins\switchery\switchery.min.js" />
     <Content Include="Content\admin\plugins\tinymce\jquery.tinymce.min.js" />

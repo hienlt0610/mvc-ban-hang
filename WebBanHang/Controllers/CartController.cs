@@ -86,14 +86,14 @@ namespace WebBanHang.Controllers
             }
 
             result.status = "OK";
-            result.count = product.Colors.Count;
-            foreach (var color in product.Colors)
+            result.count = product.ProductColors.Count;
+            foreach (var color in product.ProductColors)
             {
                 colors.Add(new
                 {
                     color_id = color.ColorID,
-                    color_name = color.ColorName,
-                    hex_code = color.HexCode
+                    color_name = color.Color.ColorName,
+                    hex_code = color.Color.HexCode
                 });
             }
             return Content(JsonConvert.SerializeObject(result), "application/json");

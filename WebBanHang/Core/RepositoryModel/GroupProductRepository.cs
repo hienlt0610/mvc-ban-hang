@@ -40,7 +40,7 @@ namespace WebBanHang.Core.RepositoryModel
 
             if (!String.IsNullOrEmpty(filter["color"]))
             {
-                model = model.Where(product => product.Colors.Any(color => color.ColorID.ToString().Equals(filter["color"])));
+                model = model.Where(product => product.ProductColors.Any(color => color.ColorID.ToString().Equals(filter["color"])));
             }
 
             if (!String.IsNullOrEmpty(filter["range_price"]))

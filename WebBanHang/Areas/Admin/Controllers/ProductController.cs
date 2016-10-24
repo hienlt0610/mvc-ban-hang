@@ -66,25 +66,21 @@ namespace WebBanHang.Areas.Admin.Controllers
                 model.Detail = HttpUtility.HtmlEncode(model.Detail);
                 var product = Mapper.Map<Product>(model);
                 product.CreateDate = DateTime.Now;
-                if (model.Quantity.Count > 0)
+                if (model.ProductColor.Count > 0)
                     product.UseMultiColor = true;
                 else
                     product.UseMultiColor = false;
                 Repository.Product.Insert(product);
                 Repository.SaveChanges();
-                if (model.Quantity.Count > 0)
+                if (model.ProductColor.Count > 0)
                 {
                     var quanRepo = Repository.Create<Quantity>();
-                    foreach (var quantity in model.Quantity)
+                    foreach (var pColor in model.ProductColor)
                     {
-                        //Add Product Color
-                        var color = Repository.Color.FindById(quantity.ColorID);
-                        product.Colors.Add(color);
-                        //Add Quantity with color
-                        quanRepo.Insert(new Quantity() { 
-                            ColorID = quantity.ColorID,
+                        product.ProductColors.Add(new ProductColor() { 
+                            ColorID = pColor.ColorID,
                             ProductID = product.ProductID,
-                            Stock = quantity.Stock
+                            Stock = pColor.Stock
                         });
                     }
                     Repository.SaveChanges();
@@ -127,12 +123,14 @@ namespace WebBanHang.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+            var pColors = Repository.Create<ProductColor>().FetchAll();
             ViewBag.AttrGroup = Repository.Create<AttributeGroup>().FetchAll();
             ViewBag.GroupProducts = Repository.GroupProduct.FetchAll();
-            ViewBag.Colors = Repository.Color.FetchAll().ToList();
+            ViewBag.Colors = Repository.Color.FetchAll().Where(c => !pColors.Any(p=>p.ColorID == c.ColorID && p.ProductID == product.ProductID)).ToList();
             var model = Mapper.Map<Product, AdminProductViewModel>(product);
-            model.Quantity = product.Quantities.ToList();
+            model.ProductColor = product.ProductColors.ToList();
             model.ProductAttribute = product.ProductAttributes.ToList();
+            model.Detail = HttpUtility.HtmlDecode(model.Detail);
             return View(model);
         }
 
@@ -143,10 +141,19 @@ namespace WebBanHang.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(AdminProductViewModel model)
         {
-            model.Detail = HttpUtility.HtmlEncode(model.Detail);
             if (ModelState.IsValid)
             {
-                return Content(JsonConvert.SerializeObject(model));
+                var product = Repository.Product.FindById(model.ProductID);
+                product.ProductName = model.ProductName;
+                product.GroupID = model.GroupID;
+                product.Detail = HttpUtility.HtmlEncode(model.Detail);
+                product.Price = model.Price;
+                product.SalePrice = model.SalePrice;
+                product.Stock = model.Stock;
+                product.Active = model.Active;
+                product.UseMultiColor = product.ProductColors.Count > 0 ? true : false;
+                Repository.Product.SaveChanges();
+                return RedirectToAction("Index","Product");
             }
             ViewBag.AttrGroup = Repository.Create<AttributeGroup>().FetchAll();
             ViewBag.GroupProducts = Repository.GroupProduct.FetchAll();
@@ -190,25 +197,55 @@ namespace WebBanHang.Areas.Admin.Controllers
             base.Dispose(disposing);
         }
 
-        public ActionResult GetListAttr(int id)
+        public ActionResult GetListAttr(int id, int product_id)
         {
             if (id == 0)
             {
                 return Content(String.Format("<option value=\"\">Chọn thuộc tính</option>"));
             }
             var attrGroup = Repository.Create<AttributeGroup>().FindById(id);
+            var pAttrs = Repository.Create<ProductAttribute>().FetchAll();
             StringBuilder builder = new StringBuilder();
             if (attrGroup == null || (attrGroup !=null && attrGroup.Attributes.Count == 0)) {
                 builder.Append(String.Format("<option value=\"\">Không có thuộc tính</option>"));
                 return Content(builder.ToString());
             }
             builder.Append(String.Format("<option value=\"\">Chọn thuộc tính</option>"));
-            foreach(var attr in attrGroup.Attributes){
+            var availableAttr = attrGroup.Attributes.Where(a => !pAttrs.Any(p => p.ProductID == product_id && a.AttrID == p.AttrID));
+            foreach (var attr in availableAttr)
+            {
                 builder.Append(String.Format("<option value=\"{0}\">{1}</option>",attr.AttrID,attr.AttrName));
             }
 
             return Content(builder.ToString());
         }
+
+        public ActionResult GetListColor(int id)
+        {
+            if (id == 0)
+            {
+                return Content(String.Format("<option value=\"\">Chọn màu</option>"));
+            }
+
+            var pColors = Repository.Create<ProductColor>().FetchAll();
+            var product = Repository.Product.FindById(id);
+
+            var colors = Repository.Color.FetchAll().Where(c => !pColors.Any(p => p.ColorID == c.ColorID && p.ProductID == product.ProductID)).ToList();
+            StringBuilder builder = new StringBuilder();
+            if (colors == null || (colors != null && colors.Count == 0))
+            {
+                builder.Append(String.Format("<option value=\"\">Không có màu</option>"));
+                return Content(builder.ToString());
+            }
+            builder.Append(String.Format("<option value=\"\">Chọn màu</option>"));
+            foreach (var color in colors)
+            {
+                builder.Append(String.Format("<option value=\"{0}\">{1}</option>", color.ColorID, color.ColorName));
+            }
+
+            return Content(builder.ToString());
+        }
+
 
         public ActionResult LoadAttr(int id) {
             var attrList = Repository.Create<ProductAttribute>().FetchAll().Where(a=>a.ProductID == id);
@@ -219,6 +256,24 @@ namespace WebBanHang.Areas.Admin.Controllers
                 dataAttr.Add(attr.Value);
                 dataAttr.Add(attr.AttrID);
                 data.Add(dataAttr);
+            }
+            return Json(new
+            {
+                data = data
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult LoadColor(int id)
+        {
+            var product = Repository.Product.FindById(id);
+            var data = new List<object>();
+            foreach (var color in product.ProductColors)
+            {
+                var dataColor = new List<object>();
+                dataColor.Add(color.Color.ColorName);
+                dataColor.Add(color.Stock);
+                dataColor.Add(color.ColorID);
+                data.Add(dataColor);
             }
             return Json(new
             {
@@ -238,6 +293,7 @@ namespace WebBanHang.Areas.Admin.Controllers
             return Content(status);
         }
 
+        [HttpPost]
         public ActionResult InsertAttr(ProductAttribute pAttr)
         {
             dynamic result = new ExpandoObject();
@@ -279,6 +335,94 @@ namespace WebBanHang.Areas.Admin.Controllers
             result.status = true;
             result.message = "Thêm thuộc tính thành công!!!";
             return Content(JsonConvert.SerializeObject(result), "application/json");
+        }
+
+        [HttpPost]
+        public ActionResult InsertColor(ProductColor pColorBind)
+        {
+            dynamic result = new ExpandoObject();
+            result.status = true;
+            result.message = "";
+            if (pColorBind.ColorID == 0 || pColorBind.ProductID == 0)
+            {
+                result.status = false;
+                result.message = "Thiếu thông tin đầu vào";
+                return Content(JsonConvert.SerializeObject(result), "application/json");
+            }
+            var product = Repository.Product.FindById(pColorBind.ProductID);
+            var color = Repository.Color.FindById(pColorBind.ColorID);
+            if(product == null){
+                result.status = false;
+                result.message = "Sản phẩm không tồn tại";
+                return Content(JsonConvert.SerializeObject(result), "application/json");
+            }
+            if(color == null){
+                result.status = false;
+                result.message = "Màu này không tồn tại";
+                return Content(JsonConvert.SerializeObject(result), "application/json");
+            }
+            if(product.ProductColors.Any(p=>p.ColorID == pColorBind.ColorID))
+            {
+                result.status = false;
+                result.message = "Màu này đã được thêm trước đó rồi";
+                return Content(JsonConvert.SerializeObject(result), "application/json");
+            }
+            product.ProductColors.Add(pColorBind);
+            if (Repository.SaveChanges() == 0)
+            {
+                result.status = false;
+                result.message = "Lỗi xảy ra";
+                return Content(JsonConvert.SerializeObject(result), "application/json");
+            }
+            result.status = true;
+            result.message = "Thêm thuộc tính thành công!!!";
+            return Content(JsonConvert.SerializeObject(result), "application/json");
+        }
+
+        [HttpPost]
+        public ActionResult DeleteColor(ProductColor pColorBind)
+        {
+            dynamic result = new ExpandoObject();
+            result.status = true;
+            result.message = "";
+            if (pColorBind.ColorID == 0 || pColorBind.ProductID == 0)
+            {
+                result.status = false;
+                result.message = "Thiếu thông tin đầu vào";
+                return Content(JsonConvert.SerializeObject(result), "application/json");
+            }
+            var product = Repository.Product.FindById(pColorBind.ProductID);
+            var color = Repository.Color.FindById(pColorBind.ColorID);
+            if (product == null)
+            {
+                result.status = false;
+                result.message = "Sản phẩm không tồn tại";
+                return Content(JsonConvert.SerializeObject(result), "application/json");
+            }
+            if (color == null)
+            {
+                result.status = false;
+                result.message = "Màu này không tồn tại";
+                return Content(JsonConvert.SerializeObject(result), "application/json");
+            }
+            if (!product.ProductColors.Any(p => p.ColorID == pColorBind.ColorID))
+            {
+                result.status = false;
+                result.message = "Sản phẩm không có màu này nên không thể xóa";
+                return Content(JsonConvert.SerializeObject(result), "application/json");
+            }
+
+            Repository.Create<ProductColor>().Delete(pColorBind.ProductID, pColorBind.ColorID);
+            if (Repository.Product.SaveChanges() == 0)
+            {
+                result.status = false;
+                result.message = "Lỗi không thể xóa được";
+                return Content(JsonConvert.SerializeObject(result), "application/json");
+            }
+            result.status = true;
+            result.message = "Xóa màu thành công!!!";
+            return Content(JsonConvert.SerializeObject(result), "application/json");
+
         }
 
         public ActionResult UpdateAttr(ProductAttribute pAttr)
@@ -348,6 +492,39 @@ namespace WebBanHang.Areas.Admin.Controllers
                 attr_group = pAttr.Attribute.AttriGroupID,
                 attr_text = pAttr.Attribute.AttrName,
                 attr_value = pAttr.Value
+            };
+
+            return Content(JsonConvert.SerializeObject(result), "application/json");
+        }
+
+        public ActionResult GetProductColor(int? product_id, int? color_id)
+        {
+            dynamic result = new ExpandoObject();
+            result.status = true;
+            result.message = "";
+            if (product_id == null || color_id == null)
+            {
+                result.status = false;
+                result.message = "Thiếu dữ liệu đầu vào";
+                return Content(JsonConvert.SerializeObject(result), "application/json");
+            }
+            var repo = Repository.Create<ProductColor>();
+            var pColor = repo.FindById(product_id, color_id);
+            if (pColor == null)
+            {
+                result.status = false;
+                result.message = "Màu của sản phẩm này không tồn tại";
+                return Content(JsonConvert.SerializeObject(result), "application/json");
+            }
+
+            result.status = true;
+            result.message = "";
+            result.data = new
+            {
+                product_id = pColor.ProductID,
+                color_id = pColor.ColorID,
+                color_name = pColor.Color.ColorName,
+                stock = pColor.Stock
             };
 
             return Content(JsonConvert.SerializeObject(result), "application/json");

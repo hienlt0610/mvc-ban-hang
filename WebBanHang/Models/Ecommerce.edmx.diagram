@@ -5,32 +5,33 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="9ae1acab004f49ea8a8ae96b1e634df6" Name="Diagram1" ZoomLevel="79">
-        <EntityTypeShape EntityType="ecommerceModel.Advertise" Width="1.5" PointX="13.75" PointY="7.5" />
-        <EntityTypeShape EntityType="ecommerceModel.Attribute" Width="1.5" PointX="9" PointY="17.25" />
-        <EntityTypeShape EntityType="ecommerceModel.AttributeGroup" Width="1.5" PointX="6.75" PointY="17.5" />
-        <EntityTypeShape EntityType="ecommerceModel.Cart" Width="1.5" PointX="0.75" PointY="4.5" />
-        <EntityTypeShape EntityType="ecommerceModel.CartDetail" Width="1.5" PointX="3" PointY="10.125" />
-        <EntityTypeShape EntityType="ecommerceModel.Color" Width="1.5" PointX="0.75" PointY="10.125" />
-        <EntityTypeShape EntityType="ecommerceModel.Comment" Width="1.5" PointX="8.25" PointY="7" />
-        <EntityTypeShape EntityType="ecommerceModel.Configuration" Width="1.5" PointX="0.75" PointY="7.5" />
-        <EntityTypeShape EntityType="ecommerceModel.Contact" Width="1.5" PointX="3.75" PointY="15.25" />
-        <EntityTypeShape EntityType="ecommerceModel.Coupon" Width="1.5" PointX="11.75" PointY="1.75" />
-        <EntityTypeShape EntityType="ecommerceModel.Customer" Width="1.5" PointX="1.5" PointY="14.125" />
-        <EntityTypeShape EntityType="ecommerceModel.District" Width="1.5" PointX="1.5" PointY="20.75" />
-        <EntityTypeShape EntityType="ecommerceModel.ExcludeCoupon" Width="1.5" PointX="14" PointY="4.25" />
-        <EntityTypeShape EntityType="ecommerceModel.GroupProduct" Width="1.5" PointX="3.75" PointY="5.875" />
-        <EntityTypeShape EntityType="ecommerceModel.ImageProduct" Width="1.5" PointX="8.25" PointY="13.625" />
-        <EntityTypeShape EntityType="ecommerceModel.Menu" Width="1.5" PointX="2.75" PointY="1.5" />
-        <EntityTypeShape EntityType="ecommerceModel.OrderDetail" Width="1.5" PointX="11.25" PointY="9.875" />
-        <EntityTypeShape EntityType="ecommerceModel.Order" Width="1.5" PointX="9" PointY="0.75" />
-        <EntityTypeShape EntityType="ecommerceModel.Payment" Width="1.5" PointX="6.75" PointY="2.375" />
-        <EntityTypeShape EntityType="ecommerceModel.ProductAttribute" Width="1.5" PointX="11.25" PointY="6.25" />
-        <EntityTypeShape EntityType="ecommerceModel.Product" Width="1.5" PointX="6" PointY="9" />
-        <EntityTypeShape EntityType="ecommerceModel.Province" Width="1.5" PointX="1.5" PointY="24.875" />
-        <EntityTypeShape EntityType="ecommerceModel.Quantity" Width="1.5" PointX="8.25" PointY="10.25" />
-        <EntityTypeShape EntityType="ecommerceModel.Role" Width="1.5" PointX="11.75" PointY="14.375" />
-        <EntityTypeShape EntityType="ecommerceModel.User" Width="1.5" PointX="14" PointY="13.75" />
-        <EntityTypeShape EntityType="ecommerceModel.Ward" Width="1.5" PointX="1.5" PointY="28" />
+        <EntityTypeShape EntityType="ecommerceModel.Advertise" Width="1.5" PointX="8.75" PointY="9.75" />
+        <EntityTypeShape EntityType="ecommerceModel.Attribute" Width="1.5" PointX="3.75" PointY="45" />
+        <EntityTypeShape EntityType="ecommerceModel.AttributeGroup" Width="1.5" PointX="1.5" PointY="45.125" />
+        <EntityTypeShape EntityType="ecommerceModel.Cart" Width="1.5" PointX="3.75" PointY="17.875" />
+        <EntityTypeShape EntityType="ecommerceModel.CartDetail" Width="1.5" PointX="6" PointY="10.75" />
+        <EntityTypeShape EntityType="ecommerceModel.Color" Width="1.5" PointX="3.75" PointY="2.75" />
+        <EntityTypeShape EntityType="ecommerceModel.Comment" Width="1.5" PointX="3" PointY="6.75" />
+        <EntityTypeShape EntityType="ecommerceModel.Configuration" Width="1.5" PointX="5.75" PointY="4.75" />
+        <EntityTypeShape EntityType="ecommerceModel.Contact" Width="1.5" PointX="3" PointY="35.75" />
+        <EntityTypeShape EntityType="ecommerceModel.Coupon" Width="1.5" PointX="7.75" PointY="1" />
+        <EntityTypeShape EntityType="ecommerceModel.Customer" Width="1.5" PointX="0.75" PointY="15.5" />
+        <EntityTypeShape EntityType="ecommerceModel.District" Width="1.5" PointX="1.5" PointY="25.25" />
+        <EntityTypeShape EntityType="ecommerceModel.ExcludeCoupon" Width="1.5" PointX="10" PointY="2.125" />
+        <EntityTypeShape EntityType="ecommerceModel.GroupProduct" Width="1.5" PointX="1.5" PointY="2.625" />
+        <EntityTypeShape EntityType="ecommerceModel.ImageProduct" Width="1.5" PointX="3" PointY="29.25" />
+        <EntityTypeShape EntityType="ecommerceModel.Menu" Width="1.5" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ecommerceModel.OrderDetail" Width="1.5" PointX="3" PointY="10.625" />
+        <EntityTypeShape EntityType="ecommerceModel.Order" Width="1.5" PointX="0.75" PointY="35.5" />
+        <EntityTypeShape EntityType="ecommerceModel.Payment" Width="1.5" PointX="1.5" PointY="42.125" />
+        <EntityTypeShape EntityType="ecommerceModel.ProductAttribute" Width="1.5" PointX="6" PointY="13.875" />
+        <EntityTypeShape EntityType="ecommerceModel.ProductColor" Width="1.5" PointX="6" PointY="8" />
+        <EntityTypeShape EntityType="ecommerceModel.Product" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="ecommerceModel.Province" Width="1.5" PointX="1.5" PointY="32.5" />
+        <EntityTypeShape EntityType="ecommerceModel.Quantity" Width="1.5" PointX="3" PointY="15" />
+        <EntityTypeShape EntityType="ecommerceModel.Role" Width="1.5" PointX="8.75" PointY="6.5" />
+        <EntityTypeShape EntityType="ecommerceModel.User" Width="1.5" PointX="11" PointY="6" />
+        <EntityTypeShape EntityType="ecommerceModel.Ward" Width="1.5" PointX="1.5" PointY="22.125" />
         <AssociationConnector Association="ecommerceModel.FK_Options_OptionGroups" />
         <AssociationConnector Association="ecommerceModel.FK_ProductOptions_Options" />
         <AssociationConnector Association="ecommerceModel.FK_Cart_Customers" />
@@ -38,6 +39,7 @@
         <AssociationConnector Association="ecommerceModel.FK_CartDetails_Color" />
         <AssociationConnector Association="ecommerceModel.FK_CartDetails_Products" />
         <AssociationConnector Association="ecommerceModel.FK_OrderDetails_Color" />
+        <AssociationConnector Association="ecommerceModel.FK_ProductColors_Color1" />
         <AssociationConnector Association="ecommerceModel.FK_Quantity_Color" />
         <AssociationConnector Association="ecommerceModel.FK_Comment_Customers" />
         <AssociationConnector Association="ecommerceModel.FK_Comment_Products" />
@@ -60,8 +62,8 @@
         <AssociationConnector Association="ecommerceModel.FK_Orders_Provinces" />
         <AssociationConnector Association="ecommerceModel.FK_Orders_Ward" />
         <AssociationConnector Association="ecommerceModel.FK_ProductOptions_Products" />
+        <AssociationConnector Association="ecommerceModel.FK_ProductColors_Products1" />
         <AssociationConnector Association="ecommerceModel.FK_Quantity_Products" />
-        <AssociationConnector Association="ecommerceModel.ProductColors" />
         <AssociationConnector Association="ecommerceModel.UsersInRoles" />
       </Diagram>
     </edmx:Diagrams>
