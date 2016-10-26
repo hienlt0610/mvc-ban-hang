@@ -43,7 +43,7 @@
                                                 var imgUrl = ImageHelper.DefaultImage();
                                                 if (item.Product.ImageProducts.FirstOrDefault() != null)
                                                 {
-                                                    imgUrl = ImageHelper.ImageUrl(item.Product.ImageProducts.FirstOrDefault().ImageName);
+                                                    imgUrl = ImageHelper.ImageUrl(item.Product.ImageProducts.FirstOrDefault().ImagePath);
                                                 }
                                             }
                                             <img src="@imgUrl?w=80&h=80" alt="Aspire Ultrabook Laptop" title="Aspire Ultrabook Laptop" class="img-thumbnail">

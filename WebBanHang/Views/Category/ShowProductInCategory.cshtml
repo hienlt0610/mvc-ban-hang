@@ -96,7 +96,7 @@
                                                     var imgUrl = ImageHelper.DefaultImage();
                                                     if (product.ImageProducts.Count > 0)
                                                     {
-                                                        imgUrl = ImageHelper.ImageUrl(product.ImageProducts.FirstOrDefault().ImageName);
+                                                        imgUrl = ImageHelper.ImageUrl(product.ImageProducts.FirstOrDefault().ImagePath);
                                                     }
                                                     imgUrl += "?w=195&h=250";
                                                 }

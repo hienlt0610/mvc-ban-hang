@@ -79,7 +79,7 @@
                                             <div class="col-md-7 dropdown-submit-input">
                                                 @Html.HiddenFor(item => item.GroupID, new { Value = (groups.Count() > 0 ? groups.FirstOrDefault().GroupID.ToString() : "") })
                                                 <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    @(groups.Count() > 0 ? groups.FirstOrDefault().GroupName : "")
+                                                    @ViewBag.GroupName
                                                     <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu multi-level" id="list-group" role="menu" aria-labelledby="dropdownMenu">
@@ -198,7 +198,38 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane" id="picture" role="tabpanel">3123123</div>
+                        <div class="tab-pane" id="picture" role="tabpanel">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="card card-block">
+                                        <h5 class="card-title">Quản lý hình ảnh</h5>
+                                            <div class="row">
+                                                <div class="col-md-9 center-block">
+                                                    <table id="table-image" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Hình ảnh</th>
+                                                                <th>Đường dẫn</th>
+                                                                <th style="width:125px;">Hành động</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    <div class="card card-block">
+                                        <h5 class="card-title">Thêm hình ảnh mới</h5>
+
+                                        <div class="uploader">
+                                            <input type="file" multiple id="ssi-upload" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div><!-- end col -->
@@ -323,36 +354,36 @@
 @section scripts{
     <script src="https://cdn.datatables.net/rowreorder/1.1.2/js/dataTables.rowReorder.min.js"></script>
     <script>
-        $.validator.setDefaults({
-            ignore: ''
-        });
-        $.validator.unobtrusive.parse($('#myForm'));
-        $('input.autonumber').each(function () {
-            $(this).rules('remove', 'number');
-        });
-        tinymce.init({
-            selector: '#product-detail',
-            theme: 'modern',
-            height: 250, plugins: [
-              'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
-              'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
-              'save table contextmenu directionality emoticons template paste textcolor'
-            ],
-            setup: function (ed) {
-                ed.on('keyup', function (e) {
-                    tinyMceChange(ed);
-                });
-                ed.on('change', function (e) {
-                    tinyMceChange(ed);
-                });
-            }
-        });
-        $('.autonumber').autoNumeric('init', { pSign: 's', mDec: '0' });
-
-        function tinyMceChange(ed) {
-            tinyMCE.triggerSave();
-            $("#" + ed.id).valid();
+    $.validator.setDefaults({
+        ignore: ''
+    });
+    $.validator.unobtrusive.parse($('#myForm'));
+    $('input.autonumber').each(function () {
+        $(this).rules('remove', 'number');
+    });
+    tinymce.init({
+        selector: '#product-detail',
+        theme: 'modern',
+        height: 250, plugins: [
+          'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+          'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+          'save table contextmenu directionality emoticons template paste textcolor'
+        ],
+        setup: function (ed) {
+            ed.on('keyup', function (e) {
+                tinyMceChange(ed);
+            });
+            ed.on('change', function (e) {
+                tinyMceChange(ed);
+            });
         }
+    });
+    $('.autonumber').autoNumeric('init', { pSign: 's', mDec: '0' });
+
+    function tinyMceChange(ed) {
+        tinyMCE.triggerSave();
+        $("#" + ed.id).valid();
+    }
 
     table_attr = $("#table-attr").DataTable({
         "processing": true, //Feature control the processing indicator.
@@ -420,6 +451,50 @@
         ]
     });
 
+        table_image = $("#table-image").DataTable({
+            "processing": true, //Feature control the processing indicator.
+            "serverSide": true, //Feature control DataTables' server-side processing mode
+            // Load data for the table's content from an Ajax source
+            "autoWidth": false,
+            "ajax": {
+                "url": "/Admin/Product/LoadImage",
+                "type": "GET",
+                "data": { id: "@Model.ProductID" }
+            },
+            "bPaginate": false,
+            bFilter: false,
+            bInfo: false,
+            "columnDefs": [
+                {
+                    "orderable": false,
+                    "searchable": false,
+                    "targets": [2],
+                    "data": null,
+                    "className": "align-center",
+                    "render": function (data, type, full, meta) {
+                        if (type === 'display') {
+                            data = '<div style="min-width:70px" class="btn-group" role="group"><button type="button" onclick="delete_img(' + full[1] + ',' +@Model.ProductID +')" class="delete btn btn-danger btn-sm m-l-5"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>Xóa</button></div>';
+                        }
+
+                        return data;
+                    }
+                },
+                {
+                    "targets": 1,
+                    "render": function (data, type, full, meta) {
+                        return full[0];
+                    }
+                },
+                {
+                    "targets": 0,
+                    "className": "align-center",
+                    "render": function (data, type, full, meta) {
+                        return '<img src="' + data + '?w=150"/>';
+                    }
+                }
+            ]
+        });
+
     table_attr.on('row-reorder', function (e, diff, edit) {
         alert(JSON.stringify(diff));
     });
@@ -429,8 +504,10 @@
     function reload_table(type) {
         if (type == 'attr') {
             table_attr.ajax.reload(null, false); //reload datatable ajax
-        } else {
+        } else if(type == 'color') {
             table_color.ajax.reload(null, false); //reload datatable ajax
+        } else if(type == 'image'){
+            table_image.ajax.reload(null, false); //reload datatable ajax
         }
     }
 
@@ -448,7 +525,7 @@
         save_method = 'add';
         $('#form-color [name="color_id"]').parent().parent().show();
         $('#form-color')[0].reset(); // reset form on modals
-        $.get('/Admin/Product/GetListColor', { id: '@Model.ProductID' }, function (data) {
+        $.get('/Admin/Product/GetListColor', { id: '@Model.ProductID', available:true }, function (data) {
             $('#color_id').html(data);
         });
         $('#modal_form_color').modal('show'); // show bootstrap modal
@@ -468,7 +545,10 @@
                 success: function (data) {
                     $('#form-attr [name="attr_group"]').val(data.data.attr_group);
                     $('#form-attr [name="attr_value"]').val(data.data.attr_value);
-                    $('#form-attr [name="attr_id"]').val(data.data.attr_id);
+                    $.get('/Admin/Product/GetListAttr', { id: data.data.attr_group, product_id : '@Model.ProductID', available:false }, function (list) {
+                        $('#attr_id').html(list);
+                        $('#attr_id').val(data.data.attr_id);
+                    });
                     $('#modal_form_attr').modal('show');
                     $('#form-attr .modal-title').text('Chỉnh sửa: ' + data.data.attr_text); // Set Title to Bootstrap modal title
                 },
@@ -488,6 +568,10 @@
                 dataType: "JSON",
                 success: function (data) {
                     $('#form-color [name="color_id"]').parent().parent().hide();
+                    $.get('/Admin/Product/GetListColor', { id: '@Model.ProductID', available:false }, function (list) {
+                        $('#color_id').html(list);
+                        $('#color_id').val(data.data.color_id);
+                    });
                     $('#form-color [name="stock"]').val(data.data.stock);
                     $('#modal_form_color').modal('show');
                     $('#form-color .modal-title').html('Chỉnh sửa: <b>Màu ' + data.data.color_name + '</b>'); // Set Title to Bootstrap modal title
@@ -593,7 +677,7 @@
     }
 
     function load_attr(item) {
-        $.get('/Admin/Product/GetListAttr', { id: item.value, product_id: '@Model.ProductID' }, function (data) {
+        $.get('/Admin/Product/GetListAttr', { id: item.value, product_id: '@Model.ProductID', available:true }, function (data) {
             $('#attr_id').html(data);
         });
     }
@@ -632,6 +716,35 @@
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         swal("Thất bại!", "Có lỗi xảy ra, vui lòng thử lại", "error");
+                    }
+                });
+            }
+        });
+    }
+
+    function delete_img(img_id, product_id) {
+        swal({
+            title: "Bạn chắc chắn xóa?",
+            text: "Khi đã xóa bạn không thể khôi phục lại!!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Đồng ý!",
+            cancelButtonText: "Hủy",
+            closeOnConfirm: false
+        }, function (is_confirm) {
+            if (is_confirm) {
+                $.post("/Admin/Product/DeleteImage", { ImageID: img_id, ProductID:product_id }, function (status) {
+                    if (status == 'success') {
+                        swal({
+                            title: 'Đã xóa!',
+                            text: 'Chúc mừng bạn đã xóa thành công!!!',
+                            type: "success",
+                            timer: 800
+                        });
+                        reload_table('image');
+                    } else {
+                        swal("Lỗi!", "Đã có lỗi xảy ra, vui lòng kiểm tra lại", "error");
                     }
                 });
             }
@@ -700,6 +813,48 @@
                 self.val(v);
             });
         }
+    });
+    //Xử lý chọn nhóm sản phẩm
+    $('ul#list-group.dropdown-menu a').click(function (e) {
+        e.preventDefault();
+        $submitInput = $(this).closest('.dropdown-submit-input');
+        $submitInput.find('input').val($(this).data('value'));
+        $submitInput.find('button').html($(this).text() + ' <span class="caret"></span>');
+    });
+
+    $('#ssi-upload').ssi_uploader({
+        url: '/admin/product/imageupload',
+        data:{product_id: '@Model.ProductID'},
+        locale: 'vi',
+        allowed: ['png', 'jpg', 'gif'],
+        errorHandler: {
+            method: function (msg, type) {
+                swal({
+                    title: msg,
+                    type: 'error',
+                    timer: 1500
+                });
+            },
+            success: 'success',
+            error: 'error'
+        },
+        onEachUpload: function (fileInfo) {
+            console.log(fileInfo);
+        },
+        responseValidation:{
+            validationKey: 'status',
+            resultKey: 'message',
+            success: 'success',
+            error: 'error'
+        },
+        onUpload: function () {
+            reload_table('image');
+        },
+        maxFileSize: 5//mb
+    });
+
+    $('.ssi-button').on('click', function () {
+        return false;
     });
     </script>
 }

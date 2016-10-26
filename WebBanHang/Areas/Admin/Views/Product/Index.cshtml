@@ -46,7 +46,7 @@
                                             @if (item.ImageProducts.Count > 0)
                                             {
                                                 var firstImg = item.ImageProducts.FirstOrDefault();
-                                                <img class="img-thumbnail" src="@ImageHelper.ImageUrl(firstImg.ImageName)?w=50&h=50" />
+                                                <img class="img-thumbnail" src="@ImageHelper.ImageUrl(firstImg.ImagePath)?w=50&h=50" />
                                             }
                                         </td>
                                         <td style='vertical-align:middle'>@item.ProductName</td>
@@ -64,7 +64,7 @@
                                         </td>
                                         <td style='text-align: center; vertical-align: middle;'>
                                             <a href="@Url.Action("Edit", new { id = item.ProductID })" class="btn waves-effect waves-light btn-warning"> <i class="fa fa-wrench"></i> </a>
-                                            <a href="@Url.Action("Delete", new { id = item.ProductID })" class="btn waves-effect waves-light btn-danger"> <i class="fa fa-remove"></i> </a>
+                                            <a href="@Url.Action("Delete", new { id = item.ProductID })" onclick="delete_product(@item.ProductID);return false;" class="btn waves-effect waves-light btn-danger"> <i class="fa fa-remove"></i> </a>
                                         </td>
                                     </tr>
                                     }
@@ -81,11 +81,37 @@
 
 @section scripts {
     <script type="text/javascript">
-    $(document).ready(function () {
-        $('#datatable').DataTable({
-        });
-    });
-
+        var table = $('#datatable').DataTable();
+        function delete_product(product_id){
+            swal({
+                title: "Bạn chắc chắn xóa?",
+                text: "Khi đã xóa bạn không thể khôi phục lại!!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Đồng ý!",
+                cancelButtonText: "Hủy",
+                closeOnConfirm: false
+            },function(is_confirm){
+                if(is_confirm){
+                    $.post("/Admin/Product/Delete",{id : product_id},function(status){
+                        if(status == 'success'){
+                            swal({
+                                title: 'Đã xóa!',
+                                text: 'Chúc mừng bạn đã xóa thành công!!!',
+                                type: "success",
+                                timer: 800
+                            });
+                            setTimeout(function(){
+                                location.reload();
+                            },1000);
+                        }else{
+                            swal("Lỗi!", "Đã có lỗi xảy ra, vui lòng kiểm tra lại", "error");
+                        }
+                    });
+                }
+            });
+        }
 </script>
 
 

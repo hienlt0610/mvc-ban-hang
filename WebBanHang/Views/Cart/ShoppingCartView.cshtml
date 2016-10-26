@@ -30,7 +30,7 @@
                                 var imgUrl = ImageHelper.DefaultImage();
                                 if (cartItem.Product.ImageProducts.FirstOrDefault() != null)
                                 {
-                                    imgUrl = ImageHelper.ImageUrl(cartItem.Product.ImageProducts.FirstOrDefault().ImageName);
+                                    imgUrl = ImageHelper.ImageUrl(cartItem.Product.ImageProducts.FirstOrDefault().ImagePath);
                                 }
                             }
                             <td class="text-center"><a href="product.html"><img class="img-thumbnail" title="@cartItem.Product.ProductName" alt="@cartItem.Product.ProductName" src="@imgUrl?w=80&h=80"></a></td>

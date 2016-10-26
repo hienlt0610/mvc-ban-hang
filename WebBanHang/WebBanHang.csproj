@@ -206,6 +206,7 @@
     <Compile Include="Areas\Admin\Controllers\AuthController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
+    <Compile Include="Areas\Admin\Controllers\UploadController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AppApiController.cs" />
     <Compile Include="Controllers\CartController.cs" />
@@ -450,6 +451,9 @@
     <Content Include="Content\admin\plugins\datatables\vfs_fonts.js" />
     <Content Include="Content\admin\plugins\rowReoder\dataTables.rowReorder.min.js" />
     <Content Include="Content\admin\plugins\rowReoder\rowReorder.dataTables.min.css" />
+    <Content Include="Content\admin\plugins\ssi-uploader\images\sprite.png" />
+    <Content Include="Content\admin\plugins\ssi-uploader\ssi-uploader.css" />
+    <Content Include="Content\admin\plugins\ssi-uploader\ssi-uploader.min.js" />
     <Content Include="Content\admin\plugins\switchery\switchery.min.css" />
     <Content Include="Content\admin\plugins\switchery\switchery.min.js" />
     <Content Include="Content\admin\plugins\tinymce\jquery.tinymce.min.js" />
@@ -921,6 +925,7 @@
     <Content Include="Content\admin\plugins\tinymce\skins\lightgray\fonts\tinymce.eot" />
     <Content Include="Content\admin\plugins\tinymce\skins\lightgray\fonts\tinymce.ttf" />
     <Content Include="Content\admin\plugins\tinymce\skins\lightgray\fonts\tinymce.woff" />
+    <Content Include="Areas\Admin\Views\Upload\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -992,6 +997,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\Admin\" />
+    <Folder Include="Uploads\" />
     <Folder Include="Views\Api\" />
     <Folder Include="Views\Test\" />
   </ItemGroup>

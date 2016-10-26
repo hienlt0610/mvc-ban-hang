@@ -17,5 +17,16 @@ namespace WebBanHang.Utils
         {
             return s.Replace("Thành Phố","TP. ");
         }
+
+        public static String GenerateID()
+        {
+            long ticks = DateTime.Now.Ticks;
+            byte[] bytes = BitConverter.GetBytes(ticks);
+            string id = Convert.ToBase64String(bytes)
+                                    .Replace('+', '_')
+                                    .Replace('/', '-')
+                                    .TrimEnd('=');
+            return id;
+        }
     }
 }

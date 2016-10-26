@@ -97,6 +97,11 @@
     text-align:right;
 }
 
+.align-center{
+    text-align:center;
+}
+
 .haserror{
     background:#FFE5E5;
 }
+

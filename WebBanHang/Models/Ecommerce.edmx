@@ -158,10 +158,11 @@
         <EntityType Name="ImageProducts">
           <Key>
             <PropertyRef Name="ImageID" />
+            <PropertyRef Name="ProductID" />
           </Key>
           <Property Name="ImageID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Caption" Type="nvarchar" MaxLength="100" />
-          <Property Name="ImageName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="ImagePath" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="ProductID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Menus">
@@ -622,7 +623,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ProductColors_Products1">
-          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ProductColors" Type="Self.ProductColors" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Products">
@@ -1263,10 +1266,11 @@
         <EntityType Name="ImageProduct">
           <Key>
             <PropertyRef Name="ImageID" />
+            <PropertyRef Name="ProductID" />
           </Key>
           <Property Name="ImageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Caption" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="ImageName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ImagePath" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="ProductID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Product" Relationship="ecommerceModel.FK_ImageProducts_Products" FromRole="ImageProduct" ToRole="Product" />
         </EntityType>
@@ -1807,7 +1811,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ProductColors_Products1">
-          <End Type="ecommerceModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="ecommerceModel.Product" Role="Product" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="ecommerceModel.ProductColor" Role="ProductColor" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Product">
@@ -2017,7 +2023,7 @@
             <EntityTypeMapping TypeName="ecommerceModel.ImageProduct">
               <MappingFragment StoreEntitySet="ImageProducts">
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
-                <ScalarProperty Name="ImageName" ColumnName="ImageName" />
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
                 <ScalarProperty Name="Caption" ColumnName="Caption" />
                 <ScalarProperty Name="ImageID" ColumnName="ImageID" />
               </MappingFragment>

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebBanHang.Core;
 using WebBanHang.Models;
+using WebBanHang.Utils;
 using WebBanHang.ViewModels;
 
 namespace WebBanHang.Areas.Admin.Controllers
@@ -127,6 +129,7 @@ namespace WebBanHang.Areas.Admin.Controllers
             ViewBag.AttrGroup = Repository.Create<AttributeGroup>().FetchAll();
             ViewBag.GroupProducts = Repository.GroupProduct.FetchAll();
             ViewBag.Colors = Repository.Color.FetchAll().Where(c => !pColors.Any(p=>p.ColorID == c.ColorID && p.ProductID == product.ProductID)).ToList();
+            ViewBag.GroupName = product.GroupProduct.GroupName;
             var model = Mapper.Map<Product, AdminProductViewModel>(product);
             model.ProductColor = product.ProductColors.ToList();
             model.ProductAttribute = product.ProductAttributes.ToList();
@@ -179,13 +182,15 @@ namespace WebBanHang.Areas.Admin.Controllers
 
         // POST: /Admin/Product/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Product product = db.Products.Find(id);
-            db.Products.Remove(product);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            Product product = Repository.Product.FindById(id);
+            if (product == null) return Content("error");
+            Repository.Product.Delete(product.ProductID);
+            Repository.SaveChanges();
+            if(Repository.Product.FetchAll().Any(p=>p.ProductID == id))
+                return Content("error");
+            return Content("success");
         }
 
         protected override void Dispose(bool disposing)
@@ -197,7 +202,7 @@ namespace WebBanHang.Areas.Admin.Controllers
             base.Dispose(disposing);
         }
 
-        public ActionResult GetListAttr(int id, int product_id)
+        public ActionResult GetListAttr(int id, int product_id, bool available = false)
         {
             if (id == 0)
             {
@@ -211,7 +216,11 @@ namespace WebBanHang.Areas.Admin.Controllers
                 return Content(builder.ToString());
             }
             builder.Append(String.Format("<option value=\"\">Chọn thuộc tính</option>"));
-            var availableAttr = attrGroup.Attributes.Where(a => !pAttrs.Any(p => p.ProductID == product_id && a.AttrID == p.AttrID));
+            List<WebBanHang.Models.Attribute> availableAttr = attrGroup.Attributes.ToList();
+            if (available)
+            {
+                availableAttr = availableAttr.Where(a => !pAttrs.Any(p=>p.AttrID == a.AttrID && p.ProductID == product_id)).ToList();
+            }
             foreach (var attr in availableAttr)
             {
                 builder.Append(String.Format("<option value=\"{0}\">{1}</option>",attr.AttrID,attr.AttrName));
@@ -220,7 +229,7 @@ namespace WebBanHang.Areas.Admin.Controllers
             return Content(builder.ToString());
         }
 
-        public ActionResult GetListColor(int id)
+        public ActionResult GetListColor(int id, bool available = false)
         {
             if (id == 0)
             {
@@ -229,8 +238,15 @@ namespace WebBanHang.Areas.Admin.Controllers
 
             var pColors = Repository.Create<ProductColor>().FetchAll();
             var product = Repository.Product.FindById(id);
-
-            var colors = Repository.Color.FetchAll().Where(c => !pColors.Any(p => p.ColorID == c.ColorID && p.ProductID == product.ProductID)).ToList();
+            List<Color> colors;
+            if (available)
+            {
+                colors = Repository.Color.FetchAll().Where(c => !pColors.Any(p => p.ColorID == c.ColorID && p.ProductID == product.ProductID)).ToList();
+            }
+            else
+            {
+                colors = Repository.Color.FetchAll().ToList();
+            }
             StringBuilder builder = new StringBuilder();
             if (colors == null || (colors != null && colors.Count == 0))
             {
@@ -281,11 +297,41 @@ namespace WebBanHang.Areas.Admin.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult LoadImage(int id)
+        {
+            var product = Repository.Product.FindById(id);
+            var data = new List<object>();
+            foreach (var img in product.ImageProducts)
+            {
+                var dataImage = new List<object>();
+                dataImage.Add(img.ImagePath);
+                dataImage.Add(img.ImageID);
+                data.Add(dataImage);
+            }
+            return Json(new
+            {
+                data = data
+            }, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult DeleteAttr(int? id, int? attr_id) {
             var repo = Repository.Create<ProductAttribute>();
             if (id == null || attr_id == null) return Content("error");
             String status = "";
             if (repo.Delete(id, attr_id))
+                status = "success";
+            else
+                status = "error";
+            repo.SaveChanges();
+            return Content(status);
+        }
+
+        public ActionResult DeleteImage(ImageProduct pImg)
+        {
+            var repo = Repository.Create<ImageProduct>();
+            if (pImg.ImageID == 0 || pImg.ProductID == 0) return Content("error");
+            String status = "";
+            if (repo.Delete(pImg.ImageID,pImg.ProductID))
                 status = "success";
             else
                 status = "error";
@@ -465,6 +511,46 @@ namespace WebBanHang.Areas.Admin.Controllers
             return Content(JsonConvert.SerializeObject(result), "application/json");
         }
 
+        public ActionResult UpdateColor(ProductColor pColor)
+        {
+            dynamic result = new ExpandoObject();
+            result.status = true;
+            result.message = "";
+            if (pColor.ProductID == 0 || pColor.ColorID == 0)
+            {
+                result.status = false;
+                result.message = "Thiếu thuộc tính";
+                return Content(JsonConvert.SerializeObject(result), "application/json");
+            }
+            var product = Repository.Product.FindById(pColor.ProductID);
+            var color = Repository.Color.FindById(pColor.ColorID);
+            if (product == null)
+            {
+                result.status = false;
+                result.message = "Không tồn tại sản phẩm";
+                return Content(JsonConvert.SerializeObject(result), "application/json");
+            }
+            if (color == null)
+            {
+                result.status = false;
+                result.message = "Không tồn thuộc tính";
+                return Content(JsonConvert.SerializeObject(result), "application/json");
+            }
+            var existpColor = product.ProductColors.FirstOrDefault(c => c.ColorID == pColor.ColorID);
+            if (existpColor == null)
+            {
+                result.status = false;
+                result.message = "Sản phẩm không có màu sắc này rồi";
+                return Content(JsonConvert.SerializeObject(result), "application/json");
+            }
+            existpColor.Stock = pColor.Stock;
+
+            Repository.SaveChanges();
+            result.status = true;
+            result.message = "Chỉnh sửa màu thành công!!!";
+            return Content(JsonConvert.SerializeObject(result), "application/json");
+        }
+
         public ActionResult GetProductAttr(int? product_id, int? attr_id) {
             dynamic result = new ExpandoObject();
             result.status = true;
@@ -527,6 +613,45 @@ namespace WebBanHang.Areas.Admin.Controllers
                 stock = pColor.Stock
             };
 
+            return Content(JsonConvert.SerializeObject(result), "application/json");
+        }
+
+        [HttpPost]
+        public ActionResult ImageUpload(int product_id)
+        {
+            dynamic result = new ExpandoObject();
+            result.status = "error";
+            result.message = "";
+            HttpFileCollectionBase hfc = Request.Files;
+            var product = Repository.Product.FindById(product_id);
+            for (int i = 0; i < hfc.Count; i++)
+            {
+                HttpPostedFileBase file = hfc[i];
+                if(file != null || file.ContentLength > 0){
+                    var currDate = DateTime.Now;
+                    var fileName = StringUtils.GenerateID()+"_"+file.FileName;
+                    var folderSave = Server.MapPath("~/Uploads/"+currDate.Year+"/"+currDate.Month+"/"+currDate.Day);
+                    bool folderExists = Directory.Exists(folderSave);
+                    if (!folderExists)
+                        Directory.CreateDirectory(folderSave);
+                    var fileSave = Path.Combine(folderSave, fileName);
+                    file.SaveAs(fileSave);
+                    result.status = "success";
+                    result.message = "Upload thành công";
+                    product.ImageProducts.Add(new ImageProduct() { 
+                        ImagePath = fileSave.Replace(Server.MapPath("~/"), "/").Replace(@"\", "/"),
+                        Caption = file.FileName
+                    });
+                    Repository.SaveChanges();
+                    break;
+                }
+                else
+                {
+                    result.status = "error";
+                    result.message = "Lỗi không upload được";
+                    break;
+                }
+            }
             return Content(JsonConvert.SerializeObject(result), "application/json");
         }
     }
