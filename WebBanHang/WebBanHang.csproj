@@ -204,6 +204,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminBaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\AuthController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\UploadController.cs" />
@@ -359,6 +360,7 @@
     <Compile Include="Utils\ModelUtils.cs" />
     <Compile Include="Utils\StringUtils.cs" />
     <Compile Include="Utils\UrlHelpers.cs" />
+    <Compile Include="ViewModels\AdminGroupProductViewModel.cs" />
     <Compile Include="ViewModels\AdminLoginViewModel.cs" />
     <Compile Include="ViewModels\AdminProductViewModel.cs" />
     <Compile Include="ViewModels\ProfileViewModel.cs" />
@@ -926,6 +928,9 @@
     <Content Include="Content\admin\plugins\tinymce\skins\lightgray\fonts\tinymce.ttf" />
     <Content Include="Content\admin\plugins\tinymce\skins\lightgray\fonts\tinymce.woff" />
     <Content Include="Areas\Admin\Views\Upload\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Category\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Category\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Category\Edit.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

@@ -105,3 +105,10 @@
     background:#FFE5E5;
 }
 
+
+
+#add {
+  display: inline-block;
+  padding-left: 30px;
+  float: left;
+}

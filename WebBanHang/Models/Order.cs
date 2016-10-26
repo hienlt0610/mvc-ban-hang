@@ -36,6 +36,7 @@ namespace WebBanHang.Models
         public string CouponCode { get; set; }
         public string Comment { get; set; }
     
+        public virtual Customer Customer { get; set; }
         public virtual District District { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual Payment Payment { get; set; }

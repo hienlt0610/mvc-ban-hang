@@ -1,0 +1,98 @@
+﻿@model AdminGroupProductViewModel
+@{
+    ViewBag.Title = "Thêm mới nhóm sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPage.cshtml";
+    var groups = (IEnumerable<GroupProduct>)ViewBag.Groups;
+}
+
+
+<div class="container">
+    @using (Html.BeginForm("Create", "Category", FormMethod.Post, new { @class = "form-horizontal", id = "myForm" }))
+    {
+        @Html.AntiForgeryToken()
+    <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="btn-group pull-right m-t-15">
+                    <button type="submit" name="save" class="btn btn-primary waves-effect waves-light">
+                        <span class="btn-label">
+                            <i class="zmdi zmdi-assignment"></i>
+                        </span>Lưu
+                    </button>
+
+                    <button type="submit" name="save-continue" class="btn btn-primary waves-effect waves-light m-l-5">
+                        <span class="btn-label">
+                            <i class="zmdi zmdi-assignment"></i>
+                        </span>Lưu & Sửa
+                    </button>
+                </div>
+
+                <h4 class="page-title">@ViewBag.Title</h4>
+            </div>
+        </div>
+
+    <!--Form-->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="nav-tabs-custom"></div>
+                <div class="card-box">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card card-block">
+                                <h5 class="card-title">Thông tin chung</h5>
+                                <div class="form-group m-t-15 row">
+                                    <div class="col-sm-2 align-right">
+                                        @Html.LabelFor(m=>m.GroupName)
+                                    </div>
+                                    <div class="col-md-5">
+                                        @Html.TextBoxFor(m => m.GroupName, new { @class="form-control"})
+                                        @Html.ValidationMessageFor(m=>m.GroupName)
+                                    </div>
+                                </div>
+
+                                <div class="form-group m-t-15 row">
+                                    <div class="col-sm-2 align-right">
+                                        @Html.LabelFor(m=>m.ParentGroupID)
+                                    </div>
+                                    <div class="col-md-3 dropdown-submit-input">
+                                        @Html.DropDownListFor(m => m.ParentGroupID, groups.Select(g => new SelectListItem()
+                                        {
+                                            Text = g.GroupName,
+                                            Value = g.GroupID.ToString()
+                                        }), "/", new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.ParentGroupID)
+                                    </div>
+                                </div>
+
+                                <div class="form-group m-t-15 row">
+                                    <div class="col-sm-2 align-right">
+                                        @Html.LabelFor(m => m.Icon)
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.Icon, new { @class = "form-control", placeholder="fa-cart" })
+                                        @Html.ValidationMessageFor(m => m.Icon)
+                                    </div>
+                                </div>
+
+                                <div class="form-group m-t-15 row">
+                                    <div class="col-sm-2 align-right">
+                                        @Html.LabelFor(m=>m.Priority)
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.Priority, new { @class="form-control number"})
+                                        @Html.ValidationMessageFor(m => m.Priority)
+                                    </div>
+                                </div>
+
+                                
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end col -->
+        </div>
+    <!-- end row -->
+    }
+</div>
+

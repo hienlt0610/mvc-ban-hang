@@ -216,6 +216,7 @@
           </Key>
           <Property Name="PaymentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PaymentType" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="PaymentName" Type="nvarchar" MaxLength="50" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductAttribute">
@@ -562,6 +563,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Orders_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Orders_Districts">
           <End Role="Districts" Type="Self.Districts" Multiplicity="1" />
           <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
@@ -848,6 +861,10 @@
             <End Role="Products" EntitySet="Products" />
             <End Role="OrderDetails" EntitySet="OrderDetails" />
           </AssociationSet>
+          <AssociationSet Name="FK_Orders_Customers" Association="Self.FK_Orders_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
           <AssociationSet Name="FK_Orders_Districts" Association="Self.FK_Orders_Districts">
             <End Role="Districts" EntitySet="Districts" />
             <End Role="Orders" EntitySet="Orders" />
@@ -1001,6 +1018,10 @@
           <AssociationSet Name="FK_Customers_Ward" Association="ecommerceModel.FK_Customers_Ward">
             <End Role="Ward" EntitySet="Wards" />
             <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Customers" Association="ecommerceModel.FK_Orders_Customers">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Order" EntitySet="Orders" />
           </AssociationSet>
           <AssociationSet Name="FK_Districts_Provinces" Association="ecommerceModel.FK_Districts_Provinces">
             <End Role="Province" EntitySet="Provinces" />
@@ -1224,6 +1245,7 @@
           <NavigationProperty Name="District" Relationship="ecommerceModel.FK_Customers_Districts" FromRole="Customer" ToRole="District" />
           <NavigationProperty Name="Province" Relationship="ecommerceModel.FK_Customers_Provinces" FromRole="Customer" ToRole="Province" />
           <NavigationProperty Name="Ward" Relationship="ecommerceModel.FK_Customers_Ward" FromRole="Customer" ToRole="Ward" />
+          <NavigationProperty Name="Orders" Relationship="ecommerceModel.FK_Orders_Customers" FromRole="Customer" ToRole="Order" />
         </EntityType>
         <EntityType Name="District">
           <Key>
@@ -1323,6 +1345,7 @@
           <Property Name="Paid" Type="Boolean" Nullable="false" />
           <Property Name="CouponCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Comment" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Customer" Relationship="ecommerceModel.FK_Orders_Customers" FromRole="Order" ToRole="Customer" />
           <NavigationProperty Name="District" Relationship="ecommerceModel.FK_Orders_Districts" FromRole="Order" ToRole="District" />
           <NavigationProperty Name="OrderDetails" Relationship="ecommerceModel.FK_OrderDetails_Orders" FromRole="Order" ToRole="OrderDetail" />
           <NavigationProperty Name="Payment" Relationship="ecommerceModel.FK_Orders_Payments" FromRole="Order" ToRole="Payment" />
@@ -1335,6 +1358,7 @@
           </Key>
           <Property Name="PaymentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PaymentType" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Orders" Relationship="ecommerceModel.FK_Orders_Payments" FromRole="Payment" ToRole="Order" />
         </EntityType>
@@ -1629,6 +1653,18 @@
             </Principal>
             <Dependent Role="Customer">
               <PropertyRef Name="WardID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_Customers">
+          <End Type="ecommerceModel.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="ecommerceModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="CustomerID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2080,6 +2116,7 @@
             <EntityTypeMapping TypeName="ecommerceModel.Payment">
               <MappingFragment StoreEntitySet="Payments">
                 <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="PaymentName" ColumnName="PaymentName" />
                 <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
                 <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
               </MappingFragment>

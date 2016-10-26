@@ -1,0 +1,168 @@
+﻿
+@{
+    ViewBag.Title = "Quản lý nhóm sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPage.cshtml";
+    var groups = (IEnumerable<GroupProduct>)ViewBag.Groups;
+}
+
+<div class="container">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="btn-group pull-right m-t-15">
+                <a href="@Url.Action("Create")" class="btn btn-primary waves-effect waves-light">
+                    <span class="btn-label">
+                        <i class="zmdi zmdi-assignment"></i>
+                    </span>Thêm mới
+                </a>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card-box table-responsive">
+                <div id="datatable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap4 no-footer">
+                    <select style="display:none;" id="cate_filter" class="form-control">
+                        <option value="all">Tất cả</option>
+                        @foreach(var gr in groups){
+                            <option value="@gr.GroupID">@gr.GroupName</option>
+                        }
+                    </select>
+                    <div class="col-md-12">
+                        <table id="datatable" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="datatable_info">
+                            <thead>
+                                <tr role="row">
+                                    <th width="10%">Mã nhóm</th>
+                                    <th>Tên nhóm</th>
+                                    <th>Nhóm cha</th>
+                                    <th width="15%">Icon</th>
+                                    <th width="15%">Sắp xếp</th>
+                                    <th width="85px"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        var table = $('#datatable').DataTable({
+            processing: true, //Feature control the processing indicator.
+            serverSide: true, //Feature control DataTables' server-side processing mode
+            dom: "<'row'<'col-sm-2'l><'col-sm-4'<'#catory_filter'>><'col-sm-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            // Load data for the table's content from an Ajax source
+            autoWidth: false,
+            "bFilter": true,
+            ajax: {
+                url: "/Admin/Category/LoadCategory",
+                type: "GET"
+            },
+            columnDefs: [
+                {
+                    targets: 5,
+                    render: function (data, type, full, meta) {
+                        if (type === 'display') {
+                            data = '<div style="min-width:70px" class="btn-group" role="group"><a href="/Admin/Category/Edit/' + full[0] + '" class="edit btn btn-info btn-sm"><span class="glyphicon glyphicon-edit" aria-hidden="true">Sửa</span></a><button type="button" onclick="delete_group(' + full[0] + ')" class="delete btn btn-danger btn-sm m-l-5"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>Xóa</button></div>';
+                        }
+                        return data;
+                    }
+                },
+                {
+                    "defaultContent": "-",
+                    "targets": "_all"
+                }
+            ]
+        });
+        $("#catory_filter").append('<label>Lọc theo: &nbsp;</label>').append($('#cate_filter'));
+        $("#catory_filter").find('select').css({ display: 'inline-block' });
+        $("#catory_filter").find('select').on('change', function () {
+            var group_id = $(this).find('option:selected').val();
+            table.column(2).search(group_id).draw();
+        });
+        function delete_group(group_id) {
+            swal({
+                title: 'Bạn có chắc chắn muốn xóa?',
+                text: 'Khi đã xóa thì bạn không thể khôi phục lại',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonClass: 'btn-danger',
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Hủy bỏ',
+                closeOnConfirm: false
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        url: '/Admin/Category/Delete',
+                        data: { id: group_id },
+                        type: 'POST',
+                        dataType: 'JSON',
+                        success: function (data) {
+                            if (data.status == 'success') {
+                                swal({
+                                    title: data.title,
+                                    text: data.message,
+                                    type: data.status,
+                                    timer: 800
+                                });
+                                table.ajax.reload(null,false);
+                            } else if (data.status == 'warning') {
+                                swal({
+                                    title: data.title,
+                                    text: data.message,
+                                    type: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonClass: 'btn-danger',
+                                    confirmButtonText: 'Đồng ý',
+                                    cancelButtonText: 'Hủy bỏ',
+                                    closeOnConfirm: false
+                                }, function (confirm) {
+                                    if(confirm){
+                                        $.ajax({
+                                            url: '/Admin/Category/Delete',
+                                            data: { id: group_id, confirm: true },
+                                            type: 'POST',
+                                            dataType: 'JSON',
+                                            success: function (data) {
+                                                if (data.status == 'success') {
+                                                    swal({
+                                                        title: data.title,
+                                                        text: data.message,
+                                                        type: data.status,
+                                                        timer: 800
+                                                    });
+                                                    table.ajax.reload(null, false);
+                                                } else {
+                                                    swal(data.title, data.message, 'error');
+                                                }
+                                            },
+                                            error: function (jqXHR, textStatus, errorThrown) {
+                                                swal('Lỗi, vui lòng kiểm tra lại', 'error');
+                                            }
+                                        });
+                                    }
+                                });
+                            }else{
+                                swal(data.title, data.message, 'error');
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            swal('Lỗi, vui lòng kiểm tra lại','error');
+                        }
+                    });
+                }
+            });
+        }
+    </script>    
+}
+

@@ -2,6 +2,9 @@
 @{
     ViewBag.Title = "Dashboard";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutPage.cshtml";
+    var orders = (IEnumerable<Order>) ViewBag.Orders;
+    var products = (IEnumerable<Product>) ViewBag.Products;
+    var customers = (IEnumerable<Customer>) ViewBag.Customers;
 }
 
 <div class="container">
@@ -28,36 +31,36 @@
         <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
             <div class="card-box tilebox-one">
                 <i class="icon-layers pull-xs-right text-muted"></i>
-                <h6 class="text-muted text-uppercase m-b-20">Orders</h6>
-                <h2 class="m-b-20" data-plugin="counterup">1,587</h2>
-                <span class="label label-success"> +11% </span> <span class="text-muted">From previous period</span>
+                <h6 class="text-muted text-uppercase m-b-20">Đơn đặt hàng</h6>
+                <h2 class="m-b-20" data-plugin="counterup">@orders.Count() đơn</h2>
+                <span class="label label-success"> @orders.Where(i=> !i.Paid).Count() đơn </span> <span class="text-muted">chưa thanh toán</span>
             </div>
         </div>
 
         <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
             <div class="card-box tilebox-one">
                 <i class="icon-paypal pull-xs-right text-muted"></i>
-                <h6 class="text-muted text-uppercase m-b-20">Revenue</h6>
-                <h2 class="m-b-20">$<span data-plugin="counterup">46,782</span></h2>
-                <span class="label label-danger"> -29% </span> <span class="text-muted">From previous period</span>
+                <h6 class="text-muted text-uppercase m-b-20">Doanh thu</h6>
+                <h2 class="m-b-20"><span data-plugin="counterup">@Html.FormatCurrency(@orders.Where(i => i.Paid).Sum(i => i.TotalPrice)) đ</span></h2>
+                <span class="label label-success"> +10% </span> <span class="text-muted">so với tháng trước</span>
             </div>
         </div>
 
         <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
             <div class="card-box tilebox-one">
                 <i class="icon-chart pull-xs-right text-muted"></i>
-                <h6 class="text-muted text-uppercase m-b-20">Average Price</h6>
-                <h2 class="m-b-20">$<span data-plugin="counterup">15.9</span></h2>
-                <span class="label label-pink"> 0% </span> <span class="text-muted">From previous period</span>
+                <h6 class="text-muted text-uppercase m-b-20">Sản phẩm</h6>
+                <h2 class="m-b-20"><span data-plugin="counterup">@products.Count()</span> sản phẩm</h2>
+                <span class="label label-pink"> 0 </span> <span class="text-muted">sản phẩm mới trong tháng</span>
             </div>
         </div>
 
         <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
             <div class="card-box tilebox-one">
                 <i class="icon-rocket pull-xs-right text-muted"></i>
-                <h6 class="text-muted text-uppercase m-b-20">Product Sold</h6>
-                <h2 class="m-b-20" data-plugin="counterup">1,890</h2>
-                <span class="label label-warning"> +89% </span> <span class="text-muted">Last year</span>
+                <h6 class="text-muted text-uppercase m-b-20">Khách hàng</h6>
+                <h2 class="m-b-20" data-plugin="counterup">@customers.Count()</h2>
+                <span class="label label-warning"> +89% </span> <span class="text-muted">khách hàng mới trong tháng</span>
             </div>
         </div>
     </div>
@@ -127,167 +130,43 @@
 
 
     <div class="row">
-        <div class="col-xs-12 col-lg-12 col-xl-7">
-            <div class="row">
-                <div class="col-xs-12 col-md-6">
-                    <div class="card-box">
-                        <h4 class="header-title m-t-0 m-b-20">Inbox</h4>
-
-                        <div class="inbox-widget nicescroll" style="height: 320px; overflow: hidden; outline: none;" tabindex="5000">
-                            <a href="#">
-                                <div class="inbox-item">
-                                    <div class="inbox-item-img"><img src="assets/images/users/avatar-1.jpg" class="img-circle" alt=""></div>
-                                    <p class="inbox-item-author">Chadengle</p>
-                                    <p class="inbox-item-text">Hey! there I'm available...</p>
-                                    <p class="inbox-item-date">13:40 PM</p>
-                                </div>
-                            </a>
-                            <a href="#">
-                                <div class="inbox-item">
-                                    <div class="inbox-item-img"><img src="assets/images/users/avatar-2.jpg" class="img-circle" alt=""></div>
-                                    <p class="inbox-item-author">Tomaslau</p>
-                                    <p class="inbox-item-text">I've finished it! See you so...</p>
-                                    <p class="inbox-item-date">13:34 PM</p>
-                                </div>
-                            </a>
-                            <a href="#">
-                                <div class="inbox-item">
-                                    <div class="inbox-item-img"><img src="assets/images/users/avatar-3.jpg" class="img-circle" alt=""></div>
-                                    <p class="inbox-item-author">Stillnotdavid</p>
-                                    <p class="inbox-item-text">This theme is awesome!</p>
-                                    <p class="inbox-item-date">13:17 PM</p>
-                                </div>
-                            </a>
-                            <a href="#">
-                                <div class="inbox-item">
-                                    <div class="inbox-item-img"><img src="assets/images/users/avatar-4.jpg" class="img-circle" alt=""></div>
-                                    <p class="inbox-item-author">Kurafire</p>
-                                    <p class="inbox-item-text">Nice to meet you</p>
-                                    <p class="inbox-item-date">12:20 PM</p>
-                                </div>
-                            </a>
-                            <a href="#">
-                                <div class="inbox-item">
-                                    <div class="inbox-item-img"><img src="assets/images/users/avatar-5.jpg" class="img-circle" alt=""></div>
-                                    <p class="inbox-item-author">Shahedk</p>
-                                    <p class="inbox-item-text">Hey! there I'm available...</p>
-                                    <p class="inbox-item-date">10:15 AM</p>
-                                </div>
-                            </a>
-                            <a href="#">
-                                <div class="inbox-item">
-                                    <div class="inbox-item-img"><img src="assets/images/users/avatar-6.jpg" class="img-circle" alt=""></div>
-                                    <p class="inbox-item-author">Adhamdannaway</p>
-                                    <p class="inbox-item-text">This theme is awesome!</p>
-                                    <p class="inbox-item-date">9:56 AM</p>
-                                </div>
-                            </a>
-                            <a href="#">
-                                <div class="inbox-item">
-                                    <div class="inbox-item-img"><img src="assets/images/users/avatar-8.jpg" class="img-circle" alt=""></div>
-                                    <p class="inbox-item-author">Arashasghari</p>
-                                    <p class="inbox-item-text">Hey! there I'm available...</p>
-                                    <p class="inbox-item-date">10:15 AM</p>
-                                </div>
-                            </a>
-                            <a href="#">
-                                <div class="inbox-item">
-                                    <div class="inbox-item-img"><img src="assets/images/users/avatar-9.jpg" class="img-circle" alt=""></div>
-                                    <p class="inbox-item-author">Joshaustin</p>
-                                    <p class="inbox-item-text">I've finished it! See you so...</p>
-                                    <p class="inbox-item-date">9:56 AM</p>
-                                </div>
-                            </a>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="col-xs-12 col-md-6">
-                    <div class="card-box">
-                        <h4 class="header-title m-t-0 m-b-20">Sales Statistics</h4>
-
-                        <p class="font-600 m-b-5">iMacs <span class="text-danger pull-right"><b>79%</b></span></p>
-                        <progress class="progress progress-striped progress-xs progress-danger m-b-0" value="79" max="100">
-                            79%
-                        </progress>
-                    </div>
-
-                    <div class="card-box">
-                        <h4 class="header-title m-t-0 m-b-20">Monthly Sales</h4>
-
-                        <p class="font-600 m-b-5">Macbooks <span class="text-success pull-right"><b>30%</b></span></p>
-                        <progress class="progress progress-striped progress-xs progress-success m-b-0" value="30" max="100">
-                            30%
-                        </progress>
-                    </div>
-
-                    <div class="card-box">
-                        <h4 class="header-title m-t-0 m-b-20">Daily Sales</h4>
-
-                        <p class="font-600 m-b-5">Mobiles <span class="text-warning pull-right"><b>50%</b></span></p>
-                        <progress class="progress progress-striped progress-xs progress-warning m-b-0" value="50" max="100">
-                            50%
-                        </progress>
-                    </div>
-
-                </div>
-
-            </div>
-        </div><!-- end col-->
-
-        <div class="col-xs-12 col-lg-12 col-xl-5">
+        <div class="col-xs-12 col-lg-12">
             <div class="card-box">
 
-                <h4 class="header-title m-t-0 m-b-30">Top Contracts</h4>
+                <h4 class="header-title m-t-0 m-b-30">Đơn đặt hàng mới <a href="@Url.Action("Index","Order")" class="btn btn-info btn-sm">Xem tất cả</a></h4>
 
                 <div class="table-responsive">
                     <table class="table table-bordered m-b-0">
                         <thead>
                             <tr>
-                                <th>Company</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Status</th>
+                                <th>Mã đơn</th>
+                                <th>Tình trạng</th>
+                                <th>Khách hàng</th>
+                                <th>Phương thức thanh toán</th>
+                                <th>Ngày đặt</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th class="text-muted">Apple Technology</th>
-                                <td>20/02/2014</td>
-                                <td>19/02/2020</td>
-                                <td><span class="label label-success">Paid</span></td>
-                            </tr>
-                            <tr>
-                                <th class="text-muted">Envato Pty Ltd.</th>
-                                <td>20/02/2014</td>
-                                <td>19/02/2020</td>
-                                <td><span class="label label-danger">Unpaid</span></td>
-                            </tr>
-                            <tr>
-                                <th class="text-muted">Dribbble LLC.</th>
-                                <td>20/02/2014</td>
-                                <td>19/02/2020</td>
-                                <td><span class="label label-success">Paid</span></td>
-                            </tr>
-                            <tr>
-                                <th class="text-muted">Adobe Family</th>
-                                <td>20/02/2014</td>
-                                <td>19/02/2020</td>
-                                <td><span class="label label-success">Paid</span></td>
-                            </tr>
-                            <tr>
-                                <th class="text-muted">Apple Technology</th>
-                                <td>20/02/2014</td>
-                                <td>19/02/2020</td>
-                                <td><span class="label label-danger">Unpaid</span></td>
-                            </tr>
-                            <tr>
-                                <th class="text-muted">Envato Pty Ltd.</th>
-                                <td>20/02/2014</td>
-                                <td>19/02/2020</td>
-                                <td><span class="label label-success">Paid</span></td>
-                            </tr>
+                            @foreach(var order in orders){
+                                <tr>
+                                    <th class="text-muted">@order.OrderID</th>
+                                    <td>
+                                        @if (order.Paid)
+                                        {
+                                            <span class="label label-success">Đã thanh toán</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="label label-danger">Chưa thanh toán</span>
+                                        }
+                                    </td>
+                                    <td>@order.Customer.FullName<br />@order.Customer.Email</td>
+                                    <td>@order.Payment.PaymentName</td>
+                                    <td>@order.OrderDate.ToString("dd/MM/yyyy")</td>
+                                    <td><a href="@Url.Action("Detail", "Order", new { id = order.OrderID})" class="btn btn-info">Xem chi tiết</a></td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>

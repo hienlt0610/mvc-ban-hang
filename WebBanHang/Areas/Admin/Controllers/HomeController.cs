@@ -16,6 +16,9 @@ namespace WebBanHang.Areas.Admin.Controllers
         [Security]
         public ActionResult Index()
         {
+            ViewBag.Orders = Repository.Order.FetchAll();
+            ViewBag.Products = Repository.Product.FetchAll();
+            ViewBag.Customers = Repository.Customer.FetchAll();
             return View("Index");
         }
 
