@@ -26,6 +26,14 @@ namespace WebBanHang
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            // Add Plugin
+            bundles.Add(new StyleBundle("~/bundles/plugin-css").Include(
+                "~/Content/admin/plugins/color-picker/css/bootstrap-colorpicker.min.css"
+            ));
+            bundles.Add(new ScriptBundle("~/bundles/plugin-js").Include(
+                "~/Content/admin/plugins/color-picker/js/bootstrap-colorpicker.min.js"
+            ));
         }
     }
 }

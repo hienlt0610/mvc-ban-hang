@@ -202,21 +202,21 @@ namespace WebBanHang.Areas.Admin.Controllers
             base.Dispose(disposing);
         }
 
-        public ActionResult GetListAttr(int id, int product_id, bool available = false)
+        public ActionResult GetListAttr(int? id, int product_id, bool available = false)
         {
-            if (id == 0)
+            if (id == 0 || id == null)
             {
                 return Content(String.Format("<option value=\"\">Chọn thuộc tính</option>"));
             }
-            var attrGroup = Repository.Create<AttributeGroup>().FindById(id);
+            var listAttr = Repository.Create<WebBanHang.Models.Attribute>().FetchAll().Where(a => a.AttriGroupID == id || a.AttriGroupID == null);
             var pAttrs = Repository.Create<ProductAttribute>().FetchAll();
             StringBuilder builder = new StringBuilder();
-            if (attrGroup == null || (attrGroup !=null && attrGroup.Attributes.Count == 0)) {
+            if (listAttr == null || (listAttr !=null && listAttr.Count() == 0)) {
                 builder.Append(String.Format("<option value=\"\">Không có thuộc tính</option>"));
                 return Content(builder.ToString());
             }
             builder.Append(String.Format("<option value=\"\">Chọn thuộc tính</option>"));
-            List<WebBanHang.Models.Attribute> availableAttr = attrGroup.Attributes.ToList();
+            List<WebBanHang.Models.Attribute> availableAttr = listAttr.ToList();
             if (available)
             {
                 availableAttr = availableAttr.Where(a => !pAttrs.Any(p=>p.AttrID == a.AttrID && p.ProductID == product_id)).ToList();

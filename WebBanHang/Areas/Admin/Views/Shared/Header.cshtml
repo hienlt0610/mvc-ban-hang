@@ -4,7 +4,7 @@
 
             <!-- LOGO -->
             <div class="topbar-left">
-                <a href="@Url.Action("Index")" class="logo">
+                <a href="@Url.Action("Index","Home")" class="logo">
                     <i class="zmdi zmdi-group-work icon-c-logo"></i>
                     <span>Hitha</span>
                 </a>
@@ -178,7 +178,7 @@
                 <!-- Navigation Menu-->
                 <ul class="navigation-menu">
                     <li>
-                        <a href="@Url.Action("Index")"><i class="zmdi zmdi-view-dashboard"></i> <span> Dashboard </span> </a>
+                        <a href="@Url.Action("Index","Home")"><i class="zmdi zmdi-view-dashboard"></i> <span> Dashboard </span> </a>
                     </li>
                     <li class="has-submenu">
                         <a href="#"><i class="zmdi zmdi-receipt"></i> <span> Catalog </span> </a>
@@ -187,12 +187,13 @@
                                 <ul>
                                     <li><a href="@Url.Action("Index","Product")">Sản phẩm</a></li>
                                     <li><a href="@Url.Action("Index", "Category")">Nhóm sản phẩm</a></li>
+                                    <li><a href="@Url.Action("Index", "Color")">Màu</a></li>
                                 </ul>
                             </li>
                             <li>
                                 <ul>
-                                    <li><a href="@Url.Action("Index", "Option")">Thuộc tính</a></li>
-                                    <li><a href="@Url.Action("Index", "OptionGroup")">Nhóm thuộc tính</a></li>
+                                    <li><a href="@Url.Action("Index", "Attr")">Thuộc tính</a></li>
+                                    <li><a href="@Url.Action("Index", "AttrGroup")">Nhóm thuộc tính</a></li>
                                 </ul>
                             </li>
 

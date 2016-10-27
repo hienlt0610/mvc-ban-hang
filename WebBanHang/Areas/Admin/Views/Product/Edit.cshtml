@@ -516,6 +516,7 @@
         save_method = 'add';
         $('#form-attr [name="attr_group"]').parent().parent().show();
         $('#form-attr [name="attr_id"]').parent().parent().show();
+        $("#attr_group").val($("#attr_group option:first").val()).change();
         $('#form-attr')[0].reset(); // reset form on modals
         $('#modal_form_attr').modal('show'); // show bootstrap modal
         $('#form-attr .modal-title').text('Thêm mới'); // Set Title to Bootstrap modal title
