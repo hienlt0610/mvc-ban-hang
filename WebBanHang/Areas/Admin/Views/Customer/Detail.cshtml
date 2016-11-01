@@ -1,0 +1,271 @@
+﻿@model Customer
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPage.cshtml";
+    var provinces = (IEnumerable<Province>)ViewBag.Provinces;
+}
+
+<div class="container">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+
+            <h4 class="page-title">@Html.ActionLink("Khách hàng","Index","Customer") / @Model.FullName</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-9">
+            <div class="card-box">
+                <h4 class="card-title">Đơn hàng</h4>
+                @if(Model.Orders.Count > 0){
+                    <table id="datatable" class="table table-striped" role="grid" aria-describedby="datatable_info">
+                    <thead>
+                        <tr role="row">
+                            <th>Đơn hàng</th>
+                            <th>Ngày tạo</th>
+                            <th>Thanh toán</th>
+                            <th>Giao hàng</th>
+                            <th>Tổng tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var order in Model.Orders){
+                            <tr>
+                                <td>@Html.ActionLink("#" + order.OrderID,"Detail","Order",new {id = order.OrderID},null)</td>
+                                <td>@order.OrderDate.ToString("dd/MM/yyyy HH:mm tt")</td>
+                                <td>
+                                    @if(order.Paid){
+                                        <span class="label label-success">Đã thanh toán</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="label label-warning">Chưa thanh toán</span>
+                                    }
+                                </td>
+                                <td>
+                                    @{
+                                        var statusColor = "";
+                                        switch (order.ShippingStatusID)
+                                        {
+                                            case 1:
+                                                statusColor = "danger";
+                                                break;
+                                            case 2:
+                                                statusColor = "info";
+                                                break;
+                                            case 3:
+                                                statusColor = "success";
+                                                break;
+                                        }
+                                        <span class="label label-@statusColor">@order.ShippingStatu.ShippingName</span>
+                                    }
+                                </td>
+                                <td>@Html.FormatCurrency(order.TotalPrice) đ</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                }
+                else
+                {
+                    <div>Không có đơn hàng nào</div>
+                }
+                
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card-box">
+                <a href="#" onclick="edit(); return false;" class="btn btn-primary-outline waves-effect waves-light btn-sm pull-right">Sửa</a>
+                <h5 class="card-title">Thông tin khách hàng</h5>
+                <div class="row">
+                    <div class="col-sm-12 margin-sm-bottom">
+                        <i class="fa fa-fw fa-info-circle"></i>
+                        <span>@Model.FullName</span>
+                    </div>
+                    @if (!String.IsNullOrEmpty(Model.Phone))
+                    {
+                        <div class="col-sm-12 margin-sm-bottom">
+                            <i class="fa fa-fw fa-phone"></i>
+                            <span>@Model.Phone</span>
+                        </div>
+                    }
+                    
+                    <div class="col-sm-12 margin-sm-bottom">
+                        <i class="fa fa-fw fa-envelope"></i>
+                        <a href="mailto:hienlt0610@gmail.com" class="text-gray">
+                            hienlt0610@gmail.com
+                        </a>
+                    </div>
+                    @if (!String.IsNullOrEmpty(Model.Address))
+                    {
+                       <div class="col-sm-12 margin-sm-bottom">
+                        <i class="fa fa-fw fa-wpforms"></i>
+                        <span>@Model.Address, @Model.Ward.Type @Model.Ward.WardName, @Model.District.Type @Model.District.DistrictName, @Model.Province.Type @Model.Province.ProvinceName</span>
+                    </div> 
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form class="form-horizontal" id="editform">
+            @Html.HiddenFor(m=>m.CustomerID)
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Cập nhật khách hàng</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="FullName" class="col-md-3 control-label m-t-5 align-right">Họ tên: </label>
+                        <div class="col-md-7">
+                            @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", placeholder = "Họ tên" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="txtPhone" class="col-md-3 control-label m-t-5 align-right">Số ĐT: </label>
+                        <div class="col-md-7">
+                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", placeholder = "Số ĐT" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="txtAddress" class="col-md-3 control-label m-t-5 align-right">Địa chỉ</label>
+                        <div class="col-md-7">
+                            @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Địa chỉ" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="slc_province" class="col-md-3 control-label m-t-5 align-right">Tỉnh / Thành: </label>
+                        <div class="col-md-7">
+                            @Html.DropDownListFor(m => m.ProvinceID, provinces.Select(s =>
+                                         new SelectListItem() { Text = StringUtils.ShortCity(s.Type) + " " + s.ProvinceName, Value = s.ProvinceID.ToString() }
+                                     ), "Xin vui lòng chọn Tỉnh / Thành phố", new { @class = "form-control address-choose" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="slc_district" class="col-md-3 control-label m-t-5 align-right">Quận / Huyện: </label>
+                        <div class="col-md-7">
+                            @Html.DropDownListFor(m => m.DistrictID, Enumerable.Empty<SelectListItem>(), "Xin vui lòng chọn Quận / Huyện", new { @class = "form-control address-choose" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="slc_ward" class="col-md-3 control-label m-t-5 align-right">Phường / Xã: </label>
+                        <div class="col-md-7">
+                            @Html.DropDownListFor(m => m.WardID, Enumerable.Empty<SelectListItem>(), "Xin vui lòng chọn Phường / Xã", new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+    function edit() {
+        validate.resetForm();
+        $('select[name=ProvinceID]').trigger('change');
+        $('#editModal').modal('show');
+    }
+
+    $('.address-choose').change(function () {
+        var id = this.id;
+        var value = $(this).val();
+        if (id == 'ProvinceID') {
+            $('select[name=DistrictID]').html('<option value="">Xin vui lòng chọn Quận/Huyện</option>');
+            $('select[name=WardID]').html('<option value="">Xin vui lòng chọn Phường/Xã</option>');
+            $.getJSON("/AppApi/District_In_Province", { id: value }, function (data) {
+                if (data.status == 'ok') {
+                    $.each(data.districts, function (i, item) {
+                        $('select[name=DistrictID]').append('<option value="' + item.district_id + '">' + item.district_type + ' ' + item.district_name + '</option>').val('@(Model.DistrictID != 0 ? Model.DistrictID.ToString() : "")');
+                    });
+                    $('select[name=DistrictID]').trigger('change');
+                }
+            });
+        } else if (id == 'DistrictID') {
+            $('select[name=WardID]').html('<option value="">Xin vui lòng chọn Phường/Xã</option>');
+            $.getJSON("/AppApi/Ward_In_District", { id: value }, function (data) {
+                if (data.status == 'ok') {
+                    $.each(data.wards, function (i, item) {
+                        $('select[name=WardID]').append('<option value="' + item.ward_id + '">' + item.ward_type + ' ' + item.ward_name + '</option>').val('@(Model.WardID != 0 ? Model.WardID.ToString() : "")');
+                    });
+                }
+            });
+        }
+    });
+        
+        var validate = $('#editform').validate({
+            rules: {
+                FullName: {
+                    required: true
+                },
+                Phone: {
+                    required: true,
+                    regex: /^[0][0-9]{9,10}/
+                },
+                Address: {
+                    required: true
+                },
+                ProvinceID: {
+                    required: true
+                },
+                DistrictID: {
+                    required: true
+                },
+                WardID: {
+                    required: true
+                },
+            },
+            messages:{
+                FullName: {
+                    required: 'Vui lòng nhập họ tên'
+                },
+                Phone: {
+                    required: 'Vui lòng nhập số điện thoại',
+                    regex: 'Số điện thoại không hợp lệ'
+                },
+                FullName: {
+                    required: 'Vui lòng nhập địa chỉ'
+                },
+                ProvinceID: {
+                    required: 'Vui lòng chọn Tỉnh thành'
+                },
+                DistrictID: {
+                    required: 'Vui lòng chọn Quận huyện'
+                },
+                WardID: {
+                    required: 'Vui lòng chọn Phường xã'
+                },
+            },
+            submitHandler: function () {
+                $.ajax({
+                    url: '/Admin/Customer/Edit',
+                    type: 'POST',
+                    data: $('#editform').serialize(),
+                    dataType: 'JSON',
+                    success: function (data) {
+                        if (data.success) {
+                            $('#editModal').modal('hide');
+                            setTimeout(function () {
+                                location.reload();
+                            }, 500)
+                        } else {
+                            swal('Lỗi xảy ra',data.message,'error');
+                        }
+                    }
+                });
+            }
+        });
+    </script>    
+}

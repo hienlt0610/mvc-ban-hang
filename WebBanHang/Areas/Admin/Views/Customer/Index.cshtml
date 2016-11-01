@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPage.cshtml";
+}
+
+<div class="container">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+
+            <h4 class="page-title">Khách hàng</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card-box table-responsive">
+                <div id="datatable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap4 no-footer">
+                    <div class="col-md-12">
+                        <table id="datatable" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="datatable_info">
+                            <thead>
+                                <tr role="row">
+                                    <th>Họ tên</th>
+                                    <th>Email</th>
+                                    <th>Đơn hàng</th>
+                                    <th>Đơn hàng gần nhất</th>
+                                    <th>Tổng chi tiêu</th>
+                                    <th width="15%"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        var typingTimer;
+        var table = $('#datatable').DataTable({
+            processing: true, //Feature control the processing indicator.
+            serverSide: true, //Feature control DataTables' server-side processing mode
+            autoWidth: true,
+            ajax: {
+                url: "/Admin/Customer/Load",
+                type: "GET"
+            },
+            columnDefs: [
+                {
+                    "defaultContent": "-",
+                    "targets": "_all"
+                }
+            ],
+            columns: [
+                {
+                    data: 'customer_name'
+                },
+                {
+                    data: 'customer_email'
+                },
+                {
+                    data: 'order_num',
+                    className: 'align-center'
+                },
+                {
+                    data: 'order_latest',
+                    className: 'align-center',
+                    render: function (data, type, full, meta) {
+                        if(data == 0){
+                            return 'Không có đơn nào';
+                        }
+                        return '<a href="/Admin/Order/Detail/'+data+'">#'+data+'</a>';
+                    }
+                },
+                {
+                    data: 'total_pay',
+                    className: 'align-right',
+                    render: function (data, type, full, meta) {
+                        return addThousandsSeparator(data)+' đ';
+                    }
+                },
+                {
+                    data: 'customer_id',
+                    render: function (data, type, full, meta) {
+                        if (type === 'display') {
+                            data = '<div style="min-width:70px" class="btn-group" role="group"><a href="/Admin/Customer/Detail/' + data + '" class="btn btn-info btn-sm"><i class="fa fa-info-circle m-r-5"></i>Xem</a><button onclick="delete(' + data + ')" class="btn btn-danger btn-sm m-l-5"><i class="fa fa-trash m-r-5"></i>Xóa</button></div>';
+                        }
+                        return data;
+                    }
+                }
+            ],
+            initComplete: function (settings, data) {
+                $("div.dataTables_filter input").unbind();
+                $("div.dataTables_filter input").keyup(function (e) {
+                    clearTimeout(typingTimer);
+                    var search_value = this.value;
+                    typingTimer = setTimeout(function () {
+                        table.search(search_value).draw();
+                    }, 300);
+                });
+
+            },
+            "drawCallback": function (settings) {
+                render_UI();
+            }
+        });
+        function render_UI() {
+
+        }
+    </script>
+}
