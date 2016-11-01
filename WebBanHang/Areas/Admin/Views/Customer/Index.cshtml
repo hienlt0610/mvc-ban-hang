@@ -88,7 +88,7 @@
                     data: 'customer_id',
                     render: function (data, type, full, meta) {
                         if (type === 'display') {
-                            data = '<div style="min-width:70px" class="btn-group" role="group"><a href="/Admin/Customer/Detail/' + data + '" class="btn btn-info btn-sm"><i class="fa fa-info-circle m-r-5"></i>Xem</a><button onclick="delete(' + data + ')" class="btn btn-danger btn-sm m-l-5"><i class="fa fa-trash m-r-5"></i>Xóa</button></div>';
+                            data = '<div style="min-width:70px" class="btn-group" role="group"><a href="/Admin/Customer/Detail/' + data + '" class="btn btn-info btn-sm"><i class="fa fa-info-circle m-r-5"></i>Xem</a><button onclick="delete_customer(' + data + ')" class="btn btn-danger btn-sm m-l-5"><i class="fa fa-trash m-r-5"></i>Xóa</button></div>';
                         }
                         return data;
                     }
@@ -111,6 +111,45 @@
         });
         function render_UI() {
 
+        }
+
+        function delete_customer(customer_id) {
+            swal(
+                {
+                    title: "Bạn chắc chắn?", text: "Bạn có muốn xóa người này không, khi xóa thì không thể khôi phục lại được!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Vâng, xóa người này!",
+                    cancelButtonText: "Hủy",
+                    closeOnConfirm: false
+                }, function (isConfirm) { 
+                    if (isConfirm) {
+                        $.ajax({
+                            url: '/Admin/Customer/Delete',
+                            type: 'POST',
+                            data: { id: customer_id },
+                            dataType: 'JSON',
+                            success: function (data) {
+                                if(data.success){
+                                    swal({
+                                        title: "Xóa thành công",
+                                        text: data.message,
+                                        type: "success",
+                                        timer: 1000
+                                    });
+                                    table.ajax.reload(null, false);
+                                } else {
+                                    swal('Xóa thất bại', data.message, 'error');
+                                }
+                            },
+                            error: function () {
+                                swal('Lỗi hệ thống','Đã có lỗi xảy ra, vui lòng kiểm tra lại','error');
+                            }
+                        });
+                    }
+                }
+            );
         }
     </script>
 }

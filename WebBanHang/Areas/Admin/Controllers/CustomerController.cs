@@ -67,6 +67,7 @@ namespace WebBanHang.Areas.Admin.Controllers
             return View(customer);
         }
 
+        [HttpPost]
         public ActionResult Edit(Customer customer)
         {
             dynamic result = new ExpandoObject();
@@ -92,6 +93,29 @@ namespace WebBanHang.Areas.Admin.Controllers
             Repository.Customer.SaveChanges();
             result.success = true;
             result.message = "Cập nhật thành công!!!";
+            return Content(JsonConvert.SerializeObject(result), "application/json");
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int? id)
+        {
+            dynamic result = new ExpandoObject();
+            result.success = false;
+            result.message = "";
+            if(id == null){
+                result.message = "Thiếu mã khách hàng";
+                return Content(JsonConvert.SerializeObject(result), "application/json");
+            }
+
+            var customer = Repository.Customer.FindById(id);
+            if(customer == null){
+                result.message = "Khách hàng này không tồn tại trong hệ thống";
+                return Content(JsonConvert.SerializeObject(result), "application/json");
+            }
+            Repository.Customer.Delete(id);
+            Repository.Customer.SaveChanges();
+            result.success = true;
+            result.message = "Xóa khách hàng khỏi hệ thống thành công";
             return Content(JsonConvert.SerializeObject(result), "application/json");
         }
 	}
