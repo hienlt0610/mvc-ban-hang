@@ -1,0 +1,81 @@
+﻿@model AdminConfigViewModel
+@{
+    ViewBag.Title = "Cấu hình";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPage.cshtml";
+}
+<div class="container">
+    @using (Html.BeginForm("Edit", "Setting", FormMethod.Post, new { @class = "form-horizontal", id = "myForm" }))
+    {
+        @Html.AntiForgeryToken()
+    <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="btn-group pull-right m-t-15">
+                    <button type="submit" name="save" class="btn btn-primary waves-effect waves-light">
+                        <span class="btn-label">
+                            <i class="zmdi zmdi-assignment"></i>
+                        </span>Lưu
+                    </button>
+                </div>
+
+                <h4 class="page-title">@ViewBag.Title</h4>
+            </div>
+        </div>
+
+    <!--Form-->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="nav-tabs-custom"></div>
+                <div class="card-box">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card card-block">
+                                <h5 class="card-title">Cấu hình chung</h5>
+                                <div class="form-group m-t-15 row">
+                                    <div class="col-sm-3 align-right">
+                                        <label class="m-t-5">Tên trang web: </label>
+                                    </div>
+                                    <div class="col-md-5">
+                                        @Html.TextBoxFor(m => m.SiteTitle, new { @class="form-control"})
+                                        @Html.ValidationMessageFor(m => m.SiteTitle)
+                                    </div>
+                                </div>
+
+                                <div class="form-group m-t-15 row">
+                                    <div class="col-sm-3 align-right">
+                                        <label class="m-t-5">Số điện thoại hỗ trợ: </label>
+                                    </div>
+                                    <div class="col-md-5">
+                                        @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.Phone)
+                                    </div>
+                                </div>
+
+                                <div class="form-group m-t-15 row">
+                                    <div class="col-sm-3 align-right">
+                                        <label class="m-t-5">Email hỗ trợ: </label>
+                                    </div>
+                                    <div class="col-md-5">
+                                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.Email)
+                                    </div>
+                                </div>
+
+                                <div class="form-group m-t-15 row">
+                                    <div class="col-sm-3 align-right">
+                                        <label class="m-t-5">Số sản phẩm trên 1 trang: </label>
+                                    </div>
+                                    <div class="col-md-5">
+                                        @Html.TextBoxFor(m => m.ProductPerPage, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.ProductPerPage)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end col -->
+        </div>
+    <!-- end row -->
+    }
+</div>
