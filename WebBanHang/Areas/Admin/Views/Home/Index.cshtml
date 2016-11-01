@@ -141,16 +141,40 @@
                             <tr>
                                 <th>Mã đơn</th>
                                 <th>Tình trạng</th>
+                                <th>Thanh toán</th>
+                                <th>Giao hàng</th>
                                 <th>Khách hàng</th>
-                                <th>Phương thức thanh toán</th>
+                                <th>Phương thức</th>
                                 <th>Ngày đặt</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach(var order in orders){
+                            @foreach (var order in orders)
+                            {
                                 <tr>
-                                    <th class="text-muted">@order.OrderID</th>
+                                    <td>@order.OrderID</td>
+                                    <td>
+                                        @{
+                                var statusColor = "";
+                                switch (order.OrderStatusID)
+                                {
+                                    case 1:
+                                        statusColor = "warning";
+                                        break;
+                                    case 2:
+                                        statusColor = "info";
+                                        break;
+                                    case 3:
+                                        statusColor = "success";
+                                        break;
+                                    default:
+                                        statusColor = "danger";
+                                        break;
+                                }
+                                            <span class="label label-@statusColor">@order.OrderStatu.OrderStatusName</span>
+                                        }
+                                    </td>
                                     <td>
                                         @if (order.Paid)
                                         {
@@ -158,8 +182,25 @@
                                         }
                                         else
                                         {
-                                            <span class="label label-danger">Chưa thanh toán</span>
+                                            <span class="label label-warning">Chưa thanh toán</span>
                                         }
+                                    </td>
+                                    <td>
+                                        @{statusColor = "";
+                                        switch (order.ShippingStatusID)
+                                            {
+                                                case 1:
+                                                    statusColor = "danger";
+                                                    break;
+                                                case 2:
+                                                    statusColor = "info";
+                                                    break;
+                                                case 3:
+                                                    statusColor = "success";
+                                                    break;
+                                            }
+                                        }
+                                        <span class="label label-@statusColor">@order.ShippingStatu.ShippingName</span>
                                     </td>
                                     <td>@order.Customer.FullName<br />@order.Customer.Email</td>
                                     <td>@order.Payment.PaymentName</td>
