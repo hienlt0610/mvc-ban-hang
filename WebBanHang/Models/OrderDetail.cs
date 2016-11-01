@@ -14,6 +14,7 @@ namespace WebBanHang.Models
     
     public partial class OrderDetail
     {
+        public int DetailID { get; set; }
         public int OrderID { get; set; }
         public int ProductID { get; set; }
         public long Price { get; set; }

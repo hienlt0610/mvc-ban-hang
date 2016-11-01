@@ -34,13 +34,17 @@ namespace WebBanHang.Models
         public Nullable<System.DateTime> PaymentDate { get; set; }
         public bool Paid { get; set; }
         public string CouponCode { get; set; }
+        public int OrderStatusID { get; set; }
+        public int ShippingStatusID { get; set; }
         public string Comment { get; set; }
     
         public virtual Customer Customer { get; set; }
         public virtual District District { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        public virtual OrderStatu OrderStatu { get; set; }
         public virtual Payment Payment { get; set; }
         public virtual Province Province { get; set; }
+        public virtual ShippingStatu ShippingStatu { get; set; }
         public virtual Ward Ward { get; set; }
     }
 }

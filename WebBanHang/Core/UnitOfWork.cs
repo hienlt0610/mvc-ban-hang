@@ -25,6 +25,7 @@ namespace WebBanHang.Core
         private WardRepository wardRepository;
         private OrderRepository orderRepository;
         private PaymentRepository paymentRepository;
+        private OrderDetailRepository orderDetailRepository;
 
         public UnitOfWork(DbContext dbContext)
         {
@@ -174,6 +175,16 @@ namespace WebBanHang.Core
                 if (orderRepository == null)
                     orderRepository = new OrderRepository(_dbContext);
                 return orderRepository;
+            }
+        }
+
+        public OrderDetailRepository OrderDetail
+        {
+            get
+            {
+                if (orderDetailRepository == null)
+                    orderDetailRepository = new OrderDetailRepository(_dbContext);
+                return orderDetailRepository;
             }
         }
 

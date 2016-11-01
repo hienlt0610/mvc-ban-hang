@@ -132,3 +132,12 @@
     .colorpicker-2x .colorpicker-color div {
         height: 30px;
     }
+
+.filter-col{
+    padding-left:10px;
+    padding-right:10px;
+}
+
+.editable-click, a.editable-click{
+    border:0px;
+}

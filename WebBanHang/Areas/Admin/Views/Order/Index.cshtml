@@ -1,0 +1,160 @@
+﻿
+@{
+    ViewBag.Title = "Quản lý đơn đặt hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPage.cshtml";
+}
+
+<div class="container">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card-box table-responsive">
+                <div id="datatable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap4 no-footer">
+                    <div class="col-md-12">
+                        <table id="datatable" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="datatable_info">
+                            <thead>
+                                <tr role="row">
+                                    <th>Mã đơn</th>
+                                    <th>Tình trạng</th>
+                                    <th>Thanh toán</th>
+                                    <th>Giao hàng</th>
+                                    <th>Khách hàng</th>
+                                    <th>Phương thức</th>
+                                    <th>Ngày đặt</th>
+                                    <th width="85px"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $.fn.editable.defaults.mode = 'inline';
+        var typingTimer;
+        var table = $('#datatable').DataTable({
+            processing: true, //Feature control the processing indicator.
+            serverSide: true, //Feature control DataTables' server-side processing mode
+            autoWidth: false,
+            ajax: {
+                url: "/Admin/Order/LoadOrder",
+                type: "GET"
+            },
+            columnDefs: [
+                {
+                    targets: 7,
+                    render: function (data, type, full, meta) {
+                        if (type === 'display') {
+                            data = '<div style="min-width:70px" class="btn-group" role="group"><a href="/Admin/Order/Detail/'+full[0]+'" class="edit btn btn-info btn-sm"><span class="glyphicon glyphicon-edit" aria-hidden="true">Xem chi tiết</span></a></div>';
+                        }
+                        return data;
+                    }
+                },
+                {
+                    "defaultContent": "-",
+                    "targets": "_all"
+                }
+            ],
+            initComplete: function (settings, data) {
+                $("div.dataTables_filter input").unbind();
+                $("div.dataTables_filter input").keyup(function (e) {
+                    clearTimeout(typingTimer);
+                    var search_value = this.value;
+                    typingTimer = setTimeout(function () {
+                        table.search(search_value).draw();
+                    }, 300);
+                });
+                
+            },
+            "drawCallback": function (settings) {
+                render_UI();
+            }
+        });
+
+        function render_UI() {
+            $.getJSON("/Admin/Order/OrderStatusOption", function (list) {
+                $('.status-order').editable({
+                    type: 'select',
+                    source: list,
+                    highlight: false,
+                    send: 'always',
+                    showbuttons: false,
+                    url: '/Admin/Order/UpdateStatus',
+                    params: function (params) {
+                        return {
+                            id: params.pk,
+                            order_status: params.value
+                        };
+                    },
+                    success: function (response, newValue) {
+                        if (!response.status) {
+                            return response.message;
+                        }
+                    }
+                });
+            });
+
+            $('.status-payment').editable({
+                type: 'select',
+                source: [
+                    { value: 0, text: 'Chưa thanh toán' },
+                    { value: 1, text: 'Đã thanh toán' }
+                ],
+                highlight: false,
+                send: 'always',
+                showbuttons: false,
+                url: '/Admin/Order/UpdatePayment',
+                params: function (params) {
+                    return {
+                        id: params.pk,
+                        paid: (params.value==1?true:false)
+                    };
+                },
+                success: function (response, newValue) {
+                    if (!response.success) {
+                        return response.message;
+                    }
+                }
+            });
+
+            $.getJSON("/Admin/Order/ShippingStatusOption", function (list) {
+                $('.status-shipping').editable({
+                    type: 'select',
+                    source: list,
+                    highlight: false,
+                    send: 'always',
+                    showbuttons: false,
+                    url: '/Admin/Order/UpdateStatus',
+                    params: function (params) {
+                        return {
+                            id: params.pk,
+                            shipping_status: params.value
+                        };
+                    },
+                    success: function (response, newValue) {
+                        if (!response.status) {
+                            return response.message;
+                        }
+                    }
+                });
+            });
+
+            $('.status-order, .status-payment, .status-shipping').on('save', function (e, params) {
+                table.ajax.reload(null, false);
+            });
+        }
+        
+    </script>    
+}
