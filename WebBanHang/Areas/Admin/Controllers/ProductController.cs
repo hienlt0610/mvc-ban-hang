@@ -76,7 +76,6 @@ namespace WebBanHang.Areas.Admin.Controllers
                 Repository.SaveChanges();
                 if (model.ProductColor.Count > 0)
                 {
-                    var quanRepo = Repository.Create<Quantity>();
                     foreach (var pColor in model.ProductColor)
                     {
                         product.ProductColors.Add(new ProductColor() { 
@@ -103,8 +102,7 @@ namespace WebBanHang.Areas.Admin.Controllers
                     }
                     Repository.SaveChanges();
                 }
-                
-                return RedirectToAction("Index","Product");
+                return RedirectToAction("Edit", "Product", new { id=product.ProductID});
                     
             }
             ViewBag.AttrGroup = Repository.Create<AttributeGroup>().FetchAll();
@@ -156,7 +154,9 @@ namespace WebBanHang.Areas.Admin.Controllers
                 product.Active = model.Active;
                 product.UseMultiColor = product.ProductColors.Count > 0 ? true : false;
                 Repository.Product.SaveChanges();
-                return RedirectToAction("Index","Product");
+                if (Request.Form["save-continue"] != null)
+                    return RedirectToAction("Edit", "Product", new { id = product.ProductID });
+                return RedirectToAction("Index", "Product");
             }
             ViewBag.AttrGroup = Repository.Create<AttributeGroup>().FetchAll();
             ViewBag.GroupProducts = Repository.GroupProduct.FetchAll();

@@ -77,7 +77,7 @@
                                                 @Html.LabelFor(m => m.GroupID, new { @class = "control-label m-t-5" })
                                             </div>
                                             <div class="col-md-7 dropdown-submit-input">
-                                                @Html.HiddenFor(item => item.GroupID, new { Value = (groups.Count() > 0 ? groups.FirstOrDefault().GroupID.ToString() : "") })
+                                                @Html.HiddenFor(item => item.GroupID)
                                                 <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     @ViewBag.GroupName
                                                     <span class="caret"></span>

@@ -22,12 +22,6 @@
                         <i class="zmdi zmdi-assignment"></i>
                     </span>Lưu
                 </button>
-
-                <button type="submit" name="save-continue" class="btn btn-primary waves-effect waves-light m-l-5">
-                    <span class="btn-label">
-                        <i class="zmdi zmdi-assignment"></i>
-                    </span>Lưu & Sửa
-                </button>
             </div>
 
             <h4 class="page-title">@ViewBag.Title</h4>
@@ -153,62 +147,7 @@
                             <div class="col-sm-12">
                                 <div class="card card-block">
                                     <h5 class="card-title">Thêm thuộc tính</h5>
-
-                                    <table class="table table-hover" id="table-attr">
-                                        <thead>
-                                            <tr>
-                                                <th width="500px">Nhóm thuộc tính / Thuộc tính</th>
-                                                <th>Giá trị</th>
-                                                <th width="50"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr data-index="-1" style="background:#f1f1f1;">
-                                                <td>
-                                                    <div class="row">
-                                                        <div class="col-sm-6">
-                                                            <select id="attr_group" name="attr_group_box" class="form-control">
-                                                                <option value="0">Chọn nhóm</option>
-                                                                @foreach(var op in attrGroup){
-                                                                    <option value="@op.AttrGroupID">@op.AttrGroupName</option>
-                                                                }
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                            <select id="attr_box" name="colorbox" class="form-control">
-                                                                <option value="0">Chọn thuộc tính</option>
-                                                            </select>
-                                                            <div>
-                                                                <span id="attr_error" class="field-validation-error" data-valmsg-for="colorbox" data-valmsg-replace="true"></span>
-                                                            </div>  
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <input id="attr_value" type="text" name="stockbox" class="form-control">
-                                                    <div>
-                                                        <span id="attr_value_error" class="field-validation-error" data-valmsg-for="attr_value" data-valmsg-replace="true"></span>
-                                                    </div>
-                                                </td>
-                                                <td data-tabullet-type="save">
-                                                    <button type="button" class="btn btn-info btn-save">Thêm</button>
-                                                </td>
-                                            </tr>
-                                            <!-- Available color
-                                            <tr data-index="0">
-                                                <td>0</td>
-                                                <td>Aditya Purwa</td>
-                                                <td>Admin</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-default btn-edit">Edit</button>
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="btn btn-danger btn-delete">Delete</button>
-                                                </td>
-                                            </tr>-->
-                                        </tbody>
-                                    </table>
-
+                                    <p>* Hãy lưu trước khi thêm thuộc tính</p>
                                 </div>
                             </div>
                         </div>
@@ -219,62 +158,24 @@
                                 <div class="card card-block">
                                     <h5 class="card-title">Chọn màu sắc</h5>
 
-                                    <table class="table table-hover" id="table-color">
-                                        <thead>
-                                            <tr>
-                                                <th width="50px">
-                                                    ID
-                                                </th>
-                                                <th width="300px">Màu sắc</th>
-                                                <th data-tabullet-map="level">Số lượng</th>
-                                                <th width="50"></th>
-                                                <th width="50"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr data-index="-1" style="background:#f1f1f1;">
-                                            <td></td>
-                                            <td>
-                                                <select id="colorbox" name="colorbox" class="form-control">
-                                                    @foreach (var color in colors)
-                                                    {
-                                                        <option value="@color.ColorID">@color.ColorName</option>
-                                                    }
-                                                </select>
-                                                <div>
-                                                    <span id="colorerror" class="field-validation-error" data-valmsg-for="colorbox" data-valmsg-replace="true"></span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <input id="stockbox" type="text" name="stockbox" class="form-control number">
-                                                <div>
-                                                    <span id="stockerror" class="field-validation-error" data-valmsg-for="stockbox" data-valmsg-replace="true"></span>
-                                                </div>
-                                            </td>
-                                            <td data-tabullet-type="save">
-                                                <button type="button" class="btn btn-info btn-save">Thêm</button></td>
-                                            <td></td>
-                                        </tr>
-                                        <!-- Available color
-                                        <tr data-index="0">
-                                            <td>0</td>
-                                            <td>Aditya Purwa</td>
-                                            <td>Admin</td>
-                                            <td>
-                                                <button type="button" class="btn btn-default btn-edit">Edit</button>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-danger btn-delete">Delete</button>
-                                            </td>
-                                        </tr>-->
-                                    </tbody>
-                                    </table>
+                                    <p>* Hãy lưu trước khi thêm màu sắc</p>
 
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="picture" role="tabpanel">3123123</div>
+                    <div class="tab-pane" id="picture" role="tabpanel">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card card-block">
+                                    <h5 class="card-title">Thêm hình ảnh</h5>
+
+                                    <p>* Hãy lưu trước khi thêm hình ảnh</p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div><!-- end col -->
