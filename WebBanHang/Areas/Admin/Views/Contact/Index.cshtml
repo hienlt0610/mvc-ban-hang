@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewBag.Title = "Liên hệ";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPage.cshtml";
+}
+<style>
+    #datatable tbody tr a {
+        color: #646565;
+    }
+</style>
+<div class="container">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card-box table-responsive">
+                <div id="datatable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap4 no-footer">
+                    <div class="col-md-12">
+                        <table id="datatable" class="table table-inbox" role="grid" aria-describedby="datatable_info">
+                            <thead>
+                                <tr role="row">
+                                    <th width="20%">Người gửi</th>
+                                    <th>Nội dung</th>
+                                    <th width="17%">Thời gian</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var typingTimer;
+        var table = $('#datatable').DataTable({
+            processing: true, //Feature control the processing indicator.
+            serverSide: true, //Feature control DataTables' server-side processing mode
+            autoWidth: false,
+            ajax: {
+                url: "/Admin/Contact/Load",
+                type: "GET"
+            },
+            columnDefs: [
+                {
+                    "defaultContent": "-",
+                    "targets": "_all"
+                }
+            ],
+            columns: [
+                {
+                    data: 'full_name',
+                    render: function (data, type, full, meta) {
+                        if(full.seen)
+                            return '<a href="/Admin/Contact/Detail/' + full.contact_id + '" class="col-name">' + data + '</a>';
+                        return '<a href="/Admin/Contact/Detail/' + full.contact_id + '" class="col-name"><strong>' + data + '</strong</a>';
+                    }
+                },
+                {
+                    data: 'message',
+                    render: function (data, type, full, meta) {
+                        if (full.seen)
+                            return '<a href="/Admin/Contact/Detail/' + full.contact_id + '" class="col-name">' + data + '</a>';
+                        return '<a href="/Admin/Contact/Detail/' + full.contact_id + '" class="col-name"><strong>' + data + '</strong</a>';
+                    }
+                },
+                { data: 'time', className: 'align-right' }
+            ],
+            initComplete: function (settings, data) {
+                $("div.dataTables_filter input").unbind();
+                $("div.dataTables_filter input").keyup(function (e) {
+                    clearTimeout(typingTimer);
+                    var search_value = this.value;
+                    typingTimer = setTimeout(function () {
+                        table.search(search_value).draw();
+                    }, 300);
+                });
+
+            },
+            rowCallback: function (row, data, index) {
+                if (!data.seen) {
+                    $(row).addClass('unread');
+                } else {
+                    $(row).removeClass('unread');
+                }
+            }
+        });
+    </script>    
+}

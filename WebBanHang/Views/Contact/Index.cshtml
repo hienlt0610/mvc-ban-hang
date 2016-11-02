@@ -1,0 +1,117 @@
+﻿@model ContactViewModel
+@{
+    ViewBag.Title = "Liên hệ";
+}
+
+<div class="breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-inner">
+            <ul class="list-inline list-unstyled">
+                <li><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+                <li class='active'>@ViewBag.Title</li>
+            </ul>
+        </div><!-- /.breadcrumb-inner -->
+    </div><!-- /.container -->
+</div><!-- /.breadcrumb -->
+
+<div class="container">
+    <div class="row inner-bottom-sm">
+        <div class="contact-page">
+            <div class="col-md-7 contact-form">
+                <div class="col-md-12 contact-title">
+                    <h4>Form Liên hệ</h4>
+                </div>
+                <form class="form-horizontal" id="myform">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.FullName, new { @class = "col-md-2 control-label m-t-3" })
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(m => m.FullName, new { @class = "form-control unicase-form-control" })
+                            @Html.ValidationMessageFor(m=>m.FullName)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label m-t-3" })
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control unicase-form-control" })
+                            @Html.ValidationMessageFor(m => m.Email)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Phone, new { @class = "col-md-2 control-label m-t-3" })
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control unicase-form-control" })
+                            @Html.ValidationMessageFor(m => m.Phone)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Message, new { @class = "col-md-2 control-label m-t-3" })
+                        <div class="col-md-8">
+                            @Html.TextAreaFor(m => m.Message, new { @class = "form-control unicase-form-control", rows="5" })
+                            @Html.ValidationMessageFor(m => m.Message)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label m-t-3" for="submit"></label>
+                        <div class="col-md-8">
+                            <button id="submit" type="submit" name="submit" class="btn btn-info">Gửi liên hệ</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-5 contact-info">
+                <div class="row">
+                    <div class="contact-title">
+                        <h4>Thông tin</h4>
+                    </div>
+                    <div class="clearfix address">
+                        <span class="contact-i"><i class="fa fa-map-marker"></i></span>
+                        <span class="contact-span">475A Điện Biên Phủ, P.25, Q.Bình Thạnh, TP.HCM.</span>
+                    </div>
+                    <div class="clearfix phone-no">
+                        <span class="contact-i"><i class="fa fa-mobile"></i></span>
+                        <span class="contact-span">01207774140</span>
+                    </div>
+                    <div class="clearfix email">
+                        <span class="contact-i"><i class="fa fa-envelope"></i></span>
+                        <span class="contact-span">hienlt0610@gmail.com</span>
+                    </div>
+                </div>
+                <div class="row m-t-20">
+                    <div class="contact-title">
+                        <h4>Bản đồ</h4>
+                    </div>
+                    <div class="clearfix">
+                        <div style="width: 100%"><iframe width="100%" height="300" src="http://www.maps.ie/create-google-map/map.php?width=100%&amp;height=300&amp;hl=en&amp;q=%20475A%20%C4%90i%E1%BB%87n%20Bi%C3%AAn%20Ph%E1%BB%A7+(HithaShop)&amp;ie=UTF8&amp;t=&amp;z=17&amp;iwloc=A&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"><a href="http://www.mapsdirections.info/pt/crie-um-google-map/">Incorporar mapa Google</a> on <a href="http://www.mapsdirections.info/pt/">Calcular Rota</a></iframe></div><br />
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.contact-page -->
+    </div><!-- /.row -->
+</div>
+
+@section masterjs{
+    <script>
+        $('#myform').submit(function () {
+            if ($(this).valid()) {
+                $.ajax({
+                    url: '/Contact/SendContact',
+                    data: $('#myform').serialize(),
+                    type: 'POST',
+                    dataType: 'JSON',
+                    success: function (data) {
+                        if(data.success){
+                            Msg.success(data.message, 2000);
+                            $('#FullName').val('');
+                            $('#Email').val('');
+                            $('#Phone').val('');
+                            $('#Message').val('');
+                        } else {
+                            Msg.error(data.message,2000);
+                        }
+                    }
+                });
+            }
+            return false;
+        });
+    </script>    
+}
