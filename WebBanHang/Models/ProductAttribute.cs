@@ -17,7 +17,7 @@ namespace WebBanHang.Models
         public int ProductID { get; set; }
         public int AttrID { get; set; }
         public string Value { get; set; }
-        public Nullable<byte> Priority { get; set; }
+        public byte Priority { get; set; }
     
         public virtual Attribute Attribute { get; set; }
         public virtual Product Product { get; set; }

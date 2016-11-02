@@ -24,7 +24,7 @@
             <PropertyRef Name="AttrID" />
           </Key>
           <Property Name="AttrID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AttrName" Type="nvarchar" MaxLength="50" />
+          <Property Name="AttrName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="AttriGroupID" Type="int" />
         </EntityType>
         <EntityType Name="AttributeGroups">
@@ -32,7 +32,7 @@
             <PropertyRef Name="AttrGroupID" />
           </Key>
           <Property Name="AttrGroupID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AttrGroupName" Type="nvarchar" MaxLength="50" />
+          <Property Name="AttrGroupName" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Cart">
           <Key>
@@ -60,7 +60,7 @@
           </Key>
           <Property Name="ColorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ColorName" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="HexCode" Type="char" MaxLength="6" />
+          <Property Name="HexCode" Type="char" MaxLength="6" Nullable="false" />
         </EntityType>
         <EntityType Name="Comment">
           <Key>
@@ -87,12 +87,14 @@
             <PropertyRef Name="ContactID" />
           </Key>
           <Property Name="ContactID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FullName" Type="nvarchar" MaxLength="50" />
-          <Property Name="Email" Type="varchar" MaxLength="80" />
-          <Property Name="Phone" Type="varchar" MaxLength="11" />
-          <Property Name="Message" Type="nvarchar" MaxLength="1000" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="11" Nullable="false" />
+          <Property Name="Message" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="CustomerID" Type="int" />
-          <Property Name="IP" Type="varchar" MaxLength="50" />
+          <Property Name="IP" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Time" Type="smalldatetime" Nullable="false" />
+          <Property Name="Seen" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Coupon">
           <Key>
@@ -161,9 +163,9 @@
             <PropertyRef Name="ProductID" />
           </Key>
           <Property Name="ImageID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
           <Property Name="Caption" Type="nvarchar" MaxLength="100" />
           <Property Name="ImagePath" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="ProductID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Menus">
           <Key>
@@ -179,9 +181,9 @@
         </EntityType>
         <EntityType Name="OrderDetails">
           <Key>
-            <PropertyRef Name="OrderID" />
-            <PropertyRef Name="ProductID" />
+            <PropertyRef Name="DetailID" />
           </Key>
+          <Property Name="DetailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OrderID" Type="int" Nullable="false" />
           <Property Name="ProductID" Type="int" Nullable="false" />
           <Property Name="Price" Type="bigint" Nullable="false" />
@@ -208,7 +210,16 @@
           <Property Name="PaymentDate" Type="smalldatetime" />
           <Property Name="Paid" Type="bit" Nullable="false" />
           <Property Name="CouponCode" Type="varchar" MaxLength="10" />
+          <Property Name="OrderStatusID" Type="int" Nullable="false" />
+          <Property Name="ShippingStatusID" Type="int" Nullable="false" />
           <Property Name="Comment" Type="nvarchar" MaxLength="400" />
+        </EntityType>
+        <EntityType Name="OrderStatus">
+          <Key>
+            <PropertyRef Name="OrderStatusID" />
+          </Key>
+          <Property Name="OrderStatusID" Type="int" Nullable="false" />
+          <Property Name="OrderStatusName" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="Payments">
           <Key>
@@ -226,8 +237,8 @@
           </Key>
           <Property Name="ProductID" Type="int" Nullable="false" />
           <Property Name="AttrID" Type="int" Nullable="false" />
-          <Property Name="Value" Type="nvarchar" MaxLength="50" />
-          <Property Name="Priority" Type="tinyint" />
+          <Property Name="Value" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Priority" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductColors">
           <Key>
@@ -261,21 +272,19 @@
           <Property Name="ProvinceName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <EntityType Name="Quantity">
-          <Key>
-            <PropertyRef Name="ProductID" />
-            <PropertyRef Name="ColorID" />
-          </Key>
-          <Property Name="ProductID" Type="int" Nullable="false" />
-          <Property Name="ColorID" Type="int" Nullable="false" />
-          <Property Name="Stock" Type="int" />
-        </EntityType>
         <EntityType Name="Roles">
           <Key>
             <PropertyRef Name="RoleID" />
           </Key>
           <Property Name="RoleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RoleName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ShippingStatus">
+          <Key>
+            <PropertyRef Name="ShippingStatusID" />
+          </Key>
+          <Property Name="ShippingStatusID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ShippingName" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -587,6 +596,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Orders_OrderStatus">
+          <End Role="OrderStatus" Type="Self.OrderStatus" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderStatus">
+              <PropertyRef Name="OrderStatusID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="OrderStatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Orders_Payments">
           <End Role="Payments" Type="Self.Payments" Multiplicity="1" />
           <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
@@ -608,6 +629,18 @@
             </Principal>
             <Dependent Role="Orders">
               <PropertyRef Name="ProvinceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_ShippingStatus">
+          <End Role="ShippingStatus" Type="Self.ShippingStatus" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ShippingStatus">
+              <PropertyRef Name="ShippingStatusID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="ShippingStatusID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -689,32 +722,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Quantity_Color">
-          <End Role="Color" Type="Self.Color" Multiplicity="1" />
-          <End Role="Quantity" Type="Self.Quantity" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Color">
-              <PropertyRef Name="ColorID" />
-            </Principal>
-            <Dependent Role="Quantity">
-              <PropertyRef Name="ColorID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Quantity_Products">
-          <End Role="Products" Type="Self.Products" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Quantity" Type="Self.Quantity" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Products">
-              <PropertyRef Name="ProductID" />
-            </Principal>
-            <Dependent Role="Quantity">
-              <PropertyRef Name="ProductID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UsersInRoles_Roles">
           <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
           <End Role="UsersInRoles" Type="Self.UsersInRoles" Multiplicity="*" />
@@ -770,13 +777,14 @@
           <EntitySet Name="Menus" EntityType="Self.Menus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderDetails" EntityType="Self.OrderDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderStatus" EntityType="Self.OrderStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Payments" EntityType="Self.Payments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductAttribute" EntityType="Self.ProductAttribute" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductColors" EntityType="Self.ProductColors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Provinces" EntityType="Self.Provinces" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Quantity" EntityType="Self.Quantity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ShippingStatus" EntityType="Self.ShippingStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UsersInRoles" EntityType="Self.UsersInRoles" Schema="dbo" store:Type="Tables" />
@@ -869,12 +877,20 @@
             <End Role="Districts" EntitySet="Districts" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
+          <AssociationSet Name="FK_Orders_OrderStatus" Association="Self.FK_Orders_OrderStatus">
+            <End Role="OrderStatus" EntitySet="OrderStatus" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
           <AssociationSet Name="FK_Orders_Payments" Association="Self.FK_Orders_Payments">
             <End Role="Payments" EntitySet="Payments" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
           <AssociationSet Name="FK_Orders_Provinces" Association="Self.FK_Orders_Provinces">
             <End Role="Provinces" EntitySet="Provinces" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_ShippingStatus" Association="Self.FK_Orders_ShippingStatus">
+            <End Role="ShippingStatus" EntitySet="ShippingStatus" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
           <AssociationSet Name="FK_Orders_Ward" Association="Self.FK_Orders_Ward">
@@ -900,14 +916,6 @@
           <AssociationSet Name="FK_Products_GroupProducts" Association="Self.FK_Products_GroupProducts">
             <End Role="GroupProducts" EntitySet="GroupProducts" />
             <End Role="Products" EntitySet="Products" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Quantity_Color" Association="Self.FK_Quantity_Color">
-            <End Role="Color" EntitySet="Color" />
-            <End Role="Quantity" EntitySet="Quantity" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Quantity_Products" Association="Self.FK_Quantity_Products">
-            <End Role="Products" EntitySet="Products" />
-            <End Role="Quantity" EntitySet="Quantity" />
           </AssociationSet>
           <AssociationSet Name="FK_UsersInRoles_Roles" Association="Self.FK_UsersInRoles_Roles">
             <End Role="Roles" EntitySet="Roles" />
@@ -936,7 +944,6 @@
           <EntitySet Name="Colors" EntityType="ecommerceModel.Color" />
           <EntitySet Name="Comments" EntityType="ecommerceModel.Comment" />
           <EntitySet Name="Configurations" EntityType="ecommerceModel.Configuration" />
-          <EntitySet Name="Contacts" EntityType="ecommerceModel.Contact" />
           <EntitySet Name="Coupons" EntityType="ecommerceModel.Coupon" />
           <EntitySet Name="Customers" EntityType="ecommerceModel.Customer" />
           <EntitySet Name="Districts" EntityType="ecommerceModel.District" />
@@ -946,13 +953,14 @@
           <EntitySet Name="Menus" EntityType="ecommerceModel.Menu" />
           <EntitySet Name="OrderDetails" EntityType="ecommerceModel.OrderDetail" />
           <EntitySet Name="Orders" EntityType="ecommerceModel.Order" />
+          <EntitySet Name="OrderStatus" EntityType="ecommerceModel.OrderStatu" />
           <EntitySet Name="Payments" EntityType="ecommerceModel.Payment" />
           <EntitySet Name="ProductAttributes" EntityType="ecommerceModel.ProductAttribute" />
           <EntitySet Name="ProductColors" EntityType="ecommerceModel.ProductColor" />
           <EntitySet Name="Products" EntityType="ecommerceModel.Product" />
           <EntitySet Name="Provinces" EntityType="ecommerceModel.Province" />
-          <EntitySet Name="Quantities" EntityType="ecommerceModel.Quantity" />
           <EntitySet Name="Roles" EntityType="ecommerceModel.Role" />
+          <EntitySet Name="ShippingStatus" EntityType="ecommerceModel.ShippingStatu" />
           <EntitySet Name="Users" EntityType="ecommerceModel.User" />
           <EntitySet Name="Wards" EntityType="ecommerceModel.Ward" />
           <AssociationSet Name="FK_Options_OptionGroups" Association="ecommerceModel.FK_Options_OptionGroups">
@@ -987,10 +995,6 @@
             <End Role="Color" EntitySet="Colors" />
             <End Role="ProductColor" EntitySet="ProductColors" />
           </AssociationSet>
-          <AssociationSet Name="FK_Quantity_Color" Association="ecommerceModel.FK_Quantity_Color">
-            <End Role="Color" EntitySet="Colors" />
-            <End Role="Quantity" EntitySet="Quantities" />
-          </AssociationSet>
           <AssociationSet Name="FK_Comment_Customers" Association="ecommerceModel.FK_Comment_Customers">
             <End Role="Customer" EntitySet="Customers" />
             <End Role="Comment" EntitySet="Comments" />
@@ -998,10 +1002,6 @@
           <AssociationSet Name="FK_Comment_Products" Association="ecommerceModel.FK_Comment_Products">
             <End Role="Product" EntitySet="Products" />
             <End Role="Comment" EntitySet="Comments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Contact_Customers" Association="ecommerceModel.FK_Contact_Customers">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="Contact" EntitySet="Contacts" />
           </AssociationSet>
           <AssociationSet Name="FK_ExcludeCoupon_Coupon" Association="ecommerceModel.FK_ExcludeCoupon_Coupon">
             <End Role="Coupon" EntitySet="Coupons" />
@@ -1063,12 +1063,20 @@
             <End Role="Product" EntitySet="Products" />
             <End Role="OrderDetail" EntitySet="OrderDetails" />
           </AssociationSet>
+          <AssociationSet Name="FK_Orders_OrderStatus" Association="ecommerceModel.FK_Orders_OrderStatus">
+            <End Role="OrderStatu" EntitySet="OrderStatus" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
           <AssociationSet Name="FK_Orders_Payments" Association="ecommerceModel.FK_Orders_Payments">
             <End Role="Payment" EntitySet="Payments" />
             <End Role="Order" EntitySet="Orders" />
           </AssociationSet>
           <AssociationSet Name="FK_Orders_Provinces" Association="ecommerceModel.FK_Orders_Provinces">
             <End Role="Province" EntitySet="Provinces" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_ShippingStatus" Association="ecommerceModel.FK_Orders_ShippingStatus">
+            <End Role="ShippingStatu" EntitySet="ShippingStatus" />
             <End Role="Order" EntitySet="Orders" />
           </AssociationSet>
           <AssociationSet Name="FK_Orders_Ward" Association="ecommerceModel.FK_Orders_Ward">
@@ -1083,13 +1091,14 @@
             <End Role="Product" EntitySet="Products" />
             <End Role="ProductColor" EntitySet="ProductColors" />
           </AssociationSet>
-          <AssociationSet Name="FK_Quantity_Products" Association="ecommerceModel.FK_Quantity_Products">
-            <End Role="Product" EntitySet="Products" />
-            <End Role="Quantity" EntitySet="Quantities" />
-          </AssociationSet>
           <AssociationSet Name="UsersInRoles" Association="ecommerceModel.UsersInRoles">
             <End Role="Role" EntitySet="Roles" />
             <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <EntitySet Name="Contacts" EntityType="ecommerceModel.Contact" />
+          <AssociationSet Name="FK_Contact_Customers" Association="ecommerceModel.FK_Contact_Customers">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Contact" EntitySet="Contacts" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="sysdiagram">
@@ -1121,7 +1130,7 @@
             <PropertyRef Name="AttrID" />
           </Key>
           <Property Name="AttrID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AttrName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AttrName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="AttriGroupID" Type="Int32" />
           <NavigationProperty Name="AttributeGroup" Relationship="ecommerceModel.FK_Options_OptionGroups" FromRole="Attribute" ToRole="AttributeGroup" />
           <NavigationProperty Name="ProductAttributes" Relationship="ecommerceModel.FK_ProductOptions_Options" FromRole="Attribute" ToRole="ProductAttribute" />
@@ -1131,7 +1140,7 @@
             <PropertyRef Name="AttrGroupID" />
           </Key>
           <Property Name="AttrGroupID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AttrGroupName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AttrGroupName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Attributes" Relationship="ecommerceModel.FK_Options_OptionGroups" FromRole="AttributeGroup" ToRole="Attribute" />
         </EntityType>
         <EntityType Name="Cart">
@@ -1165,11 +1174,10 @@
           </Key>
           <Property Name="ColorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ColorName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="HexCode" Type="String" MaxLength="6" FixedLength="true" Unicode="false" />
+          <Property Name="HexCode" Type="String" Nullable="false" MaxLength="6" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="CartDetails" Relationship="ecommerceModel.FK_CartDetails_Color" FromRole="Color" ToRole="CartDetail" />
           <NavigationProperty Name="OrderDetails" Relationship="ecommerceModel.FK_OrderDetails_Color" FromRole="Color" ToRole="OrderDetail" />
           <NavigationProperty Name="ProductColors" Relationship="ecommerceModel.FK_ProductColors_Color1" FromRole="Color" ToRole="ProductColor" />
-          <NavigationProperty Name="Quantities" Relationship="ecommerceModel.FK_Quantity_Color" FromRole="Color" ToRole="Quantity" />
         </EntityType>
         <EntityType Name="Comment">
           <Key>
@@ -1192,19 +1200,6 @@
           <Property Name="ConfigName" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="Value" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="Contact">
-          <Key>
-            <PropertyRef Name="ContactID" />
-          </Key>
-          <Property Name="ContactID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
-          <Property Name="Phone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
-          <Property Name="Message" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerID" Type="Int32" />
-          <Property Name="IP" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Customer" Relationship="ecommerceModel.FK_Contact_Customers" FromRole="Contact" ToRole="Customer" />
         </EntityType>
         <EntityType Name="Coupon">
           <Key>
@@ -1241,11 +1236,11 @@
           <Property Name="RegistrationDate" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Carts" Relationship="ecommerceModel.FK_Cart_Customers" FromRole="Customer" ToRole="Cart" />
           <NavigationProperty Name="Comments" Relationship="ecommerceModel.FK_Comment_Customers" FromRole="Customer" ToRole="Comment" />
-          <NavigationProperty Name="Contacts" Relationship="ecommerceModel.FK_Contact_Customers" FromRole="Customer" ToRole="Contact" />
           <NavigationProperty Name="District" Relationship="ecommerceModel.FK_Customers_Districts" FromRole="Customer" ToRole="District" />
           <NavigationProperty Name="Province" Relationship="ecommerceModel.FK_Customers_Provinces" FromRole="Customer" ToRole="Province" />
           <NavigationProperty Name="Ward" Relationship="ecommerceModel.FK_Customers_Ward" FromRole="Customer" ToRole="Ward" />
           <NavigationProperty Name="Orders" Relationship="ecommerceModel.FK_Orders_Customers" FromRole="Customer" ToRole="Order" />
+          <NavigationProperty Name="Contacts" Relationship="ecommerceModel.FK_Contact_Customers" FromRole="Customer" ToRole="Contact" />
         </EntityType>
         <EntityType Name="District">
           <Key>
@@ -1291,9 +1286,9 @@
             <PropertyRef Name="ProductID" />
           </Key>
           <Property Name="ImageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
           <Property Name="Caption" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="ImagePath" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="ProductID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Product" Relationship="ecommerceModel.FK_ImageProducts_Products" FromRole="ImageProduct" ToRole="Product" />
         </EntityType>
         <EntityType Name="Menu">
@@ -1312,9 +1307,9 @@
         </EntityType>
         <EntityType Name="OrderDetail">
           <Key>
-            <PropertyRef Name="OrderID" />
-            <PropertyRef Name="ProductID" />
+            <PropertyRef Name="DetailID" />
           </Key>
+          <Property Name="DetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OrderID" Type="Int32" Nullable="false" />
           <Property Name="ProductID" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Int64" Nullable="false" />
@@ -1344,13 +1339,25 @@
           <Property Name="PaymentDate" Type="DateTime" Precision="0" />
           <Property Name="Paid" Type="Boolean" Nullable="false" />
           <Property Name="CouponCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="OrderStatusID" Type="Int32" Nullable="false" />
+          <Property Name="ShippingStatusID" Type="Int32" Nullable="false" />
           <Property Name="Comment" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Customer" Relationship="ecommerceModel.FK_Orders_Customers" FromRole="Order" ToRole="Customer" />
           <NavigationProperty Name="District" Relationship="ecommerceModel.FK_Orders_Districts" FromRole="Order" ToRole="District" />
           <NavigationProperty Name="OrderDetails" Relationship="ecommerceModel.FK_OrderDetails_Orders" FromRole="Order" ToRole="OrderDetail" />
+          <NavigationProperty Name="OrderStatu" Relationship="ecommerceModel.FK_Orders_OrderStatus" FromRole="Order" ToRole="OrderStatu" />
           <NavigationProperty Name="Payment" Relationship="ecommerceModel.FK_Orders_Payments" FromRole="Order" ToRole="Payment" />
           <NavigationProperty Name="Province" Relationship="ecommerceModel.FK_Orders_Provinces" FromRole="Order" ToRole="Province" />
+          <NavigationProperty Name="ShippingStatu" Relationship="ecommerceModel.FK_Orders_ShippingStatus" FromRole="Order" ToRole="ShippingStatu" />
           <NavigationProperty Name="Ward" Relationship="ecommerceModel.FK_Orders_Ward" FromRole="Order" ToRole="Ward" />
+        </EntityType>
+        <EntityType Name="OrderStatu">
+          <Key>
+            <PropertyRef Name="OrderStatusID" />
+          </Key>
+          <Property Name="OrderStatusID" Type="Int32" Nullable="false" />
+          <Property Name="OrderStatusName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Orders" Relationship="ecommerceModel.FK_Orders_OrderStatus" FromRole="OrderStatu" ToRole="Order" />
         </EntityType>
         <EntityType Name="Payment">
           <Key>
@@ -1369,8 +1376,8 @@
           </Key>
           <Property Name="ProductID" Type="Int32" Nullable="false" />
           <Property Name="AttrID" Type="Int32" Nullable="false" />
-          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Priority" Type="Byte" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Priority" Type="Byte" Nullable="false" />
           <NavigationProperty Name="Attribute" Relationship="ecommerceModel.FK_ProductOptions_Options" FromRole="ProductAttribute" ToRole="Attribute" />
           <NavigationProperty Name="Product" Relationship="ecommerceModel.FK_ProductOptions_Products" FromRole="ProductAttribute" ToRole="Product" />
         </EntityType>
@@ -1406,7 +1413,6 @@
           <NavigationProperty Name="OrderDetails" Relationship="ecommerceModel.FK_OrderDetails_Products" FromRole="Product" ToRole="OrderDetail" />
           <NavigationProperty Name="ProductAttributes" Relationship="ecommerceModel.FK_ProductOptions_Products" FromRole="Product" ToRole="ProductAttribute" />
           <NavigationProperty Name="ProductColors" Relationship="ecommerceModel.FK_ProductColors_Products1" FromRole="Product" ToRole="ProductColor" />
-          <NavigationProperty Name="Quantities" Relationship="ecommerceModel.FK_Quantity_Products" FromRole="Product" ToRole="Quantity" />
         </EntityType>
         <EntityType Name="Province">
           <Key>
@@ -1419,17 +1425,6 @@
           <NavigationProperty Name="Districts" Relationship="ecommerceModel.FK_Districts_Provinces" FromRole="Province" ToRole="District" />
           <NavigationProperty Name="Orders" Relationship="ecommerceModel.FK_Orders_Provinces" FromRole="Province" ToRole="Order" />
         </EntityType>
-        <EntityType Name="Quantity">
-          <Key>
-            <PropertyRef Name="ProductID" />
-            <PropertyRef Name="ColorID" />
-          </Key>
-          <Property Name="ProductID" Type="Int32" Nullable="false" />
-          <Property Name="ColorID" Type="Int32" Nullable="false" />
-          <Property Name="Stock" Type="Int32" />
-          <NavigationProperty Name="Color" Relationship="ecommerceModel.FK_Quantity_Color" FromRole="Quantity" ToRole="Color" />
-          <NavigationProperty Name="Product" Relationship="ecommerceModel.FK_Quantity_Products" FromRole="Quantity" ToRole="Product" />
-        </EntityType>
         <EntityType Name="Role">
           <Key>
             <PropertyRef Name="RoleID" />
@@ -1437,6 +1432,14 @@
           <Property Name="RoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RoleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Users" Relationship="ecommerceModel.UsersInRoles" FromRole="Role" ToRole="User" />
+        </EntityType>
+        <EntityType Name="ShippingStatu">
+          <Key>
+            <PropertyRef Name="ShippingStatusID" />
+          </Key>
+          <Property Name="ShippingStatusID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ShippingName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Orders" Relationship="ecommerceModel.FK_Orders_ShippingStatus" FromRole="ShippingStatu" ToRole="Order" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -1560,18 +1563,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Quantity_Color">
-          <End Type="ecommerceModel.Color" Role="Color" Multiplicity="1" />
-          <End Type="ecommerceModel.Quantity" Role="Quantity" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Color">
-              <PropertyRef Name="ColorID" />
-            </Principal>
-            <Dependent Role="Quantity">
-              <PropertyRef Name="ColorID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Comment_Customers">
           <End Type="ecommerceModel.Customer" Role="Customer" Multiplicity="0..1" />
           <End Type="ecommerceModel.Comment" Role="Comment" Multiplicity="*" />
@@ -1593,18 +1584,6 @@
             </Principal>
             <Dependent Role="Comment">
               <PropertyRef Name="ProductID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Contact_Customers">
-          <End Type="ecommerceModel.Customer" Role="Customer" Multiplicity="0..1" />
-          <End Type="ecommerceModel.Contact" Role="Contact" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Customer">
-              <PropertyRef Name="CustomerID" />
-            </Principal>
-            <Dependent Role="Contact">
-              <PropertyRef Name="CustomerID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1796,6 +1775,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Orders_OrderStatus">
+          <End Type="ecommerceModel.OrderStatu" Role="OrderStatu" Multiplicity="1" />
+          <End Type="ecommerceModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderStatu">
+              <PropertyRef Name="OrderStatusID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="OrderStatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Orders_Payments">
           <End Type="ecommerceModel.Payment" Role="Payment" Multiplicity="1" />
           <End Type="ecommerceModel.Order" Role="Order" Multiplicity="*" />
@@ -1817,6 +1808,18 @@
             </Principal>
             <Dependent Role="Order">
               <PropertyRef Name="ProvinceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_ShippingStatus">
+          <End Type="ecommerceModel.ShippingStatu" Role="ShippingStatu" Multiplicity="1" />
+          <End Type="ecommerceModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ShippingStatu">
+              <PropertyRef Name="ShippingStatusID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="ShippingStatusID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1860,23 +1863,36 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Quantity_Products">
-          <End Type="ecommerceModel.Product" Role="Product" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="ecommerceModel.Quantity" Role="Quantity" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Product">
-              <PropertyRef Name="ProductID" />
-            </Principal>
-            <Dependent Role="Quantity">
-              <PropertyRef Name="ProductID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="UsersInRoles">
           <End Type="ecommerceModel.Role" Role="Role" Multiplicity="*" />
           <End Type="ecommerceModel.User" Role="User" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Contact">
+          <Key>
+            <PropertyRef Name="ContactID" />
+          </Key>
+          <Property Name="ContactID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerID" Type="Int32" />
+          <Property Name="IP" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Time" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Seen" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Customer" Relationship="ecommerceModel.FK_Contact_Customers" FromRole="Contact" ToRole="Customer" />
+        </EntityType>
+        <Association Name="FK_Contact_Customers">
+          <End Type="ecommerceModel.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="ecommerceModel.Contact" Role="Contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="Contact">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -1977,19 +1993,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Contacts">
-            <EntityTypeMapping TypeName="ecommerceModel.Contact">
-              <MappingFragment StoreEntitySet="Contact">
-                <ScalarProperty Name="IP" ColumnName="IP" />
-                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
-                <ScalarProperty Name="Message" ColumnName="Message" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="FullName" ColumnName="FullName" />
-                <ScalarProperty Name="ContactID" ColumnName="ContactID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Coupons">
             <EntityTypeMapping TypeName="ecommerceModel.Coupon">
               <MappingFragment StoreEntitySet="Coupon">
@@ -2058,9 +2061,9 @@
           <EntitySetMapping Name="ImageProducts">
             <EntityTypeMapping TypeName="ecommerceModel.ImageProduct">
               <MappingFragment StoreEntitySet="ImageProducts">
-                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
                 <ScalarProperty Name="Caption" ColumnName="Caption" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="ImageID" ColumnName="ImageID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2087,6 +2090,7 @@
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="DetailID" ColumnName="DetailID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2094,6 +2098,8 @@
             <EntityTypeMapping TypeName="ecommerceModel.Order">
               <MappingFragment StoreEntitySet="Orders">
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="ShippingStatusID" ColumnName="ShippingStatusID" />
+                <ScalarProperty Name="OrderStatusID" ColumnName="OrderStatusID" />
                 <ScalarProperty Name="CouponCode" ColumnName="CouponCode" />
                 <ScalarProperty Name="Paid" ColumnName="Paid" />
                 <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
@@ -2109,6 +2115,14 @@
                 <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderStatus">
+            <EntityTypeMapping TypeName="ecommerceModel.OrderStatu">
+              <MappingFragment StoreEntitySet="OrderStatus">
+                <ScalarProperty Name="OrderStatusName" ColumnName="OrderStatusName" />
+                <ScalarProperty Name="OrderStatusID" ColumnName="OrderStatusID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2166,20 +2180,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Quantities">
-            <EntityTypeMapping TypeName="ecommerceModel.Quantity">
-              <MappingFragment StoreEntitySet="Quantity">
-                <ScalarProperty Name="Stock" ColumnName="Stock" />
-                <ScalarProperty Name="ColorID" ColumnName="ColorID" />
-                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Roles">
             <EntityTypeMapping TypeName="ecommerceModel.Role">
               <MappingFragment StoreEntitySet="Roles">
                 <ScalarProperty Name="RoleName" ColumnName="RoleName" />
                 <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ShippingStatus">
+            <EntityTypeMapping TypeName="ecommerceModel.ShippingStatu">
+              <MappingFragment StoreEntitySet="ShippingStatus">
+                <ScalarProperty Name="ShippingName" ColumnName="ShippingName" />
+                <ScalarProperty Name="ShippingStatusID" ColumnName="ShippingStatusID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2215,6 +2228,21 @@
               <ScalarProperty Name="RoleID" ColumnName="RoleID" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Contacts">
+            <EntityTypeMapping TypeName="ecommerceModel.Contact">
+              <MappingFragment StoreEntitySet="Contact">
+                <ScalarProperty Name="Seen" ColumnName="Seen" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="IP" ColumnName="IP" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

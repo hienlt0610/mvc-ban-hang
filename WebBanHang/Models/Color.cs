@@ -19,7 +19,6 @@ namespace WebBanHang.Models
             this.CartDetails = new HashSet<CartDetail>();
             this.OrderDetails = new HashSet<OrderDetail>();
             this.ProductColors = new HashSet<ProductColor>();
-            this.Quantities = new HashSet<Quantity>();
         }
     
         public int ColorID { get; set; }
@@ -29,6 +28,5 @@ namespace WebBanHang.Models
         public virtual ICollection<CartDetail> CartDetails { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual ICollection<ProductColor> ProductColors { get; set; }
-        public virtual ICollection<Quantity> Quantities { get; set; }
     }
 }

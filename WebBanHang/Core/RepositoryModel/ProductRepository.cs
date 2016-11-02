@@ -24,5 +24,10 @@ namespace WebBanHang.Core.RepositoryModel
         {
             return FetchAll().Where(item => item.GroupID == group).ToList();
         }
+
+        public Product BestProductSale()
+        {
+            return null;
+        }
     }
 }

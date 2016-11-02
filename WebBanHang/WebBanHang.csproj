@@ -208,24 +208,31 @@
     <Compile Include="Areas\Admin\Controllers\AuthController.cs" />
     <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\ColorController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ContactController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CustomerController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\OrderController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SettingController.cs" />
     <Compile Include="Areas\Admin\Controllers\UploadController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AppApiController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\CheckoutController.cs" />
+    <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProductManagerController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\WidgetController.cs" />
     <Compile Include="Core\AutoMapperConfig.cs" />
     <Compile Include="Core\BaseController.cs" />
     <Compile Include="Core\MyRazorViewEngine.cs" />
     <Compile Include="Core\RepositoryModel\DistrictRepository.cs" />
+    <Compile Include="Core\RepositoryModel\OrderDetailRepository.cs" />
     <Compile Include="Core\RepositoryModel\OrderRepository.cs" />
     <Compile Include="Core\RepositoryModel\PaymentRepository.cs" />
     <Compile Include="Core\RepositoryModel\ProvinceRepository.cs" />
@@ -322,6 +329,9 @@
     <Compile Include="Models\OrderDetail.cs">
       <DependentUpon>Ecommerce.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\OrderStatu.cs">
+      <DependentUpon>Ecommerce.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Payment.cs">
       <DependentUpon>Ecommerce.tt</DependentUpon>
     </Compile>
@@ -337,10 +347,10 @@
     <Compile Include="Models\Province.cs">
       <DependentUpon>Ecommerce.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Quantity.cs">
+    <Compile Include="Models\Role.cs">
       <DependentUpon>Ecommerce.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Role.cs">
+    <Compile Include="Models\ShippingStatu.cs">
       <DependentUpon>Ecommerce.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sysdiagram.cs">
@@ -362,10 +372,13 @@
     <Compile Include="Utils\ImageHelper.cs" />
     <Compile Include="Utils\ModelUtils.cs" />
     <Compile Include="Utils\StringUtils.cs" />
+    <Compile Include="Utils\TimeUtils.cs" />
     <Compile Include="Utils\UrlHelpers.cs" />
+    <Compile Include="ViewModels\AdminConfigViewModel.cs" />
     <Compile Include="ViewModels\AdminGroupProductViewModel.cs" />
     <Compile Include="ViewModels\AdminLoginViewModel.cs" />
     <Compile Include="ViewModels\AdminProductViewModel.cs" />
+    <Compile Include="ViewModels\ContactViewModel.cs" />
     <Compile Include="ViewModels\ProfileViewModel.cs" />
     <Compile Include="ViewModels\ShippingViewModel.cs" />
     <Compile Include="ViewModels\SignInViewModel.cs" />
@@ -548,6 +561,11 @@
     <Content Include="Content\admin\plugins\tinymce\themes\inlite\theme.min.js" />
     <Content Include="Content\admin\plugins\tinymce\themes\modern\theme.min.js" />
     <Content Include="Content\admin\plugins\tinymce\tinymce.min.js" />
+    <Content Include="Content\admin\plugins\x-editable\css\bootstrap-editable.css" />
+    <Content Include="Content\admin\plugins\x-editable\img\clear.png" />
+    <Content Include="Content\admin\plugins\x-editable\img\loading.gif" />
+    <Content Include="Content\admin\plugins\x-editable\js\bootstrap-editable.js" />
+    <Content Include="Content\admin\plugins\x-editable\js\bootstrap-editable.min.js" />
     <Content Include="Content\css\animate.min.css" />
     <Content Include="Content\css\blue.css" />
     <Content Include="Content\css\bootstrap-msg.min.css" />
@@ -948,6 +966,14 @@
     <Content Include="Areas\Admin\Views\Color\Index.cshtml" />
     <Content Include="Content\admin\plugins\color-picker\css\bootstrap-colorpicker.css.map" />
     <Content Include="Content\admin\plugins\color-picker\css\bootstrap-colorpicker.min.css.map" />
+    <Content Include="Areas\Admin\Views\Order\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\Customer\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Customer\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\Setting\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Contact\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Contact\Detail.cshtml" />
+    <None Include="Properties\PublishProfiles\hienlt0610.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -1014,6 +1040,10 @@
     <Content Include="Views\Widget\LatestProduct.cshtml" />
     <Content Include="Views\Checkout\Payment.cshtml" />
     <Content Include="Views\Checkout\Checkout_Success.cshtml" />
+    <Content Include="Views\Search\Index.cshtml" />
+    <Content Include="Views\Widget\Search.cshtml" />
+    <Content Include="Views\Product\Search.cshtml" />
+    <Content Include="Views\Contact\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

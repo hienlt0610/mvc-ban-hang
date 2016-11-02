@@ -70,6 +70,9 @@ namespace WebBanHang.Controllers
                     WardID = model.WardID,
                     Phone = model.Phone,
                     TotalPrice = ShoppingCart.Instance.GetTotal(),
+                    Paid = false,
+                    OrderStatusID = 1,
+                    ShippingStatusID = 1,
                     Comment = model.Comment
                 };
                 var payment = Repository.Payment.FindById(model.PaymentMethod);
@@ -83,6 +86,7 @@ namespace WebBanHang.Controllers
                     if (newOrder != null && newOrder.OrderID != 0)
                     {
                         //Add each item from cart to orderdetail
+                        var detailRepo = Repository.Create<OrderDetail>();
                         foreach(var cart in ShoppingCart.Instance.Items){
                             var od = new OrderDetail
                             {
@@ -93,9 +97,9 @@ namespace WebBanHang.Controllers
                                 ColorID = cart.ColorID,
                                 Total = cart.TotalPrice
                             };
-                            newOrder.OrderDetails.Add(od);
+                            detailRepo.Insert(od);
                         }
-                        Repository.Order.SaveChanges();
+                        Repository.SaveChanges();
                         ShoppingCart.Instance.Clean();
                         TempData["ship"] = newOrder;
                         return RedirectToAction("Success","Checkout");

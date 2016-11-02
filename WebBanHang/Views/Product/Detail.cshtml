@@ -3,6 +3,16 @@
     ViewBag.Title = "Chi tiết sản phẩm";    
 }
 
+<div id="fb-root"></div>
+<script>
+(function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
 <div class="breadcrumb">
     <div class="container">
         <div class="breadcrumb-inner">
@@ -58,7 +68,15 @@
                                     </div>
                                     <div class="col-sm-9">
                                         <div class="stock-box">
-                                            <span class="value available">Còn hàng</span>
+                                            @if (Model.ProductColors.Count == 0) {
+                                                if(Model.Stock != 0){
+                                                    <span class="value available">Còn hàng</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="value">Hết hàng</span>
+                                                }
+                                            }
                                         </div>
                                     </div>
                                 </div><!-- /.row -->
@@ -79,21 +97,6 @@
                                             }
                                         </div>
                                     </div>
-
-                                    <div class="col-sm-4">
-                                        <div class="favorite-button m-t-10">
-                                            <a class="btn btn-primary" data-toggle="tooltip" data-placement="right" title="" href="#" data-original-title="Wishlist">
-                                                <i class="fa fa-heart"></i>
-                                            </a>
-                                            <a class="btn btn-primary" data-toggle="tooltip" data-placement="right" title="" href="#" data-original-title="Add to Compare">
-                                                <i class="fa fa-retweet"></i>
-                                            </a>
-                                            <a class="btn btn-primary" data-toggle="tooltip" data-placement="right" title="" href="#" data-original-title="E-mail">
-                                                <i class="fa fa-envelope"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-
                                 </div><!-- /.row -->
                             </div><!-- /.price-container -->
                             
@@ -110,7 +113,14 @@
                                                 <div class="color-input">
                                                     <select name="Color" id="color-choose" class="form-control">
                                                         @foreach(var color in Model.ProductColors){
-                                                            <option value="@color.ColorID">@color.Color.ColorName</option>
+                                                            if (color.Stock > 0)
+                                                            {
+                                                                <option value="@color.ColorID">@color.Color.ColorName</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@color.ColorID">@color.Color.ColorName (Hết hàng)</option>
+                                                            }
                                                         }
                                                     </select>
                                                 </div>
@@ -214,442 +224,76 @@
                         </ul>
                         <div class="tab-content">
                             <div id="tab-review" class="tab-pane active">
-                                <form class="form-horizontal">
-                                    <div id="review">
-                                        <div>
-                                            <table class="table table-striped table-bordered">
-                                                <tbody>
-                                                    <tr>
-                                                        <td style="width: 50%;"><strong><span>harvey</span></strong></td>
-                                                        <td class="text-right"><span>20/01/2016</span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="2">
-                                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                                            <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <table class="table table-striped table-bordered">
-                                                <tbody>
-                                                    <tr>
-                                                        <td style="width: 50%;"><strong><span>Andrson</span></strong></td>
-                                                        <td class="text-right"><span>20/01/2016</span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="2">
-                                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                                            <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="text-right"></div>
-                                    </div>
-                                    <h2>Write a review</h2>
-                                    <div class="form-group required">
-                                        <div class="col-sm-12">
-                                            <label for="input-name" class="control-label">Your Name</label>
-                                            <input type="text" class="form-control" id="input-name" value="" name="name">
-                                        </div>
-                                    </div>
-                                    <div class="form-group required">
-                                        <div class="col-sm-12">
-                                            <label for="input-review" class="control-label">Your Review</label>
-                                            <textarea class="form-control" id="input-review" rows="5" name="text"></textarea>
-                                            <div class="help-block"><span class="text-danger">Note:</span> HTML is not translated!</div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group required">
-                                        <div class="col-sm-12">
-                                            <label class="control-label">Rating</label>
-                                            &nbsp;&nbsp;&nbsp; Bad&nbsp;
-                                            <input type="radio" value="1" name="rating">
-                                            &nbsp;
-                                            <input type="radio" value="2" name="rating">
-                                            &nbsp;
-                                            <input type="radio" value="3" name="rating">
-                                            &nbsp;
-                                            <input type="radio" value="4" name="rating">
-                                            &nbsp;
-                                            <input type="radio" value="5" name="rating">
-                                            &nbsp;Good
-                                        </div>
-                                    </div>
-                                    <div class="buttons">
-                                        <div class="pull-right">
-                                            <button class="btn btn-primary" id="button-review" type="button">Continue</button>
-                                        </div>
-                                    </div>
-                                </form>
+                                <div class="fb-comments" data-href="@Request.Url.AbsoluteUri" data-width="850" data-numposts="5"></div>
                             </div>
                         </div>
                     </div>
                 </div><!-- /.product-tabs -->
-                <!-- ============================================== UPSELL PRODUCTS ============================================== -->
-                <section class="section featured-product wow fadeInUp animated" style="visibility: visible; animation-name: fadeInUp;">
-                    <h3 class="section-title">upsell products</h3>
-                    <div class="owl-carousel home-owl-carousel upsell-product custom-carousel owl-theme outer-top-xs" style="opacity: 1; display: block;">
 
-                        <div class="owl-wrapper-outer">
-                            <div class="owl-wrapper" style="width: 2544px; left: 0px; display: block;">
-                                <div class="owl-item" style="width: 212px;">
-                                    <div class="item item-carousel">
-                                        <div class="products">
-
-                                            <div class="product">
-                                                <div class="product-image">
-                                                    <div class="image">
-                                                        <a href="detail.html"><img src="/Content/images//products/4.jpg" alt=""></a>
-                                                    </div><!-- /.image -->
-
-                                                    <div class="tag sale"><span>sale</span></div>
-                                                </div><!-- /.product-image -->
-
-
-                                                <div class="product-info text-left">
-                                                    <h3 class="name"><a href="detail.html">LG Smart Phone LP68</a></h3>
-                                                    <div class="rating rateit-small rateit"><button id="rateit-reset-6" data-role="none" class="rateit-reset" aria-label="reset rating" aria-controls="rateit-range-6" style="display: none;"></button><div id="rateit-range-6" class="rateit-range" tabindex="0" role="slider" aria-label="rating" aria-owns="rateit-reset-6" aria-valuemin="0" aria-valuemax="5" aria-valuenow="4" aria-readonly="true" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 64px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
-                                                    <div class="description"></div>
-
-                                                    <div class="product-price">
-                                                        <span class="price">
-                                                            $650.99
-                                                        </span>
-                                                        <span class="price-before-discount">$ 800</span>
-
-                                                    </div><!-- /.product-price -->
-
-                                                </div><!-- /.product-info -->
-                                                <div class="cart clearfix animate-effect">
-                                                    <div class="action">
-                                                        <ul class="list-unstyled">
-                                                            <li class="add-cart-button btn-group">
-                                                                <button class="btn btn-primary icon" data-toggle="dropdown" type="button">
-                                                                    <i class="fa fa-shopping-cart"></i>
-                                                                </button>
-                                                                <button class="btn btn-primary" type="button">Add to cart</button>
-
-                                                            </li>
-
-                                                            <li class="lnk wishlist">
-                                                                <a class="add-to-cart" href="detail.html" title="Wishlist">
-                                                                    <i class="icon fa fa-heart"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li class="lnk">
-                                                                <a class="add-to-cart" href="detail.html" title="Compare">
-                                                                    <i class="fa fa-retweet"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div><!-- /.action -->
-                                                </div><!-- /.cart -->
-                                            </div><!-- /.product -->
-
-                                        </div><!-- /.products -->
-                                    </div>
-                                </div><div class="owl-item" style="width: 212px;">
-                                    <div class="item item-carousel">
-                                        <div class="products">
-
-                                            <div class="product">
-                                                <div class="product-image">
-                                                    <div class="image">
-                                                        <a href="detail.html"><img src="/Content/images//products/3.jpg" alt=""></a>
-                                                    </div><!-- /.image -->
-
-                                                    <div class="tag sale"><span>sale</span></div>
-                                                </div><!-- /.product-image -->
-
-
-                                                <div class="product-info text-left">
-                                                    <h3 class="name"><a href="detail.html">Apple Iphone 5s 32GB</a></h3>
-                                                    <div class="rating rateit-small rateit"><button id="rateit-reset-7" data-role="none" class="rateit-reset" aria-label="reset rating" aria-controls="rateit-range-7" style="display: none;"></button><div id="rateit-range-7" class="rateit-range" tabindex="0" role="slider" aria-label="rating" aria-owns="rateit-reset-7" aria-valuemin="0" aria-valuemax="5" aria-valuenow="4" aria-readonly="true" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 64px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
-                                                    <div class="description"></div>
-
-                                                    <div class="product-price">
-                                                        <span class="price">
-                                                            $650.99
-                                                        </span>
-                                                        <span class="price-before-discount">$ 800</span>
-
-                                                    </div><!-- /.product-price -->
-
-                                                </div><!-- /.product-info -->
-                                                <div class="cart clearfix animate-effect">
-                                                    <div class="action">
-                                                        <ul class="list-unstyled">
-                                                            <li class="add-cart-button btn-group">
-                                                                <button class="btn btn-primary icon" data-toggle="dropdown" type="button">
-                                                                    <i class="fa fa-shopping-cart"></i>
-                                                                </button>
-                                                                <button class="btn btn-primary" type="button">Add to cart</button>
-
-                                                            </li>
-
-                                                            <li class="lnk wishlist">
-                                                                <a class="add-to-cart" href="detail.html" title="Wishlist">
-                                                                    <i class="icon fa fa-heart"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li class="lnk">
-                                                                <a class="add-to-cart" href="detail.html" title="Compare">
-                                                                    <i class="fa fa-retweet"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div><!-- /.action -->
-                                                </div><!-- /.cart -->
-                                            </div><!-- /.product -->
-
-                                        </div><!-- /.products -->
-                                    </div>
-                                </div><div class="owl-item" style="width: 212px;">
-                                    <div class="item item-carousel">
-                                        <div class="products">
-
-                                            <div class="product">
-                                                <div class="product-image">
-                                                    <div class="image">
-                                                        <a href="detail.html"><img src="/Content/images//products/1.jpg" alt=""></a>
-                                                    </div><!-- /.image -->
-
-                                                    <div class="tag hot"><span>hot</span></div>
-                                                </div><!-- /.product-image -->
-
-
-                                                <div class="product-info text-left">
-                                                    <h3 class="name"><a href="detail.html">Sony Ericson Vaga</a></h3>
-                                                    <div class="rating rateit-small rateit"><button id="rateit-reset-8" data-role="none" class="rateit-reset" aria-label="reset rating" aria-controls="rateit-range-8" style="display: none;"></button><div id="rateit-range-8" class="rateit-range" tabindex="0" role="slider" aria-label="rating" aria-owns="rateit-reset-8" aria-valuemin="0" aria-valuemax="5" aria-valuenow="4" aria-readonly="true" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 64px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
-                                                    <div class="description"></div>
-
-                                                    <div class="product-price">
-                                                        <span class="price">
-                                                            $650.99
-                                                        </span>
-                                                        <span class="price-before-discount">$ 800</span>
-
-                                                    </div><!-- /.product-price -->
-
-                                                </div><!-- /.product-info -->
-                                                <div class="cart clearfix animate-effect">
-                                                    <div class="action">
-                                                        <ul class="list-unstyled">
-                                                            <li class="add-cart-button btn-group">
-                                                                <button class="btn btn-primary icon" data-toggle="dropdown" type="button">
-                                                                    <i class="fa fa-shopping-cart"></i>
-                                                                </button>
-                                                                <button class="btn btn-primary" type="button">Add to cart</button>
-
-                                                            </li>
-
-                                                            <li class="lnk wishlist">
-                                                                <a class="add-to-cart" href="detail.html" title="Wishlist">
-                                                                    <i class="icon fa fa-heart"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li class="lnk">
-                                                                <a class="add-to-cart" href="detail.html" title="Compare">
-                                                                    <i class="fa fa-retweet"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div><!-- /.action -->
-                                                </div><!-- /.cart -->
-                                            </div><!-- /.product -->
-
-                                        </div><!-- /.products -->
-                                    </div>
-                                </div><div class="owl-item" style="width: 212px;">
-                                    <div class="item item-carousel">
-                                        <div class="products">
-
-                                            <div class="product">
-                                                <div class="product-image">
-                                                    <div class="image">
-                                                        <a href="detail.html"><img src="/Content/images//products/2.jpg" alt=""></a>
-                                                    </div><!-- /.image -->
-
-                                                    <div class="tag new"><span>new</span></div>
-                                                </div><!-- /.product-image -->
-
-
-                                                <div class="product-info text-left">
-                                                    <h3 class="name"><a href="detail.html">Samsung Galaxy S4</a></h3>
-                                                    <div class="rating rateit-small rateit"><button id="rateit-reset-9" data-role="none" class="rateit-reset" aria-label="reset rating" aria-controls="rateit-range-9" style="display: none;"></button><div id="rateit-range-9" class="rateit-range" tabindex="0" role="slider" aria-label="rating" aria-owns="rateit-reset-9" aria-valuemin="0" aria-valuemax="5" aria-valuenow="4" aria-readonly="true" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 64px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
-                                                    <div class="description"></div>
-
-                                                    <div class="product-price">
-                                                        <span class="price">
-                                                            $650.99
-                                                        </span>
-                                                        <span class="price-before-discount">$ 800</span>
-
-                                                    </div><!-- /.product-price -->
-
-                                                </div><!-- /.product-info -->
-                                                <div class="cart clearfix animate-effect">
-                                                    <div class="action">
-                                                        <ul class="list-unstyled">
-                                                            <li class="add-cart-button btn-group">
-                                                                <button class="btn btn-primary icon" data-toggle="dropdown" type="button">
-                                                                    <i class="fa fa-shopping-cart"></i>
-                                                                </button>
-                                                                <button class="btn btn-primary" type="button">Add to cart</button>
-
-                                                            </li>
-
-                                                            <li class="lnk wishlist">
-                                                                <a class="add-to-cart" href="detail.html" title="Wishlist">
-                                                                    <i class="icon fa fa-heart"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li class="lnk">
-                                                                <a class="add-to-cart" href="detail.html" title="Compare">
-                                                                    <i class="fa fa-retweet"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div><!-- /.action -->
-                                                </div><!-- /.cart -->
-                                            </div><!-- /.product -->
-
-                                        </div><!-- /.products -->
-                                    </div>
-                                </div><div class="owl-item" style="width: 212px;">
-                                    <div class="item item-carousel">
-                                        <div class="products">
-
-                                            <div class="product">
-                                                <div class="product-image">
-                                                    <div class="image">
-                                                        <a href="detail.html"><img src="/Content/images//products/2.jpg" alt=""></a>
-                                                    </div><!-- /.image -->
-
-                                                    <div class="tag hot"><span>hot</span></div>
-                                                </div><!-- /.product-image -->
-
-
-                                                <div class="product-info text-left">
-                                                    <h3 class="name"><a href="detail.html">Samsung Galaxy S4</a></h3>
-                                                    <div class="rating rateit-small rateit"><button id="rateit-reset-10" data-role="none" class="rateit-reset" aria-label="reset rating" aria-controls="rateit-range-10" style="display: none;"></button><div id="rateit-range-10" class="rateit-range" tabindex="0" role="slider" aria-label="rating" aria-owns="rateit-reset-10" aria-valuemin="0" aria-valuemax="5" aria-valuenow="4" aria-readonly="true" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 64px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
-                                                    <div class="description"></div>
-
-                                                    <div class="product-price">
-                                                        <span class="price">
-                                                            $650.99
-                                                        </span>
-                                                        <span class="price-before-discount">$ 800</span>
-
-                                                    </div><!-- /.product-price -->
-
-                                                </div><!-- /.product-info -->
-                                                <div class="cart clearfix animate-effect">
-                                                    <div class="action">
-                                                        <ul class="list-unstyled">
-                                                            <li class="add-cart-button btn-group">
-                                                                <button class="btn btn-primary icon" data-toggle="dropdown" type="button">
-                                                                    <i class="fa fa-shopping-cart"></i>
-                                                                </button>
-                                                                <button class="btn btn-primary" type="button">Add to cart</button>
-
-                                                            </li>
-
-                                                            <li class="lnk wishlist">
-                                                                <a class="add-to-cart" href="detail.html" title="Wishlist">
-                                                                    <i class="icon fa fa-heart"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li class="lnk">
-                                                                <a class="add-to-cart" href="detail.html" title="Compare">
-                                                                    <i class="fa fa-retweet"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div><!-- /.action -->
-                                                </div><!-- /.cart -->
-                                            </div><!-- /.product -->
-
-                                        </div><!-- /.products -->
-                                    </div>
-                                </div><div class="owl-item" style="width: 212px;">
-                                    <div class="item item-carousel">
-                                        <div class="products">
-
-                                            <div class="product">
-                                                <div class="product-image">
-                                                    <div class="image">
-                                                        <a href="detail.html"><img src="/Content/images//products/6.jpg" alt=""></a>
-                                                    </div><!-- /.image -->
-
-                                                    <div class="tag new"><span>new</span></div>
-                                                </div><!-- /.product-image -->
-
-
-                                                <div class="product-info text-left">
-                                                    <h3 class="name"><a href="detail.html">Nokia Lumia 520</a></h3>
-                                                    <div class="rating rateit-small rateit"><button id="rateit-reset-11" data-role="none" class="rateit-reset" aria-label="reset rating" aria-controls="rateit-range-11" style="display: none;"></button><div id="rateit-range-11" class="rateit-range" tabindex="0" role="slider" aria-label="rating" aria-owns="rateit-reset-11" aria-valuemin="0" aria-valuemax="5" aria-valuenow="4" aria-readonly="true" style="width: 80px; height: 16px;"><div class="rateit-selected" style="height: 16px; width: 64px;"></div><div class="rateit-hover" style="height:16px"></div></div></div>
-                                                    <div class="description"></div>
-
-                                                    <div class="product-price">
-                                                        <span class="price">
-                                                            $650.99
-                                                        </span>
-                                                        <span class="price-before-discount">$ 800</span>
-
-                                                    </div><!-- /.product-price -->
-
-                                                </div><!-- /.product-info -->
-                                                <div class="cart clearfix animate-effect">
-                                                    <div class="action">
-                                                        <ul class="list-unstyled">
-                                                            <li class="add-cart-button btn-group">
-                                                                <button class="btn btn-primary icon" data-toggle="dropdown" type="button">
-                                                                    <i class="fa fa-shopping-cart"></i>
-                                                                </button>
-                                                                <button class="btn btn-primary" type="button">Add to cart</button>
-
-                                                            </li>
-
-                                                            <li class="lnk wishlist">
-                                                                <a class="add-to-cart" href="detail.html" title="Wishlist">
-                                                                    <i class="icon fa fa-heart"></i>
-                                                                </a>
-                                                            </li>
-
-                                                            <li class="lnk">
-                                                                <a class="add-to-cart" href="detail.html" title="Compare">
-                                                                    <i class="fa fa-retweet"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div><!-- /.action -->
-                                                </div><!-- /.cart -->
-                                            </div><!-- /.product -->
-
-                                        </div><!-- /.products -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- /.item -->
-                        <!-- /.item -->
-                        <!-- /.item -->
-                        <!-- /.item -->
-                        <!-- /.item -->
-                        <!-- /.item -->
-                        <div class="owl-controls clickable"><div class="owl-buttons"><div class="owl-prev"></div><div class="owl-next"></div></div></div>
-                    </div><!-- /.home-owl-carousel -->
-                </section><!-- /.section -->
-                <!-- ============================================== UPSELL PRODUCTS : END ============================================== -->
-
+                <section class="section featured-product wow fadeInUp animated animated animated" style="visibility: visible; animation-name: fadeInUp;">
+                    <h3 class="section-title">Sản phẩm khác</h3>
+                    <div class="product-slider">
+                        <div class="owl-carousel home-owl-carousel custom-carousel owl-theme" data-item="4">
+                            @foreach (Product product in Model.GroupProduct.Products.Where(p=>p.ProductID!=Model.ProductID))
+                            {
+                                <div class="item item-carousel">
+                                    <div class="products">
+
+                                        <div class="product">
+                                            <div class="product-image">
+                                                <div class="image">
+                                                    <a href="@Url.Action("Detail", "Product", new { id = product.ProductID})">
+                                                        @{
+                                var imgUrl = ImageHelper.DefaultImage();
+                                if (product.ImageProducts.Count > 0)
+                                {
+                                    imgUrl = ImageHelper.ImageUrl(product.ImageProducts.FirstOrDefault().ImagePath);
+                                }
+                                imgUrl += "?w=195&h=250";
+                                                        }
+                                                        <img src="@Url.Content("~/Content/images/blank.gif")" data-echo="@Url.Content(imgUrl)" alt="">
+                                                    </a>
+                                                </div><!-- /.image -->
+                                                <div class="tag new"><span>new</span></div>
+                                            </div><!-- /.product-image -->
+
+                                            <div class="product-info text-left">
+                                                <h3 class="name"><a href="@Url.Action("Detail", "Product", new { id = product.ProductID},null)">@product.ProductName</a></h3>
+                                                <div class="rating rateit-small"></div>
+                                                <div class="description"></div>
+                                                <div class="product-price">
+                                                    <span class="price">
+                                                        @if (product.isSale())
+                                                        {
+                                                            @Html.FormatCurrency(product.SalePrice) <span>đ</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.FormatCurrency(product.Price) <span>đ</span>
+                                                        }
+                                                    </span>
+                                                    @if (product.isSale())
+                                                    {
+                                                        <span class="price-before-discount">@Html.FormatCurrency(product.Price) đ</span>
+                                                    }
+
+                                                </div>
+
+                                            </div><!-- /.product-info -->
+                                            <div class="cart clearfix animate-effect">
+                                                <a data-id="@product.ProductID" href="#" class="btn btn-labeled btn-info add-cart">
+                                                    <span class="btn-label"><i class="fa fa-shopping-cart add-cart"></i></span>Thêm giỏ hàng
+                                                </a>
+                                            </div><!-- /.cart -->
+                                        </div><!-- /.product -->
+
+                                    </div><!-- /.products -->
+                                </div><!-- /.item -->
+                            }
+                        </div><!-- /.home-owl-carousel -->
+                    </div><!-- /.product-slider -->
+                </section>
+               
             </div><!-- /.col -->
             <div class="col-md-3 sidebar">
                 <div class="sidebar-module-container">
@@ -929,93 +573,7 @@
                 </div>
             </div><div class="clearfix"></div>
         </div><!-- /.row -->
-        <!-- ============================================== BRANDS CAROUSEL ============================================== -->
-        <div id="brands-carousel" class="logo-slider wow fadeInUp animated" style="visibility: visible; animation-name: fadeInUp;">
-
-            <h3 class="section-title">Our Brands</h3>
-            <div class="logo-slider-inner">
-                <div id="brand-slider" class="owl-carousel brand-slider custom-carousel owl-theme" style="opacity: 1; display: block;">
-                    <div class="owl-wrapper-outer">
-                        <div class="owl-wrapper" style="width: 3800px; left: 0px; display: block;">
-                            <div class="owl-item" style="width: 190px;">
-                                <div class="item m-t-15">
-                                    <a href="#" class="image">
-                                        <img data-echo="/Content/images//brands/brand1.png" src="/Content/images//blank.gif" alt="">
-                                    </a>
-                                </div>
-                            </div><div class="owl-item" style="width: 190px;">
-                                <div class="item m-t-10">
-                                    <a href="#" class="image">
-                                        <img data-echo="/Content/images//brands/brand2.png" src="/Content/images//blank.gif" alt="">
-                                    </a>
-                                </div>
-                            </div><div class="owl-item" style="width: 190px;">
-                                <div class="item">
-                                    <a href="#" class="image">
-                                        <img data-echo="/Content/images//brands/brand3.png" src="/Content/images//blank.gif" alt="">
-                                    </a>
-                                </div>
-                            </div><div class="owl-item" style="width: 190px;">
-                                <div class="item">
-                                    <a href="#" class="image">
-                                        <img data-echo="/Content/images//brands/brand4.png" src="/Content/images//blank.gif" alt="">
-                                    </a>
-                                </div>
-                            </div><div class="owl-item" style="width: 190px;">
-                                <div class="item">
-                                    <a href="#" class="image">
-                                        <img data-echo="/Content/images//brands/brand5.png" src="/Content/images//blank.gif" alt="">
-                                    </a>
-                                </div>
-                            </div><div class="owl-item" style="width: 190px;">
-                                <div class="item">
-                                    <a href="#" class="image">
-                                        <img data-echo="/Content/images//brands/brand6.png" src="/Content/images//blank.gif" alt="">
-                                    </a>
-                                </div>
-                            </div><div class="owl-item" style="width: 190px;">
-                                <div class="item">
-                                    <a href="#" class="image">
-                                        <img data-echo="/Content/images//brands/brand2.png" src="/Content/images//blank.gif" alt="">
-                                    </a>
-                                </div>
-                            </div><div class="owl-item" style="width: 190px;">
-                                <div class="item">
-                                    <a href="#" class="image">
-                                        <img data-echo="/Content/images//brands/brand4.png" src="/Content/images//blank.gif" alt="">
-                                    </a>
-                                </div>
-                            </div><div class="owl-item" style="width: 190px;">
-                                <div class="item">
-                                    <a href="#" class="image">
-                                        <img data-echo="/Content/images//brands/brand1.png" src="/Content/images//blank.gif" alt="">
-                                    </a>
-                                </div>
-                            </div><div class="owl-item" style="width: 190px;">
-                                <div class="item">
-                                    <a href="#" class="image">
-                                        <img data-echo="/Content/images//brands/brand5.png" src="/Content/images//blank.gif" alt="">
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!--/.item-->
-                    <!--/.item-->
-                    <!--/.item-->
-                    <!--/.item-->
-                    <!--/.item-->
-                    <!--/.item-->
-                    <!--/.item-->
-                    <!--/.item-->
-                    <!--/.item-->
-                    <!--/.item-->
-                    <div class="owl-controls clickable"><div class="owl-buttons"><div class="owl-prev"></div><div class="owl-next"></div></div></div>
-                </div><!-- /.owl-carousel #logo-slider -->
-            </div><!-- /.logo-slider-inner -->
-
-        </div><!-- /.logo-slider -->
-        <!-- ============================================== BRANDS CAROUSEL : END ============================================== -->
-    </div><!-- /.container -->
+       </div><!-- /.container -->
 </div>
 
 @helper ShowBreadcrumb(GroupProduct group, int currGroupID = -1)

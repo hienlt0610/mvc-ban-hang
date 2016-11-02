@@ -21,6 +21,8 @@ namespace WebBanHang.Models
         public string Message { get; set; }
         public Nullable<int> CustomerID { get; set; }
         public string IP { get; set; }
+        public System.DateTime Time { get; set; }
+        public bool Seen { get; set; }
     
         public virtual Customer Customer { get; set; }
     }

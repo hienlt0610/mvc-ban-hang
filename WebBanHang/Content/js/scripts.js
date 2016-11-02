@@ -1,6 +1,4 @@
-﻿(function($) {
-    "use strict";
-function addThousandsSeparator(input) {
+﻿function addThousandsSeparator(input) {
     var output = input
     if (parseFloat(input)) {
         input = new String(input); // so you can perform string operations
@@ -11,8 +9,6 @@ function addThousandsSeparator(input) {
 
     return output;
 }
-
-    /*===================================================================================*/
 /*	OWL CAROUSEL
 /*===================================================================================*/
 $(document).ready(function () {
@@ -301,28 +297,6 @@ $(document).ready(function(){
     $('.rating').rateit({max: 5, step: 1, value : 4, resetable : false , readonly : true});
 });
 
-/*===================================================================================*/
-/* PRICE SLIDER
-/*===================================================================================*/
-$(document).ready(function () {
-
-// Price Slider
-if ($('.price-slider').length > 0) {
-    $('.price-slider').slider({
-        min: 0,
-        max: 50000000,
-        step: 1000000,
-        value: [0, 50000000],
-        handle: "square",
-        formatter: function (value) {
-            return 'Từ ' + addThousandsSeparator(value[0]) + ' đến ' + addThousandsSeparator(value[1]);
-        }
-    });
-
-}
-
-});
-
 
 /*===================================================================================*/
 /* SINGLE PRODUCT GALLERY
@@ -428,7 +402,6 @@ $('#transitionType li a').click(function () {
 var lastId;
 var lastBtn;
 $("a.add-cart").on('click', function (event) {
-    event.preventDefault();
     lastBtn = $(this);
     var id = $(this).data("id");
     lastId = id;
@@ -500,5 +473,3 @@ $(".btn").click(function (event) {
     // Removes focus of the button.
     $(this).blur();
 });
-
-})(jQuery);

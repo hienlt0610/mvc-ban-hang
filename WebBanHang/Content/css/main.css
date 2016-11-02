@@ -158,7 +158,7 @@ img[src="assets/images/blank.gif"] {
   padding-top: 100px;
 }
 .inner-top-sm {
-  padding-top: 80px;
+  padding-top: 20px;
 }
 .inner-top-xs {
   padding-top: 40px;
@@ -1059,11 +1059,10 @@ a {
   vertical-align: middle;
 }
 .main-header .top-search-holder .search-area {
-  border: 1px solid #e2e2e2;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
-  margin: 8px 0 0;
+  margin-top: 20px;
 }
 .main-header .top-search-holder .search-area .search-field {
   border: medium none;
@@ -5517,4 +5516,5 @@ label.error {
     width:480px;
 }
 
-.field-validation-error{ color: red; font-weight: bold; }
+.field-validation-error{ color: red;padding:5px; }
+

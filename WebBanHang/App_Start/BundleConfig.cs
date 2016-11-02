@@ -29,10 +29,12 @@ namespace WebBanHang
 
             // Add Plugin
             bundles.Add(new StyleBundle("~/bundles/plugin-css").Include(
-                "~/Content/admin/plugins/color-picker/css/bootstrap-colorpicker.min.css"
+                "~/Content/admin/plugins/color-picker/css/bootstrap-colorpicker.min.css",
+                "~/Content/admin/plugins/x-editable/css/bootstrap-editable.css"
             ));
             bundles.Add(new ScriptBundle("~/bundles/plugin-js").Include(
-                "~/Content/admin/plugins/color-picker/js/bootstrap-colorpicker.min.js"
+                "~/Content/admin/plugins/color-picker/js/bootstrap-colorpicker.min.js",
+                "~/Content/admin/plugins/x-editable/js/bootstrap-editable.min.js"
             ));
         }
     }

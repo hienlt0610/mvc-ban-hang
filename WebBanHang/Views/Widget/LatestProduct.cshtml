@@ -61,7 +61,7 @@
                                         </div><!-- /.col -->
                                         <div class="col col-xs-7">
                                             <div class="product-info">
-                                                <h3 class="name"><a href="#">@product.ProductName</a></h3>
+                                                <h3 class="name"><a href="@Url.Action("Detail", "Product", new { id=product.ProductID})">@product.ProductName</a></h3>
                                                 <div class="product-price">
                                                     <div class="price">
                                                         @if (product.isSale())

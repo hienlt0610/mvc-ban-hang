@@ -141,3 +141,8 @@
 .editable-click, a.editable-click{
     border:0px;
 }
+
+.table-inbox tr.unread td {
+    background: none repeat scroll 0 0 #FAFAFA;
+    font-weight: 600;
+}
