@@ -31,5 +31,12 @@ namespace WebBanHang.Controllers
             var list = Repository.Product.GetNewProduct(9);
             return PartialView(list);
         }
+
+        public ActionResult Search()
+        {
+            
+            var model = Repository.GroupProduct.GetTopGroupProducts();
+            return PartialView(model);
+        }
 	}
 }

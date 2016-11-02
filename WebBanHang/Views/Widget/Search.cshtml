@@ -1,0 +1,28 @@
+﻿@model IEnumerable<GroupProduct>
+@{
+    Layout = null;
+}
+
+<div class="search-area">
+    @using (Html.BeginForm("Search", "Product", FormMethod.Get))
+    {
+    <div class="input-group">
+        <div class="input-group-btn search-panel">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <span id="search_concept">Tất cả</span> <span class="caret"></span>
+            </button>
+            <input type="hidden" name="group" value="@(Request["group"] != null ? Request["group"] : "")" id="group">
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#" data-id="">Tất cả</a></li>
+                @foreach(var group in Model){
+                    <li><a data-id="@group.GroupID" href="#">@group.GroupName</a></li>
+                }
+            </ul>
+        </div>
+        <input type="text" class="form-control" value="@(Request["q"] != null ? Request["q"] : "")" name="q" placeholder="Từ khóa tìm kiếm...">
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+        </span>
+    </div>
+    }
+</div><!-- /.search-area -->

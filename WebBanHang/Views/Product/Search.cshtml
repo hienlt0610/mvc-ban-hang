@@ -1,0 +1,106 @@
+﻿@model IEnumerable<Product>
+@{
+    ViewBag.Title = "Search";
+    int i = 0;
+}
+
+<div class="breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-inner">
+            <ul class="list-inline list-unstyled">
+                <li>@Html.ActionLink("Trang chủ", "Index", "Home")</li>
+                <li class="active">Tìm kiếm: @ViewBag.Query</li>
+            </ul>
+        </div>
+        <!-- /.breadcrumb-inner -->
+    </div>
+    <!-- /.container -->
+</div>
+
+<div class="body-content">
+    <div class='container'>
+        <div class='row outer-bottom-sm'>
+            <div class='col-md-12'>
+                <div class="search-result-container">
+                    <div class="category-product  inner-top-vs">
+                        <div class="row">
+                            @foreach (Product product in Model)
+                            {
+                                if (i % 4 == 0 && i > 0)
+                                {
+                                    @Html.Raw("</div><div class=\"row\">");
+                                }
+                                <div class="col-sm-6 col-md-3 wow fadeInUp">
+                                    <div class="products">
+                                        <div class="product">
+                                            <div class="product-image">
+                                                <div class="image">
+                                                    @{
+                                var imgUrl = ImageHelper.DefaultImage();
+                                if (product.ImageProducts.Count > 0)
+                                {
+                                    imgUrl = ImageHelper.ImageUrl(product.ImageProducts.FirstOrDefault().ImagePath);
+                                }
+                                imgUrl += "?w=195&h=250";
+                                                    }
+                                                    <a href="@Url.Action("Detail", "Product", new { id = product.ProductID })"><img src="assets/images/blank.gif" data-echo="@imgUrl" alt=""></a>
+                                                </div>
+                                                <!-- /.image -->
+                                                <div class="tag new"><span>new</span></div>
+                                            </div>
+                                            <!-- /.product-image -->
+
+
+                                            <div class="product-info text-left">
+                                                <h3 class="name"><a href="@Url.Action("Detail", "Product", new { id = product.ProductID })">@product.ProductName</a></h3>
+                                                <div class="description"></div>
+                                                <div class="product-price">
+                                                    <span class="price">
+                                                        @if (product.isSale())
+                                                        {
+                                                            @Html.FormatCurrency(product.SalePrice) <span>đ</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.FormatCurrency(product.Price) <span>đ</span>
+                                                        }
+                                                    </span>
+                                                    @if (product.isSale())
+                                                    {
+                                                        <span class="price-before-discount">@Html.FormatCurrency(product.Price) đ</span>
+                                                    }
+
+                                                </div>
+                                                <!-- /.product-price -->
+
+                                            </div>
+                                            <!-- /.product-info -->
+                                            <div class="cart clearfix animate-effect">
+                                                <a data-id="@product.ProductID" href="#" class="btn btn-labeled btn-info add-cart">
+                                                    <span class="btn-label"><i class="fa fa-shopping-cart"></i></span>Thêm giỏ hàng
+                                                </a>
+                                            </div><!-- /.cart -->
+                                            <!-- /.cart -->
+                                        </div>
+                                        <!-- /.product -->
+
+                                    </div>
+                                    <!-- /.products -->
+                                </div><!-- /.item -->
+                                                    i++;
+                            }
+                        </div>
+                        <!-- /.row -->
+                    </div>
+
+                    <!-- /.filters-container -->
+                </div>
+                <!-- /.search-result-container -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+</div>
+<!-- /.body-content -->

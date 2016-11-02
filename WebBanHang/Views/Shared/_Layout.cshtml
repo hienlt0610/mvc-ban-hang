@@ -80,5 +80,12 @@
     
     <script src="~/Content/js/scripts.js"></script>
     @RenderSection("masterjs", required: false)
+    <script>
+        $('.search-panel ul.dropdown-menu a').click(function (e) {
+            e.preventDefault();
+            $(this).parents().eq(2).find('button.dropdown-toggle').html($(this).text() + ' <span class="caret"></span>');
+            $(this).parents().eq(2).find('#group').val($(this).data('id'));
+        });
+    </script>
 </body>
 </html>
