@@ -23,6 +23,7 @@ namespace WebBanHang.Controllers
             var productRepository = Repository.Bind<ProductRepository>();
             var model = productRepository.FindById(id);
             ViewBag.Sale = Repository.Product.BestProductSale();
+
             return View(model);
         }
 

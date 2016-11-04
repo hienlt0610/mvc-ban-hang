@@ -231,6 +231,7 @@
     <Compile Include="Core\AutoMapperConfig.cs" />
     <Compile Include="Core\BaseController.cs" />
     <Compile Include="Core\MyRazorViewEngine.cs" />
+    <Compile Include="Core\OnepayProperty.cs" />
     <Compile Include="Core\RepositoryModel\DistrictRepository.cs" />
     <Compile Include="Core\RepositoryModel\OrderDetailRepository.cs" />
     <Compile Include="Core\RepositoryModel\OrderRepository.cs" />
@@ -253,6 +254,7 @@
     <Compile Include="Core\RepositoryModel\MenuRepository.cs" />
     <Compile Include="Core\RepositoryModel\ProductRepository.cs" />
     <Compile Include="Core\UserManager.cs" />
+    <Compile Include="Core\VPCRequest.cs" />
     <Compile Include="Core\WebDbContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
